@@ -21,7 +21,7 @@ export default function FormulaireBudgetPatrimonial() {
     "Adresse",
     "Nationalité",
     "Téléphone",
-	"Email",
+    "Email",
   ];
 
   const investorFamilyFields = [
@@ -127,14 +127,23 @@ export default function FormulaireBudgetPatrimonial() {
       style: "currency",
       currency: "EUR",
       maximumFractionDigits: 0,
-    }).format(v);
+    }).format(Number(v) || 0);
 
-  const [investorIdentity, setInvestorIdentity] = useState(mapInit(investorIdentityFields));
-  const [investorFamily, setInvestorFamily] = useState(mapInit(investorFamilyFields));
-  const [investorProfessional, setInvestorProfessional] = useState(mapInit(investorProfessionalFields));
+  const [investorIdentity, setInvestorIdentity] = useState(
+    mapInit(investorIdentityFields)
+  );
+  const [investorFamily, setInvestorFamily] = useState(
+    mapInit(investorFamilyFields)
+  );
+  const [investorProfessional, setInvestorProfessional] = useState(
+    mapInit(investorProfessionalFields)
+  );
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [childrenData, setChildrenData] = useState(
-    Array.from({ length: investorChildrenCount }, () => ({ prenom: "", naissance: "" }))
+    Array.from({ length: investorChildrenCount }, () => ({
+      prenom: "",
+      naissance: "",
+    }))
   );
 
   const [income, setIncome] = useState(mapInit(incomeFields));
@@ -188,6 +197,7 @@ export default function FormulaireBudgetPatrimonial() {
     () => assets.reduce((s, a) => s + toNumber(a.montant), 0),
     [assets]
   );
+
   const assetsByCat = useMemo(() => {
     const r = { "Court terme": 0, "Moyen terme": 0, "Long terme": 0 };
     assets.forEach((a) => {
@@ -209,7 +219,10 @@ export default function FormulaireBudgetPatrimonial() {
     [realEstate]
   );
   const epargnePrecautionReco = useMemo(() => totalCharges * 6, [totalCharges]);
-  const patrimoineBrut = useMemo(() => totalAssets + totalImmo, [totalAssets, totalImmo]);
+  const patrimoineBrut = useMemo(
+    () => totalAssets + totalImmo,
+    [totalAssets, totalImmo]
+  );
   const tauxCharges = useMemo(
     () => (totalIncome > 0 ? (totalCharges / totalIncome) * 100 : 0),
     [totalIncome, totalCharges]
@@ -242,9 +255,11 @@ export default function FormulaireBudgetPatrimonial() {
         }
 
         const saved = data.data_json;
+
         if (saved.investorIdentity) setInvestorIdentity(saved.investorIdentity);
         if (saved.investorFamily) setInvestorFamily(saved.investorFamily);
-        if (saved.investorProfessional) setInvestorProfessional(saved.investorProfessional);
+        if (saved.investorProfessional)
+          setInvestorProfessional(saved.investorProfessional);
         if (saved.childrenData) setChildrenData(saved.childrenData);
         if (saved.income) setIncome(saved.income);
         if (saved.charges) setCharges(saved.charges);
@@ -265,131 +280,88 @@ export default function FormulaireBudgetPatrimonial() {
   }, []);
 
   const updateAsset = (i, key, value) => {
-    setAssets((prev) => prev.map((row, index) => (index === i ? { ...row, [key]: value } : row)));
+    setAssets((prev) =>
+      prev.map((row, index) =>
+        index === i ? { ...row, [key]: value } : row
+      )
+    );
   };
 
   const updateImmo = (i, key, value) => {
-    setRealEstate((prev) => prev.map((row, index) => (index === i ? { ...row, [key]: value } : row)));
+    setRealEstate((prev) =>
+      prev.map((row, index) =>
+        index === i ? { ...row, [key]: value } : row
+      )
+    );
   };
 
   const updateChild = (i, key, value) => {
-    setChildrenData((prev) => prev.map((row, index) => (index === i ? { ...row, [key]: value } : row)));
+    setChildrenData((prev) =>
+      prev.map((row, index) =>
+        index === i ? { ...row, [key]: value } : row
+      )
+    );
   };
 
   const genererPDF = async () => {
-  try {
-    setIsGeneratingPdf(true);
+    try {
+      setIsGeneratingPdf(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-    const element = document.getElementById("rapport-pdf");
-    if (!element) {
-      alert("Impossible de générer le PDF.");
-      return;
-    }
+      const element = document.getElementById("rapport-pdf");
+      if (!element) {
+        alert("Impossible de générer le PDF.");
+        return;
+      }
 
-    const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: element.scrollWidth,
-      windowHeight: element.scrollHeight,
-    });
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight,
+      });
 
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
 
-    const pageWidth = 210;
-    const pageHeight = 297;
+      const pageWidth = 210;
+      const pageHeight = 297;
+      const marginX = 8;
+      const marginY = 8;
 
-    // Marges du PDF
-    const marginX = 8;
-    const marginY = 8;
+      const usableWidth = pageWidth - marginX * 2;
+      const usableHeight = pageHeight - marginY * 2;
 
-    const usableWidth = pageWidth - marginX * 2;
-    const usableHeight = pageHeight - marginY * 2;
+      const imgWidth = usableWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    const imgWidth = usableWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = marginY;
 
-    let heightLeft = imgHeight;
-    let position = marginY;
-
-    pdf.addImage(imgData, "PNG", marginX, position, imgWidth, imgHeight);
-    heightLeft -= usableHeight;
-
-    while (heightLeft > 0) {
-      pdf.addPage();
-      position = marginY - (imgHeight - heightLeft);
       pdf.addImage(imgData, "PNG", marginX, position, imgWidth, imgHeight);
       heightLeft -= usableHeight;
+
+      while (heightLeft > 0) {
+        pdf.addPage();
+        position = marginY - (imgHeight - heightLeft);
+        pdf.addImage(imgData, "PNG", marginX, position, imgWidth, imgHeight);
+        heightLeft -= usableHeight;
+      }
+
+      const nom = investorIdentity["Nom"] || "client";
+      const prenom = investorIdentity["Prénom"] || "";
+      pdf.save(`bilan-patrimonial-${prenom}-${nom}.pdf`);
+    } catch (err) {
+      console.error("PDF ERROR:", err);
+      alert("Erreur lors de la génération du PDF : " + err.message);
+    } finally {
+      setIsGeneratingPdf(false);
     }
-
-    const nom = investorIdentity["Nom"] || "client";
-    const prenom = investorIdentity["Prénom"] || "";
-    pdf.save(`bilan-patrimonial-${prenom}-${nom}.pdf`);
-  } catch (err) {
-    console.error("PDF ERROR:", err);
-    alert("Erreur lors de la génération du PDF : " + err.message);
-  } finally {
-    setIsGeneratingPdf(false);
-  }
-};
-
-  try {
-    setIsGeneratingPdf(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    const element = document.getElementById("rapport-pdf");
-    if (!element) {
-      alert("Impossible de générer le PDF.");
-      return;
-    }
-
-    const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: element.scrollWidth,
-      windowHeight: element.scrollHeight,
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-
-    const pageWidth = 210;
-    const pageHeight = 297;
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    let heightLeft = imgHeight;
-    let position = 0;
-
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-    }
-
-    const nom = investorIdentity["Nom"] || "client";
-    const prenom = investorIdentity["Prénom"] || "";
-    pdf.save(`bilan-patrimonial-${prenom}-${nom}.pdf`);
-  } catch (err) {
-    console.error("PDF ERROR:", err);
-    alert("Erreur lors de la génération du PDF : " + err.message);
-  } finally {
-    setIsGeneratingPdf(false);
-  }
-};
+  };
 
   const handleSave = async () => {
     try {
@@ -409,22 +381,23 @@ export default function FormulaireBudgetPatrimonial() {
         realEstate,
         updatedAt: new Date().toISOString(),
       };
-	  
-	  const nom = investorIdentity["Nom"] || "";
+
+      const nom = investorIdentity["Nom"] || "";
       const prenom = investorIdentity["Prénom"] || "";
-	  const email = investorIdentity["Email"] || "";
-	  
-	  const { error } = await supabase
-		.from("formulaires_clients")
-		.upsert({
-		  client_id: clientId,
-		  client_nom: nom,
-		  client_prenom: prenom,
-		  client_email: email,
-		  data_json: payload,
-		  updated_at: new Date().toISOString(),
-        },
-        { onConflict: "client_id" }
+      const email = investorIdentity["Email"] || "";
+
+      const { error } = await supabase
+        .from("formulaires_clients")
+        .upsert(
+          {
+            client_id: clientId,
+            client_nom: nom,
+            client_prenom: prenom,
+            client_email: email,
+            data_json: payload,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "client_id" }
         );
 
       if (error) {
@@ -451,71 +424,142 @@ export default function FormulaireBudgetPatrimonial() {
 
   return (
     <div id="formulaire-pdf" className="min-h-screen bg-[#1b7b88] p-6 text-sm">
-      <div className="mb-3 text-right text-xs font-semibold text-white">{saveStatus}</div>
+      <div className="mb-3 text-right text-xs font-semibold text-white">
+        {saveStatus}
+      </div>
 
       <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
-        <div className="border-2 border-black overflow-hidden">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">Revenus mensuels</div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">{euro(totalIncome)}</div>
+        <div className="overflow-hidden border-2 border-black">
+          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
+            Revenus mensuels
+          </div>
+          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
+            {euro(totalIncome)}
+          </div>
         </div>
-        <div className="border-2 border-black overflow-hidden">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">Charges incompressibles</div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">{euro(totalCharges)}</div>
+
+        <div className="overflow-hidden border-2 border-black">
+          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
+            Charges incompressibles
+          </div>
+          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
+            {euro(totalCharges)}
+          </div>
         </div>
-        <div className="border-2 border-black overflow-hidden">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">Budget disponible</div>
-          <div className="bg-[#f5ddd7] px-3 py-3 text-lg font-bold text-black">{euro(budgetDisponible)}</div>
+
+        <div className="overflow-hidden border-2 border-black">
+          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
+            Budget disponible
+          </div>
+          <div className="bg-[#f5ddd7] px-3 py-3 text-lg font-bold text-black">
+            {euro(budgetDisponible)}
+          </div>
         </div>
-        <div className="border-2 border-black overflow-hidden">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">Patrimoine brut</div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">{euro(patrimoineBrut)}</div>
+
+        <div className="overflow-hidden border-2 border-black">
+          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
+            Patrimoine brut
+          </div>
+          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
+            {euro(patrimoineBrut)}
+          </div>
         </div>
-        <div className="border-2 border-black overflow-hidden">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">Taux de charges</div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">{tauxCharges.toFixed(0)}%</div>
+
+        <div className="overflow-hidden border-2 border-black">
+          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
+            Taux de charges
+          </div>
+          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
+            {tauxCharges.toFixed(0)}%
+          </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <div className="bg-[#1b7b88] border-2 border-black p-0">
+        <div className="border-2 border-black bg-[#1b7b88] p-0">
           <h2 className={sectionTitle}>INFORMATION INVESTISSEUR</h2>
 
           <div className="border-b-2 border-black p-3">
             {investorIdentityFields.map((f) => (
-              <div key={f} className="grid grid-cols-[1.1fr_1.3fr] gap-2 mb-1 items-center">
+              <div
+                key={f}
+                className="mb-1 grid grid-cols-[1.1fr_1.3fr] items-center gap-2"
+              >
                 <label className={label}>{f} :</label>
-                <input className={input} value={investorIdentity[f]} onChange={(e) => setInvestorIdentity({ ...investorIdentity, [f]: e.target.value })} />
+                <input
+                  className={input}
+                  value={investorIdentity[f]}
+                  onChange={(e) =>
+                    setInvestorIdentity({
+                      ...investorIdentity,
+                      [f]: e.target.value,
+                    })
+                  }
+                />
               </div>
             ))}
           </div>
 
           <div className="border-b-2 border-black p-3">
             {investorFamilyFields.map((f) => (
-              <div key={f} className="grid grid-cols-[1.1fr_1.3fr] gap-2 mb-1 items-center">
+              <div
+                key={f}
+                className="mb-1 grid grid-cols-[1.1fr_1.3fr] items-center gap-2"
+              >
                 <label className={label}>{f} :</label>
-                <input className={input} value={investorFamily[f]} onChange={(e) => setInvestorFamily({ ...investorFamily, [f]: e.target.value })} />
+                <input
+                  className={input}
+                  value={investorFamily[f]}
+                  onChange={(e) =>
+                    setInvestorFamily({
+                      ...investorFamily,
+                      [f]: e.target.value,
+                    })
+                  }
+                />
               </div>
             ))}
           </div>
 
           {Array.from({ length: investorChildrenCount }).map((_, i) => (
             <div key={i} className="border-b-2 border-black p-3">
-              <div className="grid grid-cols-[1.1fr_1.3fr] gap-2 mb-1 items-center">
+              <div className="mb-1 grid grid-cols-[1.1fr_1.3fr] items-center gap-2">
                 <label className={label}>Prénom enfant :</label>
-                <input className={input} value={childrenData[i].prenom} onChange={(e) => updateChild(i, "prenom", e.target.value)} />
+                <input
+                  className={input}
+                  value={childrenData[i].prenom}
+                  onChange={(e) => updateChild(i, "prenom", e.target.value)}
+                />
               </div>
-              <div className="grid grid-cols-[1.1fr_1.3fr] gap-2 items-center">
+              <div className="grid grid-cols-[1.1fr_1.3fr] items-center gap-2">
                 <label className={label}>Naissance enfant :</label>
-                <input className={input} type="date" value={childrenData[i].naissance} onChange={(e) => updateChild(i, "naissance", e.target.value)} />
+                <input
+                  className={input}
+                  type="date"
+                  value={childrenData[i].naissance}
+                  onChange={(e) => updateChild(i, "naissance", e.target.value)}
+                />
               </div>
             </div>
           ))}
 
           <div className="p-3">
             {investorProfessionalFields.map((f) => (
-              <div key={f} className="grid grid-cols-[1.1fr_1.3fr] gap-2 mb-1 items-center">
+              <div
+                key={f}
+                className="mb-1 grid grid-cols-[1.1fr_1.3fr] items-center gap-2"
+              >
                 <label className={label}>{f} :</label>
-                <input className={input} value={investorProfessional[f]} onChange={(e) => setInvestorProfessional({ ...investorProfessional, [f]: e.target.value })} />
+                <input
+                  className={input}
+                  value={investorProfessional[f]}
+                  onChange={(e) =>
+                    setInvestorProfessional({
+                      ...investorProfessional,
+                      [f]: e.target.value,
+                    })
+                  }
+                />
               </div>
             ))}
           </div>
@@ -526,9 +570,16 @@ export default function FormulaireBudgetPatrimonial() {
             <h3 className={sectionTitle}>Revenus (mensuel)</h3>
             <div className="p-3">
               {incomeFields.map((f) => (
-                <div key={f} className="grid grid-cols-2 gap-2 items-center mb-1">
+                <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
                   <label className={label}>{f}</label>
-                  <input className={input} type="number" value={income[f]} onChange={(e) => setIncome({ ...income, [f]: e.target.value })} />
+                  <input
+                    className={input}
+                    type="number"
+                    value={income[f]}
+                    onChange={(e) =>
+                      setIncome({ ...income, [f]: e.target.value })
+                    }
+                  />
                 </div>
               ))}
             </div>
@@ -539,83 +590,143 @@ export default function FormulaireBudgetPatrimonial() {
             <h3 className={sectionTitle}>Charges incompressibles (mensuel)</h3>
             <div className="p-3">
               {chargesFields.map((f) => (
-                <div key={f} className="grid grid-cols-2 gap-2 items-center mb-1">
+                <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
                   <label className={label}>{f}</label>
-                  <input className={input} type="number" value={charges[f]} onChange={(e) => setCharges({ ...charges, [f]: e.target.value })} />
+                  <input
+                    className={input}
+                    type="number"
+                    value={charges[f]}
+                    onChange={(e) =>
+                      setCharges({ ...charges, [f]: e.target.value })
+                    }
+                  />
                 </div>
               ))}
             </div>
             <div className={totalBar}>Total : {euro(totalCharges)}</div>
           </div>
 
-          <div className="grid grid-cols-[1fr_auto] border-2 border-black overflow-hidden">
-            <div className="bg-black text-white p-2 text-center font-bold">Budget = Revenus - Charges incompressibles</div>
-            <div className="bg-[#f5ddd7] text-black p-2 font-bold">{euro(budgetDisponible)}</div>
+          <div className="grid grid-cols-[1fr_auto] overflow-hidden border-2 border-black">
+            <div className="bg-black p-2 text-center font-bold text-white">
+              Budget = Revenus - Charges incompressibles
+            </div>
+            <div className="bg-[#f5ddd7] p-2 font-bold text-black">
+              {euro(budgetDisponible)}
+            </div>
           </div>
 
           <div className="border-2 border-black bg-[#1b7b88] p-0">
             <h3 className={sectionTitle}>Epargne mensuelle actuelle</h3>
             <div className="p-3">
               {epargneMensuelle.map((f) => (
-                <div key={f} className="grid grid-cols-2 gap-2 items-center mb-1">
+                <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
                   <label className={label}>{f}</label>
-                  <input className={input} type="number" value={epargne[f]} onChange={(e) => setEpargne({ ...epargne, [f]: e.target.value })} />
+                  <input
+                    className={input}
+                    type="number"
+                    value={epargne[f]}
+                    onChange={(e) =>
+                      setEpargne({ ...epargne, [f]: e.target.value })
+                    }
+                  />
                 </div>
               ))}
             </div>
-            <div className={totalBar}>Total pour les projets : {euro(totalEpargneMensuelle)}</div>
+            <div className={totalBar}>
+              Total pour les projets : {euro(totalEpargneMensuelle)}
+            </div>
           </div>
 
           <div className="border-2 border-black bg-[#1b7b88] p-0">
             <h3 className={sectionTitle}>Loisirs (mensuel)</h3>
             <div className="p-3">
               {loisirsFields.map((f) => (
-                <div key={f} className="grid grid-cols-2 gap-2 items-center mb-1">
+                <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
                   <label className={label}>{f}</label>
-                  <input className={input} type="number" value={loisirs[f]} onChange={(e) => setLoisirs({ ...loisirs, [f]: e.target.value })} />
+                  <input
+                    className={input}
+                    type="number"
+                    value={loisirs[f]}
+                    onChange={(e) =>
+                      setLoisirs({ ...loisirs, [f]: e.target.value })
+                    }
+                  />
                 </div>
               ))}
             </div>
             <div className={totalBar}>Total : {euro(totalLoisirs)}</div>
           </div>
 
-          <div className="grid grid-cols-[1fr_auto] border-2 border-black overflow-hidden">
-            <div className="bg-black text-white p-2 text-center font-bold">Budget Projets théorique</div>
-            <div className="bg-[#f3c316] text-black p-2 font-bold">{euro(budgetProjet)}</div>
+          <div className="grid grid-cols-[1fr_auto] overflow-hidden border-2 border-black">
+            <div className="bg-black p-2 text-center font-bold text-white">
+              Budget Projets théorique
+            </div>
+            <div className="bg-[#f3c316] p-2 font-bold text-black">
+              {euro(budgetProjet)}
+            </div>
           </div>
         </div>
 
         <div className="space-y-4">
           <div className="border-2 border-black bg-[#1b7b88] p-0">
-            <h3 className="bg-[#0f7fb3] text-white font-bold text-center px-2 py-1 border-b border-black">Epargne / Stock</h3>
-            <div className="p-3 overflow-x-auto">
-              <table className="w-full text-xs border-collapse">
+            <h3 className="border-b border-black bg-[#0f7fb3] px-2 py-1 text-center font-bold text-white">
+              Epargne / Stock
+            </h3>
+            <div className="overflow-x-auto p-3">
+              <table className="w-full border-collapse text-xs">
                 <thead>
                   <tr className="bg-[#e6c08f] text-black">
                     <th className="border border-black px-1 py-1 text-left"></th>
-                    <th className="border border-black px-1 py-1 text-left">Type de compte / placements</th>
-                    <th className="border border-black px-1 py-1 text-left">Montant</th>
-                    <th className="border border-black px-1 py-1 text-left">Banque / organisme</th>
+                    <th className="border border-black px-1 py-1 text-left">
+                      Type de compte / placements
+                    </th>
+                    <th className="border border-black px-1 py-1 text-left">
+                      Montant
+                    </th>
+                    <th className="border border-black px-1 py-1 text-left">
+                      Banque / organisme
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {assets.map((a, i) => {
-                    const showCategory = i === 0 || assets[i - 1].categorie !== a.categorie;
-                    const rowSpan = assets.filter((item) => item.categorie === a.categorie).length;
+                    const showCategory =
+                      i === 0 || assets[i - 1].categorie !== a.categorie;
+                    const rowSpan = assets.filter(
+                      (item) => item.categorie === a.categorie
+                    ).length;
 
                     return (
                       <tr key={i}>
                         {showCategory && (
-                          <td rowSpan={rowSpan} className="text-white border border-black px-1 py-0.5 text-center align-middle [writing-mode:vertical-rl] rotate-180 font-semibold">
+                          <td
+                            rowSpan={rowSpan}
+                            className="align-middle border border-black px-1 py-0.5 text-center font-semibold text-white [writing-mode:vertical-rl] rotate-180"
+                          >
                             {a.categorie}
                           </td>
                         )}
-                        <td className="text-white border border-black px-1 py-0.5">{a.type}</td>
-                        <td className="border border-black">
-                          <input className={input} type="number" value={a.montant} onChange={(e) => updateAsset(i, "montant", e.target.value)} />
+                        <td className="border border-black px-1 py-0.5 text-white">
+                          {a.type}
                         </td>
                         <td className="border border-black">
-                          <input className={input} value={a.banque} onChange={(e) => updateAsset(i, "banque", e.target.value)} />
+                          <input
+                            className={input}
+                            type="number"
+                            value={a.montant}
+                            onChange={(e) =>
+                              updateAsset(i, "montant", e.target.value)
+                            }
+                          />
+                        </td>
+                        <td className="border border-black">
+                          <input
+                            className={input}
+                            value={a.banque}
+                            onChange={(e) =>
+                              updateAsset(i, "banque", e.target.value)
+                            }
+                          />
                         </td>
                       </tr>
                     );
@@ -623,11 +734,19 @@ export default function FormulaireBudgetPatrimonial() {
                 </tbody>
               </table>
 
-              <div className="grid grid-cols-4 gap-px mt-2 border-2 border-black overflow-hidden bg-black">
-                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">Court terme : {euro(assetsByCat["Court terme"])}</div>
-                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">Moyen terme : {euro(assetsByCat["Moyen terme"])}</div>
-                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">Long terme : {euro(assetsByCat["Long terme"])}</div>
-                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">Total : {euro(totalAssets)}</div>
+              <div className="mt-2 grid grid-cols-4 gap-px overflow-hidden border-2 border-black bg-black">
+                <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
+                  Court terme : {euro(assetsByCat["Court terme"])}
+                </div>
+                <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
+                  Moyen terme : {euro(assetsByCat["Moyen terme"])}
+                </div>
+                <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
+                  Long terme : {euro(assetsByCat["Long terme"])}
+                </div>
+                <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
+                  Total : {euro(totalAssets)}
+                </div>
               </div>
             </div>
           </div>
@@ -636,132 +755,214 @@ export default function FormulaireBudgetPatrimonial() {
             <h3 className={sectionTitle}>Epargne de précaution</h3>
             <div className="grid gap-3 p-3 md:grid-cols-2">
               <div>
-                <div className="mb-1 text-white font-semibold">Montant disponible</div>
-                <input className={input} type="number" value={precaution} onChange={(e) => setPrecaution(e.target.value)} />
+                <div className="mb-1 font-semibold text-white">
+                  Montant disponible
+                </div>
+                <input
+                  className={input}
+                  type="number"
+                  value={precaution}
+                  onChange={(e) => setPrecaution(e.target.value)}
+                />
               </div>
               <div className="border border-black bg-[#d9d9d9] px-3 py-2 text-black">
-                <div className="text-xs font-bold uppercase">Recommandation CGP</div>
-                <div className="mt-1 text-base font-bold">{euro(epargnePrecautionReco)}</div>
-                <div className="mt-1 text-xs">Base : 6 mois de charges incompressibles</div>
+                <div className="text-xs font-bold uppercase">
+                  Recommandation CGP
+                </div>
+                <div className="mt-1 text-base font-bold">
+                  {euro(epargnePrecautionReco)}
+                </div>
+                <div className="mt-1 text-xs">
+                  Base : 6 mois de charges incompressibles
+                </div>
               </div>
             </div>
           </div>
 
           <div className="border-2 border-black bg-[#1b7b88] p-0">
-            <h3 className="bg-[#0f7fb3] text-white font-bold text-center px-2 py-1 border-b border-black">Biens immobiliers</h3>
-            <div className="p-3 space-y-4">
+            <h3 className="border-b border-black bg-[#0f7fb3] px-2 py-1 text-center font-bold text-white">
+              Biens immobiliers
+            </h3>
+            <div className="space-y-4 p-3">
               {realEstate.map((r, i) => (
                 <div key={i} className="border-2 border-black bg-[#166e79]">
-                  <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">{r.type}</div>
+                  <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
+                    {r.type}
+                  </div>
                   <div className="grid gap-3 p-3 md:grid-cols-2">
                     <div>
-                      <div className="mb-1 text-white font-semibold">Valeur estimée</div>
-                      <input className={input} type="number" value={r.valeur} onChange={(e) => updateImmo(i, "valeur", e.target.value)} />
+                      <div className="mb-1 font-semibold text-white">
+                        Valeur estimée
+                      </div>
+                      <input
+                        className={input}
+                        type="number"
+                        value={r.valeur}
+                        onChange={(e) =>
+                          updateImmo(i, "valeur", e.target.value)
+                        }
+                      />
                     </div>
                     <div>
-                      <div className="mb-1 text-white font-semibold">Surface / m²</div>
-                      <input className={input} type="number" value={r.surface} onChange={(e) => updateImmo(i, "surface", e.target.value)} />
+                      <div className="mb-1 font-semibold text-white">
+                        Surface / m²
+                      </div>
+                      <input
+                        className={input}
+                        type="number"
+                        value={r.surface}
+                        onChange={(e) =>
+                          updateImmo(i, "surface", e.target.value)
+                        }
+                      />
                     </div>
                     <div className="md:col-span-2">
-                      <div className="mb-1 text-white font-semibold">Adresse</div>
-                      <input className={input} value={r.adresse} onChange={(e) => updateImmo(i, "adresse", e.target.value)} />
+                      <div className="mb-1 font-semibold text-white">Adresse</div>
+                      <input
+                        className={input}
+                        value={r.adresse}
+                        onChange={(e) =>
+                          updateImmo(i, "adresse", e.target.value)
+                        }
+                      />
                     </div>
                   </div>
                   <div className="grid gap-3 border-t-2 border-black p-3 md:grid-cols-4">
                     <div>
-                      <div className="mb-1 text-white font-semibold">Date acquisition</div>
-                      <input className={input} type="date" value={r.dateAcquisition} onChange={(e) => updateImmo(i, "dateAcquisition", e.target.value)} />
+                      <div className="mb-1 font-semibold text-white">
+                        Date acquisition
+                      </div>
+                      <input
+                        className={input}
+                        type="date"
+                        value={r.dateAcquisition}
+                        onChange={(e) =>
+                          updateImmo(i, "dateAcquisition", e.target.value)
+                        }
+                      />
                     </div>
                     <div>
-                      <div className="mb-1 text-white font-semibold">Date fin</div>
-                      <input className={input} type="date" value={r.dateFin} onChange={(e) => updateImmo(i, "dateFin", e.target.value)} />
+                      <div className="mb-1 font-semibold text-white">
+                        Date fin
+                      </div>
+                      <input
+                        className={input}
+                        type="date"
+                        value={r.dateFin}
+                        onChange={(e) =>
+                          updateImmo(i, "dateFin", e.target.value)
+                        }
+                      />
                     </div>
                     <div>
-                      <div className="mb-1 text-white font-semibold">Mensualité</div>
-                      <input className={input} type="number" value={r.mensualite} onChange={(e) => updateImmo(i, "mensualite", e.target.value)} />
+                      <div className="mb-1 font-semibold text-white">
+                        Mensualité
+                      </div>
+                      <input
+                        className={input}
+                        type="number"
+                        value={r.mensualite}
+                        onChange={(e) =>
+                          updateImmo(i, "mensualite", e.target.value)
+                        }
+                      />
                     </div>
                     <div>
-                      <div className="mb-1 text-white font-semibold">Reste à rembourser</div>
-                      <input className={input} type="number" value={r.reste} onChange={(e) => updateImmo(i, "reste", e.target.value)} />
+                      <div className="mb-1 font-semibold text-white">
+                        Reste à rembourser
+                      </div>
+                      <input
+                        className={input}
+                        type="number"
+                        value={r.reste}
+                        onChange={(e) =>
+                          updateImmo(i, "reste", e.target.value)
+                        }
+                      />
                     </div>
                   </div>
                 </div>
               ))}
 
-              <div className="grid gap-px border-2 border-black bg-black md:grid-cols-3 overflow-hidden">
-                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">Total immobilier : {euro(totalImmo)}</div>
-                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">Mensualités : {euro(totalMensualitesImmo)}</div>
-                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">Capital restant : {euro(totalResteImmo)}</div>
+              <div className="grid gap-px overflow-hidden border-2 border-black bg-black md:grid-cols-3">
+                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
+                  Total immobilier : {euro(totalImmo)}
+                </div>
+                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
+                  Mensualités : {euro(totalMensualitesImmo)}
+                </div>
+                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
+                  Capital restant : {euro(totalResteImmo)}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-	  
-	  {isGeneratingPdf && (
-  <div
-    style={{
-      position: "fixed",
-      left: "-100000px",
-      top: "0",
-      width: "1200px",
-      background: "#ffffff",
-      color: "#000000",
-      zIndex: -1,
-      opacity: 1,
-      pointerEvents: "none",
-    }}
-   >
-    <RapportPatrimonialPdf
-      investorIdentity={investorIdentity}
-      investorFamily={investorFamily}
-      investorProfessional={investorProfessional}
-      childrenData={childrenData}
-      income={income}
-      charges={charges}
-      loisirs={loisirs}
-      epargne={epargne}
-      precaution={precaution}
-      assets={assets}
-      realEstate={realEstate}
-      totalIncome={totalIncome}
-      totalCharges={totalCharges}
-      totalLoisirs={totalLoisirs}
-      totalEpargneMensuelle={totalEpargneMensuelle}
-      budgetDisponible={budgetDisponible}
-      budgetProjet={budgetProjet}
-      totalAssets={totalAssets}
-      assetsByCat={assetsByCat}
-      totalImmo={totalImmo}
-      totalMensualitesImmo={totalMensualitesImmo}
-      totalResteImmo={totalResteImmo}
-      epargnePrecautionReco={epargnePrecautionReco}
-      patrimoineBrut={patrimoineBrut}
-      tauxCharges={tauxCharges}
-    />
-  </div>
-   )}
-	  
 
-       <div className="mt-10 w-full flex justify-center">
-      <div className="flex gap-8">
-        <button
-          type="button"
-          onClick={handleSave}
-          className="border-2 border-black bg-[#e6c08f] px-8 py-3 font-semibold text-black rounded"
+      {isGeneratingPdf && (
+        <div
+          style={{
+            position: "fixed",
+            left: "-100000px",
+            top: "0",
+            width: "1200px",
+            background: "#ffffff",
+            color: "#000000",
+            zIndex: -1,
+            opacity: 1,
+            pointerEvents: "none",
+          }}
         >
-          Enregistrer
-        </button>
+          <RapportPatrimonialPdf
+            investorIdentity={investorIdentity}
+            investorFamily={investorFamily}
+            investorProfessional={investorProfessional}
+            childrenData={childrenData}
+            income={income}
+            charges={charges}
+            loisirs={loisirs}
+            epargne={epargne}
+            precaution={precaution}
+            assets={assets}
+            realEstate={realEstate}
+            totalIncome={totalIncome}
+            totalCharges={totalCharges}
+            totalLoisirs={totalLoisirs}
+            totalEpargneMensuelle={totalEpargneMensuelle}
+            budgetDisponible={budgetDisponible}
+            budgetProjet={budgetProjet}
+            totalAssets={totalAssets}
+            assetsByCat={assetsByCat}
+            totalImmo={totalImmo}
+            totalMensualitesImmo={totalMensualitesImmo}
+            totalResteImmo={totalResteImmo}
+            epargnePrecautionReco={epargnePrecautionReco}
+            patrimoineBrut={patrimoineBrut}
+            tauxCharges={tauxCharges}
+          />
+        </div>
+      )}
 
-        <button
-          type="button"
-          onClick={handleDownloadPdf}
-          className="border-2 border-black bg-[#d9d9d9] px-8 py-3 font-semibold text-black rounded"
-        >
-          Télécharger le PDF
-        </button>
+      <div className="mt-10 flex w-full justify-center">
+        <div className="flex gap-8">
+          <button
+            type="button"
+            onClick={handleSave}
+            className="rounded border-2 border-black bg-[#e6c08f] px-8 py-3 font-semibold text-black"
+          >
+            Enregistrer
+          </button>
+
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            className="rounded border-2 border-black bg-[#d9d9d9] px-8 py-3 font-semibold text-black"
+          >
+            Télécharger le PDF
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
