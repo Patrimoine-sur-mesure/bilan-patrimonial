@@ -459,87 +459,147 @@ const epargneMensuelleLT = useMemo(
   fluxLT,
 }) => {
   return (
-    <div className="mt-10 border-2 border-black bg-white p-6">
-      <h3 className="mb-6 text-center text-3xl font-bold text-[#c6923f]">
+    <div className="mt-10 border-2 border-black bg-[#f3f3f3] px-6 py-8">
+      <div className="mb-8 text-center text-4xl font-bold text-[#c6923f]">
         Stocks / Flux actuels
-      </h3>
+      </div>
 
-      <div className="grid grid-cols-[180px_1fr_180px] items-center gap-4">
-        <div className="flex h-full flex-col justify-between py-10">
-          <div className="flex items-center gap-3">
-            <div className="text-sm font-bold text-black">Long terme :</div>
-            <div className="rounded bg-[#f4e3c4] px-3 py-1 font-bold text-[#6d28d9]">
-              {euro(fluxLT)}/mois
-            </div>
+      <div className="grid grid-cols-[170px_1fr_170px] items-center gap-4">
+        {/* COLONNE GAUCHE */}
+        <div className="relative h-[560px]">
+          <div className="absolute left-0 top-0 text-[24px] font-black uppercase text-black">
+            PERFORMANT
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="text-sm font-bold text-black">Moyen terme :</div>
-            <div className="rounded bg-[#f4e3c4] px-3 py-1 font-bold text-[#6d28d9]">
-              {euro(fluxMT)}/mois
-            </div>
+          <div className="absolute left-[18px] top-[48px] h-[500px] w-[12px] bg-[#2b2840]" />
+          <div
+            className="absolute left-[0px] top-[12px] h-0 w-0 border-l-[24px] border-r-[24px] border-b-[36px] border-l-transparent border-r-transparent border-b-[#2b2840]"
+          />
+          <div className="absolute left-[46px] top-[6px] flex h-[54px] w-[54px] items-center justify-center rounded-full bg-black text-[42px] font-bold leading-none text-white">
+            +
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="text-sm font-bold text-black">Court terme :</div>
-            <div className="rounded bg-[#f4e3c4] px-3 py-1 font-bold text-[#6d28d9]">
-              {euro(fluxCT)}/mois
-            </div>
+          {/* LT */}
+          <div className="absolute left-[22px] top-[128px] text-[18px] font-bold leading-tight text-black">
+            Long terme :
+          </div>
+          <div className="absolute left-[86px] top-[142px] h-[16px] w-[48px] bg-[#c6923f]" />
+          <div
+            className="absolute left-[125px] top-[136px] h-0 w-0 border-l-[18px] border-t-[14px] border-b-[14px] border-l-[#c6923f] border-t-transparent border-b-transparent"
+          />
+          <div className="absolute left-[88px] top-[106px] text-[16px] font-bold text-[#6c2bd9]">
+            {euro(fluxLT)}/mois
+          </div>
+
+          {/* MT */}
+          <div className="absolute left-[22px] top-[280px] text-[18px] font-bold leading-tight text-black">
+            Moyen terme :
+          </div>
+          <div className="absolute left-[86px] top-[294px] h-[16px] w-[48px] bg-[#c6923f]" />
+          <div
+            className="absolute left-[125px] top-[288px] h-0 w-0 border-l-[18px] border-t-[14px] border-b-[14px] border-l-[#c6923f] border-t-transparent border-b-transparent"
+          />
+          <div className="absolute left-[88px] top-[328px] text-[16px] font-bold text-[#6c2bd9]">
+            {euro(fluxMT)}/mois
+          </div>
+
+          {/* CT */}
+          <div className="absolute left-[22px] top-[448px] text-[18px] font-bold leading-tight text-black">
+            Court terme :
+          </div>
+          <div className="absolute left-[86px] top-[462px] h-[16px] w-[48px] bg-[#c6923f]" />
+          <div
+            className="absolute left-[125px] top-[456px] h-0 w-0 border-l-[18px] border-t-[14px] border-b-[14px] border-l-[#c6923f] border-t-transparent border-b-transparent"
+          />
+          <div className="absolute left-[88px] top-[438px] text-[16px] font-bold text-[#6c2bd9]">
+            {euro(fluxCT)}/mois
           </div>
         </div>
 
-        <div className="relative mx-auto h-[520px] w-[620px]">
+        {/* CENTRE */}
+        <div className="relative mx-auto h-[560px] w-[780px]">
+          {/* Pyramide */}
           <div
-            className="absolute inset-0"
+            className="absolute bottom-0 left-1/2 h-[470px] w-[620px] -translate-x-1/2 bg-[#e8ddc6]"
             style={{
-              clipPath: "polygon(50% 4%, 98% 96%, 2% 96%)",
-              background: "#eadfc8",
+              clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)",
               border: "2px solid #c6923f",
             }}
           />
 
-          <div className="absolute left-[16%] right-[16%] top-[33%] border-t-2 border-dashed border-black" />
-          <div className="absolute left-[28%] right-[28%] top-[61%] border-t-2 border-dashed border-black" />
+          {/* Lignes pointillées */}
+          <div className="absolute left-[120px] right-[120px] top-[180px] border-t-[3px] border-dashed border-black" />
+          <div className="absolute left-[205px] right-[205px] top-[340px] border-t-[3px] border-dashed border-black" />
 
-          <div className="absolute left-1/2 top-[15%] w-[180px] -translate-x-1/2 text-center">
-            <div className="text-2xl font-bold text-[#6d28d9]">{euro(stockLT)}</div>
-            <div className="mt-2 text-sm text-[#c6923f]">
-              Immo locatif, SCPI, PER, AV
-            </div>
-            <div className="mt-1 text-2xl font-semibold text-black">Long terme</div>
+          {/* LT */}
+          <div className="absolute left-1/2 top-[78px] w-[180px] -translate-x-1/2 text-center">
+            <div className="text-[34px] font-bold text-[#6c2bd9]">{euro(stockLT)}</div>
+            <div className="mt-2 text-[20px] text-[#c6923f]">Immo locatif, SCPI, PER, AV</div>
+            <div className="mt-1 text-[34px] font-medium text-black">Long terme</div>
           </div>
 
-          <div className="absolute left-1/2 top-[44%] w-[260px] -translate-x-1/2 text-center">
-            <div className="text-2xl font-bold text-[#6d28d9]">{euro(stockMT)}</div>
-            <div className="mt-2 text-sm text-[#c6923f]">
-              PEL, AV, PEA, ES
-            </div>
-            <div className="mt-1 text-2xl font-semibold text-black">Moyen terme</div>
+          {/* MT */}
+          <div className="absolute left-1/2 top-[240px] w-[280px] -translate-x-1/2 text-center">
+            <div className="text-[34px] font-bold text-[#6c2bd9]">{euro(stockMT)}</div>
+            <div className="mt-2 text-[20px] text-[#c6923f]">PEL, AV, PEA, ES</div>
+            <div className="mt-1 text-[34px] font-medium text-black">Moyen terme</div>
           </div>
 
-          <div className="absolute bottom-[8%] left-1/2 w-[420px] -translate-x-1/2 text-center">
-            <div className="text-lg text-[#c6923f]">
+          {/* CT */}
+          <div className="absolute bottom-[26px] left-1/2 w-[520px] -translate-x-1/2 text-center">
+            <div className="text-[24px] text-[#c6923f]">
               Livrets bancaires (LA, LB, LDDS, CC Perso &amp; Pro) :
-              <span className="ml-2 font-bold text-[#6d28d9]">{euro(stockCT)}</span>
+              <span className="ml-2 font-bold text-[#6c2bd9]">{euro(stockCT)}</span>
             </div>
-            <div className="mt-2 text-2xl font-semibold text-black">Court terme</div>
+            <div className="mt-2 text-[36px] font-medium text-black">Court terme</div>
           </div>
 
+          {/* Barre résidence principale */}
           <div
-            className="absolute right-[55px] top-[60px] h-[390px] w-[34px] rotate-[38deg] border-2 border-[#c6923f] bg-white"
+            className="absolute right-[118px] top-[64px] h-[440px] w-[38px] bg-white"
+            style={{
+              border: "2px solid #c6923f",
+              transform: "rotate(39deg)",
+              transformOrigin: "center",
+            }}
           />
           <div
-            className="absolute right-[82px] top-[180px] rotate-[58deg] text-3xl text-black"
+            className="absolute right-[122px] top-[165px] text-[28px] text-black"
+            style={{ transform: "rotate(58deg)" }}
           >
             Résidence Principale
           </div>
         </div>
 
-        <div className="flex h-full flex-col justify-between py-10 text-right">
-          <div className="text-xl font-bold text-[#ff5a36]">Bloqué ; Fixé</div>
-          <div className="text-xl font-bold text-[#ff5a36]">Bloqué ; Non Fixé</div>
-          <div className="text-xl font-bold text-[#ff5a36]">Non Bloqué ; Non Fixé</div>
-          <div className="text-xl font-bold text-[#ff5a36]">Épargne de précaution</div>
+        {/* COLONNE DROITE */}
+        <div className="relative h-[560px]">
+          <div className="absolute right-0 top-0 text-[24px] font-black uppercase text-black">
+            CONTRAIGNANT
+          </div>
+
+          <div className="absolute right-[18px] top-[48px] h-[500px] w-[12px] bg-[#2b2840]" />
+          <div
+            className="absolute right-[0px] top-[12px] h-0 w-0 border-l-[24px] border-r-[24px] border-b-[36px] border-l-transparent border-r-transparent border-b-[#2b2840]"
+          />
+          <div className="absolute right-[46px] top-[6px] flex h-[54px] w-[54px] items-center justify-center rounded-full bg-black text-[42px] font-bold leading-none text-white">
+            +
+          </div>
+
+          <div className="absolute right-[0px] top-[128px] text-right text-[20px] font-bold text-[#ff5a36]">
+            Bloqué ; Fixé
+          </div>
+
+          <div className="absolute right-[0px] top-[172px] text-right text-[20px] font-bold text-[#ff5a36]">
+            Bloqué ; Non Fixé
+          </div>
+
+          <div className="absolute right-[0px] top-[316px] text-right text-[20px] font-bold text-[#ff5a36]">
+            Non Bloqué ; Non Fixé
+          </div>
+
+          <div className="absolute right-[0px] top-[454px] text-right text-[20px] font-bold text-[#ff5a36]">
+            Épargne de précaution
+          </div>
         </div>
       </div>
     </div>
