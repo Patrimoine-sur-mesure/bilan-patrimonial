@@ -191,7 +191,7 @@ export default function FormulaireBudgetPatrimonial() {
   );
 
   const budgetDisponible = totalIncome - totalCharges- totalLoisirs;
-  const budgetProjet = totalIncome - totalCharges -  - totalEpargneMensuelle - totalLoisirs;
+  const budgetProjet = totalIncome - totalCharges - totalEpargneMensuelle - totalLoisirs;
 
   const totalAssets = useMemo(
     () => assets.reduce((s, a) => s + toNumber(a.montant), 0),
