@@ -37,7 +37,7 @@ export default function PyramidePatrimoineActuel({
     diagnostic = "Surpondération moyen terme.";
     diagnosticColor = "text-orange-600";
   } else {
-    diagnostic = "Répartition patrimoniale globalement équilibrée.";
+    diagnostic = ""; '"Répartition patrimoniale globalement équilibrée.";
   }
 
   const pct = (value) => {
