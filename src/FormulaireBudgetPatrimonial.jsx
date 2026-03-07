@@ -259,38 +259,44 @@ export default function FormulaireBudgetPatrimonial() {
   };
 
   const handleSave = async () => {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const clientId = params.get("client") || "demo";
 
-  const params = new URLSearchParams(window.location.search);
-  const clientId = params.get("client") || "demo";
+    const payload = {
+      investorIdentity,
+      investorFamily,
+      investorProfessional,
+      childrenData,
+      income,
+      charges,
+      loisirs,
+      epargne,
+      precaution,
+      assets,
+      realEstate,
+    };
 
-  const payload = {
-    investorIdentity,
-    investorFamily,
-    investorProfessional,
-    childrenData,
-    income,
-    charges,
-    loisirs,
-    epargne,
-    precaution,
-    assets,
-    realEstate
-  };
+    const { data, error } = await supabase
+      .from("formulaires_clients")
+      .upsert({
+        client_id: clientId,
+        data_json: payload,
+      })
+      .select();
 
-  const { error } = await supabase
-    .from("formulaires_clients")
-    .upsert({
-      client_id: clientId,
-      data_json: payload
-    });
+    if (error) {
+      console.error("SUPABASE ERROR:", error);
+      alert("ERREUR SUPABASE : " + error.message);
+      return;
+    }
 
-  if (error) {
-    console.error(error);
-    alert("Erreur lors de la sauvegarde");
-  } else {
-    alert("Formulaire sauvegardé");
+    console.log("SAVE OK:", data);
+    alert("SAUVEGARDE OK pour client : " + clientId);
+  } catch (err) {
+    console.error("SAVE EXCEPTION:", err);
+    alert("ERREUR JS : " + err.message);
   }
-
   };
 
   const handleDownloadPdf = () => {
