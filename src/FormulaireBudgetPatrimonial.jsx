@@ -275,39 +275,39 @@ export default function FormulaireBudgetPatrimonial() {
   };
 
   const genererPDF = async () => {
-    const element = document.getElementById("formulaire-pdf");
-    if (!element) return;
+  const element = document.getElementById("formulaire-pdf");
 
-    const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#1b7b88",
-      scrollY: -window.scrollY,
-    });
+  const canvas = await html2canvas(element, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: "#ffffff",
+  });
 
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
+  const imgData = canvas.toDataURL("image/png");
 
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = pdfWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  const pdf = new jsPDF("p", "mm", "a4");
 
-    let heightLeft = imgHeight;
-    let position = 0;
+  const imgWidth = 210;
+  const pageHeight = 297;
 
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  let heightLeft = imgHeight;
+  let position = 0;
+
+  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+
+  heightLeft -= pageHeight;
+
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight;
+    pdf.addPage();
     pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pdfHeight;
+    heightLeft -= pageHeight;
+  }
 
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pdfHeight;
-    }
-
-    pdf.save("bilan-patrimonial.pdf");
-  };
+  pdf.save("bilan-patrimonial.pdf");
+ };
 
   const handleSave = async () => {
     try {
