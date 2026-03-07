@@ -190,8 +190,8 @@ export default function FormulaireBudgetPatrimonial() {
     [epargne]
   );
 
-  const budgetDisponible = totalIncome - totalEpargneMensuelle - totalCharges;
-  const budgetProjet = totalIncome - totalCharges - totalLoisirs;
+  const budgetDisponible = totalIncome - totalCharges- totalLoisirs;
+  const budgetProjet = totalIncome - totalCharges -  - totalEpargneMensuelle - totalLoisirs;
 
   const totalAssets = useMemo(
     () => assets.reduce((s, a) => s + toNumber(a.montant), 0),
@@ -642,16 +642,7 @@ export default function FormulaireBudgetPatrimonial() {
             </div>
             <div className={totalBar}>Total : {euro(totalLoisirs)}</div>
           </div>
-		  
-		   <div className="grid grid-cols-[1fr_auto] overflow-hidden border-2 border-black">
-             <div className="bg-black p-2 text-center font-bold text-white">
-              Budget Projets théorique
-             </div>
-             <div className="bg-[#f3c316] p-2 font-bold text-black">
-              {euro(budgetProjet)}
-             </div>
-           </div>
-		  
+		  		  
 		  
 		  <div className="border-2 border-black bg-[#1b7b88] p-0">
             <h3 className={sectionTitle}>Epargne mensuelle actuelle</h3>
@@ -675,7 +666,15 @@ export default function FormulaireBudgetPatrimonial() {
             </div>
           </div>
 
-
+          <div className="grid grid-cols-[1fr_auto] overflow-hidden border-2 border-black">
+             <div className="bg-black p-2 text-center font-bold text-white">
+              Budget Projets théorique
+             </div>
+             <div className="bg-[#f3c316] p-2 font-bold text-black">
+              {euro(budgetProjet)}
+             </div>
+           </div>
+			
         </div>
 
         <div className="space-y-4">
