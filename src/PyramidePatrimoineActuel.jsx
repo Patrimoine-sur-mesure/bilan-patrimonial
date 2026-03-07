@@ -302,13 +302,13 @@ export default function PyramidePatrimoineActuel({
 
           {/* labels droite */}
           <text x="1360" y="250" textAnchor="end" fontSize="20" fontWeight="600" fill="#d4552d">
-            Fixe · Bloqué
+            Fixé · Bloqué
           </text>
           <text x="1360" y="315" textAnchor="end" fontSize="20" fontWeight="600" fill="#d4552d">
-            Immobilisation élevée
+            Non Fixé · Bloqué
           </text>
           <text x="1360" y="505" textAnchor="end" fontSize="20" fontWeight="600" fill="#d4552d">
-            Flexibilité intermédiaire
+            Non Fixé · Non Bloqué
           </text>
           <text x="1360" y="695" textAnchor="end" fontSize="20" fontWeight="600" fill="#d4552d">
             Liquidité immédiate
