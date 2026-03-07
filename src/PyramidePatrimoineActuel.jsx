@@ -56,7 +56,7 @@ export default function PyramidePatrimoineActuel({
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
-            Analyse patrimoniale
+            Photographie patrimoniale
           </div>
           <h3 className="mt-1 text-4xl font-bold text-[#c6923f]">
             Allocation patrimoniale actuelle
@@ -66,14 +66,14 @@ export default function PyramidePatrimoineActuel({
         <div className="flex flex-wrap gap-3">
           <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
             <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              Stock total
+              Stock patrimonial
             </div>
             <div className="text-2xl font-bold text-black">{fmt(totalStock)}</div>
           </div>
 
           <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
             <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              Flux mensuel total
+              Effort d’épargne mensuel
             </div>
             <div className="text-2xl font-bold text-black">
               {fmt(totalFlux)}/mois
@@ -104,6 +104,9 @@ export default function PyramidePatrimoineActuel({
 
       <div className="mb-4 grid grid-cols-1 gap-5 xl:grid-cols-3">
         <div className={cardBase}>
+	    <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
+		  {pct(stockCT)}%
+		</div>
           <div className="mb-4 flex items-center justify-between">
             <div>
               <div className={labelClass}>Court terme</div>
@@ -136,6 +139,9 @@ export default function PyramidePatrimoineActuel({
         </div>
 
         <div className={cardBase}>
+		  <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
+		  {pct(stockCT)}%
+		</div>
           <div className="mb-4 flex items-center justify-between">
             <div>
               <div className={labelClass}>Moyen terme</div>
@@ -168,6 +174,9 @@ export default function PyramidePatrimoineActuel({
         </div>
 
         <div className={cardBase}>
+		  <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
+		  {pct(stockCT)}%
+		</div>
           <div className="mb-4 flex items-center justify-between">
             <div>
               <div className={labelClass}>Long terme</div>
@@ -194,7 +203,7 @@ export default function PyramidePatrimoineActuel({
             </div>
 
             <div className="rounded-xl border border-black bg-[#faf7f1] p-3 text-sm text-neutral-700">
-              Immobilier locatif, SCPI, PER, placements de préparation retraite et de transmission.
+              Immobilier locatif, SCPI, PER, retraite, transmission.
             </div>
           </div>
         </div>
