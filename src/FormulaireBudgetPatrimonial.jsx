@@ -4,6 +4,7 @@ import html2canvas from "html2canvas-pro";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "./lib/supabase";
 import PyramidePatrimoineActuel from "./PyramidePatrimoineActuel";
+import PyramidePatrimoineActuelSvg from "./PyramidePatrimoineActuel";
 
 export default function FormulaireBudgetPatrimonial() {
   const label = "text-white text-sm font-semibold";
@@ -1088,7 +1089,7 @@ const epargneMensuelleLT = useMemo(
         </div>
       </div>
 
-      <PyramidePatrimoineActuel
+		<PyramidePatrimoineActuelSvg
 		  euro={euro}
 		  stockCT={assetsByCat["Court terme"]}
 		  stockMT={assetsByCat["Moyen terme"]}
@@ -1097,7 +1098,6 @@ const epargneMensuelleLT = useMemo(
 		  fluxMT={epargneMensuelleMT}
 		  fluxLT={epargneMensuelleLT}
 		/>
-	  
 	  {isGeneratingPdf && (
         <div
           style={{
