@@ -280,7 +280,7 @@ export default function FormulaireBudgetPatrimonial() {
   try {
     setIsGeneratingPdf(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     const element = document.getElementById("rapport-pdf");
     if (!element) {
@@ -297,6 +297,52 @@ export default function FormulaireBudgetPatrimonial() {
       scrollY: 0,
       windowWidth: element.scrollWidth,
       windowHeight: element.scrollHeight,
+      onclone: (clonedDoc) => {
+        const clonedElement = clonedDoc.getElementById("rapport-pdf");
+        if (!clonedElement) return;
+
+        const all = [clonedElement, ...clonedElement.querySelectorAll("*")];
+
+        all.forEach((node) => {
+          if (!(node instanceof clonedDoc.defaultView.HTMLElement)) return;
+
+          const style = clonedDoc.defaultView.getComputedStyle(node);
+
+          const safeSet = (prop, fallback) => {
+            const value = style.getPropertyValue(prop);
+            if (value && value.includes("oklch(")) {
+              node.style.setProperty(prop, fallback);
+            }
+          };
+
+          safeSet("color", "#000000");
+          safeSet("background-color", "#ffffff");
+          safeSet("border-top-color", "#000000");
+          safeSet("border-right-color", "#000000");
+          safeSet("border-bottom-color", "#000000");
+          safeSet("border-left-color", "#000000");
+          safeSet("outline-color", "#000000");
+          safeSet("text-decoration-color", "#000000");
+          safeSet("column-rule-color", "#000000");
+          safeSet("-webkit-text-fill-color", "#000000");
+          safeSet("-webkit-text-stroke-color", "#000000");
+
+          if (style.boxShadow && style.boxShadow.includes("oklch(")) {
+            node.style.boxShadow = "none";
+          }
+
+          if (style.textShadow && style.textShadow.includes("oklch(")) {
+            node.style.textShadow = "none";
+          }
+
+          if (style.backgroundImage && style.backgroundImage.includes("oklch(")) {
+            node.style.backgroundImage = "none";
+          }
+        });
+
+        clonedDoc.body.style.backgroundColor = "#ffffff";
+        clonedDoc.body.style.color = "#000000";
+      },
     });
 
     const imgData = canvas.toDataURL("image/png");
@@ -304,21 +350,19 @@ export default function FormulaireBudgetPatrimonial() {
 
     const pageWidth = 210;
     const pageHeight = 297;
-    const margin = 0;
-
-    const imgWidth = pageWidth - margin * 2;
+    const imgWidth = pageWidth;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     let heightLeft = imgHeight;
     let position = 0;
 
-    pdf.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
 
     while (heightLeft > 0) {
       position = heightLeft - imgHeight;
       pdf.addPage();
-      pdf.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
     }
 
@@ -644,12 +688,14 @@ export default function FormulaireBudgetPatrimonial() {
   <div
     style={{
       position: "fixed",
-      left: "-99999px",
+      left: "-100000px",
       top: "0",
+      width: "1200px",
       background: "#ffffff",
       color: "#000000",
-      width: "1200px",
       zIndex: -1,
+      opacity: 1,
+      pointerEvents: "none",
     }}
    >
     <RapportPatrimonialPdf

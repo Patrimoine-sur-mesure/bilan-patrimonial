@@ -50,11 +50,11 @@ export default function RapportPatrimonialPdf({
   return (
     <div
       id="rapport-pdf"
-			className="mx-auto w-[1120px] p-6 text-black"
-			style={{
-			fontFamily: "Arial, sans-serif",
-			backgroundColor: "#ffffff",
-			color: "#000000",
+	  className="mx-auto w-[1120px] p-6"
+	  style={{
+	  fontFamily: "Arial, sans-serif",
+	  background: "#ffffff",
+	  color: "#000000",
   }}
     >
       <div className="mb-6 border-2 border-black">
