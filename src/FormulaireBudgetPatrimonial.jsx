@@ -83,8 +83,11 @@ export default function FormulaireBudgetPatrimonial() {
 
   const epargneMensuelle = [
     "Livrets",
+	"Autres épargne CT",
     "Assurance vie",
+	"Autres épargne MT",
     "Investissement locatif",
+	"Autres épargne LT",
   ];
 
   const assetGroups = {
@@ -783,7 +786,7 @@ export default function FormulaireBudgetPatrimonial() {
                   {euro(epargnePrecautionReco)}
                 </div>
                 <div className="mt-1 text-xs">
-                  Base : 6 mois de charges incompressibles
+                  Base : 3 à 6 mois de charges incompressibles
                 </div>
               </div>
             </div>
