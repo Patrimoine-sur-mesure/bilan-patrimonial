@@ -20,6 +20,7 @@ export default function FormulaireBudgetPatrimonial() {
     "Adresse",
     "Nationalité",
     "Téléphone",
+	"Email",
   ];
 
   const investorFamilyFields = [
