@@ -616,45 +616,25 @@ export default function FormulaireBudgetPatrimonial() {
         </div>
       </div>
 
-      <div className="mt-10 w-full flex justify-center">
-		  <div className="flex gap-8">
-			
-			<button
-			  type="button"
-			  onClick={handleSave}
-			  className="border-2 border-black bg-[#e6c08f] px-8 py-3 font-semibold text-black rounded"
-			>
-			  Enregistrer
-			</button>
+       <div className="mt-10 w-full flex justify-center">
+      <div className="flex gap-8">
+        <button
+          type="button"
+          onClick={handleSave}
+          className="border-2 border-black bg-[#e6c08f] px-8 py-3 font-semibold text-black rounded"
+        >
+          Enregistrer
+        </button>
 
-			<button
-			  type="button"
-			  onClick={handleDownloadPdf}
-			  className="border-2 border-black bg-[#d9d9d9] px-8 py-3 font-semibold text-black rounded"
-			>
-			  Télécharger le PDF
-			</button>
-
-		   </div>
-	   </div>
-	  
-	  
-	  <div className="mt-8 flex justify-center gap-6">
-	  <button
-		type="button"
-		onClick={handleSave}
-		className="border-2 border-black bg-[#e6c08f] px-6 py-3 font-semibold text-black rounded"
-	  >
-		Enregistrer
-	  </button>
-
-	  <button
-		type="button"
-		onClick={handleDownloadPdf}
-		className="border-2 border-black bg-[#d9d9d9] px-6 py-3 font-semibold text-black rounded"
-	  >
-		Télécharger le PDF
-	  </button>
-	</div>
-  );
+        <button
+          type="button"
+          onClick={handleDownloadPdf}
+          className="border-2 border-black bg-[#d9d9d9] px-8 py-3 font-semibold text-black rounded"
+        >
+          Télécharger le PDF
+        </button>
+      </div>
+    </div>
+  </div>
+);
 }
