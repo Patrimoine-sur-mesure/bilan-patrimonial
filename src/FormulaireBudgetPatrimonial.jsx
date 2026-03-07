@@ -264,10 +264,6 @@ export default function FormulaireBudgetPatrimonial() {
     const clientId = params.get("client") || "demo";
 
     const payload = {
-      investorIdentity,
-      investorFamily,
-      investorProfessional,
-      childrenData,
       income,
       charges,
       loisirs,
@@ -275,6 +271,7 @@ export default function FormulaireBudgetPatrimonial() {
       precaution,
       assets,
       realEstate,
+      updatedAt: new Date().toISOString(),
     };
 
     const { data, error } = await supabase
