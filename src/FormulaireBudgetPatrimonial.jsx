@@ -326,13 +326,18 @@ export default function FormulaireBudgetPatrimonial() {
         realEstate,
         updatedAt: new Date().toISOString(),
       };
-		
+	  
+	  const nom = investorIdentity["Nom"] || "";
+      const prenom = investorIdentity["Prénom"] || "";
+	  
 	  const { error } = await supabase
 		.from("formulaires_clients")
 		.upsert({
 		  client_id: clientId,
-          data_json: payload,
-          updated_at: new Date().toISOString(),
+		  client_nom: nom,
+		  client_prenom: prenom,
+		  data_json: payload,
+		  updated_at: new Date().toISOString(),
         },
         { onConflict: "client_id" }
         );
