@@ -192,23 +192,6 @@ export default function FormulaireBudgetPatrimonial() {
     () => Object.values(epargne).reduce((a, b) => a + toNumber(b), 0),
     [epargne]
   );
-  
-  const epargneMensuelleCT = useMemo(
-  () => toNumber(epargne["Livrets"]) + toNumber(epargne["Autres épargne CT"]),
-  [epargne]
-);
-
-const epargneMensuelleMT = useMemo(
-  () => toNumber(epargne["Assurance vie"]) + toNumber(epargne["Autres épargne MT"]),
-  [epargne]
-);
-
-const epargneMensuelleLT = useMemo(
-  () =>
-    toNumber(epargne["Investissement locatif"]) +
-    toNumber(epargne["Autres épargne LT"]),
-  [epargne]
-);
 
   const budgetDisponible = totalIncome - totalCharges- totalLoisirs;
   const budgetProjet = totalIncome - totalCharges - totalEpargneMensuelle - totalLoisirs;
@@ -448,103 +431,6 @@ const epargneMensuelleLT = useMemo(
   const handleSendToAdvisor = () => {
     window.open("https://ton-lien-netexplorer.fr", "_blank", "noopener,noreferrer");
   };
-  
-  const PyramidePatrimoineActuel = ({
-  euro,
-  stockCT,
-  stockMT,
-  stockLT,
-  fluxCT,
-  fluxMT,
-  fluxLT,
-}) => {
-  return (
-    <div className="mt-10 border-2 border-black bg-white p-6">
-      <h3 className="mb-6 text-center text-3xl font-bold text-[#c6923f]">
-        Stocks / Flux actuels
-      </h3>
-
-      <div className="grid grid-cols-[180px_1fr_180px] items-center gap-4">
-        <div className="flex h-full flex-col justify-between py-10">
-          <div className="flex items-center gap-3">
-            <div className="text-sm font-bold text-black">Long terme :</div>
-            <div className="rounded bg-[#f4e3c4] px-3 py-1 font-bold text-[#6d28d9]">
-              {euro(fluxLT)}/mois
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="text-sm font-bold text-black">Moyen terme :</div>
-            <div className="rounded bg-[#f4e3c4] px-3 py-1 font-bold text-[#6d28d9]">
-              {euro(fluxMT)}/mois
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="text-sm font-bold text-black">Court terme :</div>
-            <div className="rounded bg-[#f4e3c4] px-3 py-1 font-bold text-[#6d28d9]">
-              {euro(fluxCT)}/mois
-            </div>
-          </div>
-        </div>
-
-        <div className="relative mx-auto h-[520px] w-[620px]">
-          <div
-            className="absolute inset-0"
-            style={{
-              clipPath: "polygon(50% 4%, 98% 96%, 2% 96%)",
-              background: "#eadfc8",
-              border: "2px solid #c6923f",
-            }}
-          />
-
-          <div className="absolute left-[16%] right-[16%] top-[33%] border-t-2 border-dashed border-black" />
-          <div className="absolute left-[28%] right-[28%] top-[61%] border-t-2 border-dashed border-black" />
-
-          <div className="absolute left-1/2 top-[15%] w-[180px] -translate-x-1/2 text-center">
-            <div className="text-2xl font-bold text-[#6d28d9]">{euro(stockLT)}</div>
-            <div className="mt-2 text-sm text-[#c6923f]">
-              Immo locatif, SCPI, PER, AV
-            </div>
-            <div className="mt-1 text-2xl font-semibold text-black">Long terme</div>
-          </div>
-
-          <div className="absolute left-1/2 top-[44%] w-[260px] -translate-x-1/2 text-center">
-            <div className="text-2xl font-bold text-[#6d28d9]">{euro(stockMT)}</div>
-            <div className="mt-2 text-sm text-[#c6923f]">
-              PEL, AV, PEA, ES
-            </div>
-            <div className="mt-1 text-2xl font-semibold text-black">Moyen terme</div>
-          </div>
-
-          <div className="absolute bottom-[8%] left-1/2 w-[420px] -translate-x-1/2 text-center">
-            <div className="text-lg text-[#c6923f]">
-              Livrets bancaires (LA, LB, LDDS, CC Perso &amp; Pro) :
-              <span className="ml-2 font-bold text-[#6d28d9]">{euro(stockCT)}</span>
-            </div>
-            <div className="mt-2 text-2xl font-semibold text-black">Court terme</div>
-          </div>
-
-          <div
-            className="absolute right-[55px] top-[60px] h-[390px] w-[34px] rotate-[38deg] border-2 border-[#c6923f] bg-white"
-          />
-          <div
-            className="absolute right-[82px] top-[180px] rotate-[58deg] text-3xl text-black"
-          >
-            Résidence Principale
-          </div>
-        </div>
-
-        <div className="flex h-full flex-col justify-between py-10 text-right">
-          <div className="text-xl font-bold text-[#ff5a36]">Bloqué ; Fixé</div>
-          <div className="text-xl font-bold text-[#ff5a36]">Bloqué ; Non Fixé</div>
-          <div className="text-xl font-bold text-[#ff5a36]">Non Bloqué ; Non Fixé</div>
-          <div className="text-xl font-bold text-[#ff5a36]">Épargne de précaution</div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
   return (
     <div id="formulaire-pdf" className="min-h-screen bg-[#1b7b88] p-6 text-sm">
@@ -1027,17 +913,7 @@ const epargneMensuelleLT = useMemo(
         </div>
       </div>
 
-      <PyramidePatrimoineActuel
-		  euro={euro}
-		  stockCT={assetsByCat["Court terme"]}
-		  stockMT={assetsByCat["Moyen terme"]}
-		  stockLT={assetsByCat["Long terme"]}
-		  fluxCT={epargneMensuelleCT}
-		  fluxMT={epargneMensuelleMT}
-		  fluxLT={epargneMensuelleLT}
-		/>
-	  
-	  {isGeneratingPdf && (
+      {isGeneratingPdf && (
         <div
           style={{
             position: "fixed",

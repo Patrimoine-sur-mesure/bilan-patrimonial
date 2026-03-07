@@ -36,9 +36,156 @@ export default function RapportPatrimonialPdf({
 
   const visibleChildren =
     childrenData?.filter((c) => c?.prenom || c?.naissance) || [];
+	
+    const toNumber = (v) => Number(v) || 0;
+
+	const epargneMensuelleCT =
+	  toNumber(epargne["Livrets"]) + toNumber(epargne["Autres épargne CT"]);
+
+	const epargneMensuelleMT =
+	  toNumber(epargne["Assurance vie"]) + toNumber(epargne["Autres épargne MT"]);
+
+	const epargneMensuelleLT =
+	  toNumber(epargne["Investissement locatif"]) +
+	  toNumber(epargne["Autres épargne LT"]);
 
   const styles = {
-    page: {
+    pyramidWrapper: {
+  border: "2px solid #000000",
+  backgroundColor: "#ffffff",
+  padding: "20px",
+  marginTop: "20px",
+},
+pyramidTitle: {
+  textAlign: "center",
+  fontSize: "24px",
+  fontWeight: "700",
+  color: "#c6923f",
+  marginBottom: "18px",
+},
+pyramidGrid: {
+  display: "grid",
+  gridTemplateColumns: "180px 1fr 180px",
+  gap: "10px",
+  alignItems: "center",
+},
+leftLegend: {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  height: "420px",
+},
+legendRow: {
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+  fontSize: "12px",
+  fontWeight: "700",
+},
+legendBadge: {
+  backgroundColor: "#f4e3c4",
+  color: "#6d28d9",
+  padding: "6px 8px",
+  fontWeight: "700",
+  borderRadius: "4px",
+},
+rightLegend: {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  height: "420px",
+  textAlign: "right",
+  color: "#ff5a36",
+  fontWeight: "700",
+  fontSize: "16px",
+},
+pyramidBox: {
+  position: "relative",
+  height: "520px",
+  width: "620px",
+  margin: "0 auto",
+},
+pyramidTriangle: {
+  position: "absolute",
+  inset: "0",
+  clipPath: "polygon(50% 4%, 98% 96%, 2% 96%)",
+  backgroundColor: "#eadfc8",
+  border: "2px solid #c6923f",
+},
+pyramidLineTop: {
+  position: "absolute",
+  left: "16%",
+  right: "16%",
+  top: "33%",
+  borderTop: "2px dashed #000000",
+},
+pyramidLineMid: {
+  position: "absolute",
+  left: "28%",
+  right: "28%",
+  top: "61%",
+  borderTop: "2px dashed #000000",
+},
+pyramidTopText: {
+  position: "absolute",
+  left: "50%",
+  top: "15%",
+  width: "180px",
+  transform: "translateX(-50%)",
+  textAlign: "center",
+},
+pyramidMiddleText: {
+  position: "absolute",
+  left: "50%",
+  top: "44%",
+  width: "260px",
+  transform: "translateX(-50%)",
+  textAlign: "center",
+},
+pyramidBottomText: {
+  position: "absolute",
+  left: "50%",
+  bottom: "8%",
+  width: "420px",
+  transform: "translateX(-50%)",
+  textAlign: "center",
+},
+purpleBig: {
+  fontSize: "24px",
+  fontWeight: "700",
+  color: "#6d28d9",
+},
+goldText: {
+  marginTop: "6px",
+  fontSize: "13px",
+  color: "#c6923f",
+},
+blackBig: {
+  marginTop: "4px",
+  fontSize: "24px",
+  fontWeight: "600",
+  color: "#000000",
+},
+rpBar: {
+  position: "absolute",
+  right: "55px",
+  top: "60px",
+  height: "390px",
+  width: "34px",
+  transform: "rotate(38deg)",
+  border: "2px solid #c6923f",
+  backgroundColor: "#ffffff",
+},
+rpText: {
+  position: "absolute",
+  right: "82px",
+  top: "180px",
+  transform: "rotate(58deg)",
+  fontSize: "28px",
+  color: "#000000",
+},
+
+page: {
       width: "1120px",
       margin: "0 auto",
       backgroundColor: "#ffffff",
@@ -430,6 +577,65 @@ export default function RapportPatrimonialPdf({
 
     <div id="pdf-page-3" style={{ marginTop: "20px" }}>
       <div style={{ ...styles.card, ...styles.pageBreakAvoid }}>
+	  <div style={styles.pyramidWrapper}>
+  <div style={styles.pyramidTitle}>Stocks / Flux actuels</div>
+
+  <div style={styles.pyramidGrid}>
+    <div style={styles.leftLegend}>
+      <div style={styles.legendRow}>
+        <span>Long terme :</span>
+        <span style={styles.legendBadge}>{euro(epargneMensuelleLT)}/mois</span>
+      </div>
+      <div style={styles.legendRow}>
+        <span>Moyen terme :</span>
+        <span style={styles.legendBadge}>{euro(epargneMensuelleMT)}/mois</span>
+      </div>
+      <div style={styles.legendRow}>
+        <span>Court terme :</span>
+        <span style={styles.legendBadge}>{euro(epargneMensuelleCT)}/mois</span>
+      </div>
+    </div>
+
+    <div style={styles.pyramidBox}>
+      <div style={styles.pyramidTriangle} />
+      <div style={styles.pyramidLineTop} />
+      <div style={styles.pyramidLineMid} />
+
+      <div style={styles.pyramidTopText}>
+        <div style={styles.purpleBig}>{euro(assetsByCat["Long terme"])}</div>
+        <div style={styles.goldText}>Immo locatif, SCPI, PER, AV</div>
+        <div style={styles.blackBig}>Long terme</div>
+      </div>
+
+      <div style={styles.pyramidMiddleText}>
+        <div style={styles.purpleBig}>{euro(assetsByCat["Moyen terme"])}</div>
+        <div style={styles.goldText}>PEL, AV, PEA, ES</div>
+        <div style={styles.blackBig}>Moyen terme</div>
+      </div>
+
+      <div style={styles.pyramidBottomText}>
+        <div style={{ fontSize: "18px", color: "#c6923f" }}>
+          Livrets bancaires (LA, LB, LDDS, CC Perso &amp; Pro) :
+          <span style={{ marginLeft: "8px", fontWeight: "700", color: "#6d28d9" }}>
+            {euro(assetsByCat["Court terme"])}
+          </span>
+        </div>
+        <div style={styles.blackBig}>Court terme</div>
+      </div>
+
+      <div style={styles.rpBar} />
+      <div style={styles.rpText}>Résidence Principale</div>
+    </div>
+
+    <div style={styles.rightLegend}>
+      <div>Bloqué ; Fixé</div>
+      <div>Bloqué ; Non Fixé</div>
+      <div>Non Bloqué ; Non Fixé</div>
+      <div>Épargne de précaution</div>
+    </div>
+  </div>
+</div>
+
         <div style={styles.sectionTitle}>Biens immobiliers</div>
         <div style={styles.sectionBody}>
           <table style={styles.table}>
