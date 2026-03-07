@@ -665,7 +665,7 @@ export default function FormulaireBudgetPatrimonial() {
               ))}
             </div>
             <div className={totalBar}>
-              Total pour les projets : {euro(totalEpargneMensuelle)}
+              Total épargne mensuelle : {euro(totalEpargneMensuelle)}
             </div>
           </div>
 
