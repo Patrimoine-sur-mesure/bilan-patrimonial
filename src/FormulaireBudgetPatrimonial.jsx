@@ -933,15 +933,6 @@ const epargneMensuelleLT = useMemo(
         </div>
       </div>
 
-		<PyramidePatrimoineActuelSvg
-		  euro={euro}
-		  stockCT={assetsByCat["Court terme"]}
-		  stockMT={assetsByCat["Moyen terme"]}
-		  stockLT={assetsByCat["Long terme"]}
-		  fluxCT={epargneMensuelleCT}
-		  fluxMT={epargneMensuelleMT}
-		  fluxLT={epargneMensuelleLT}
-		/>
 	  {isGeneratingPdf && (
         <div
           style={{
