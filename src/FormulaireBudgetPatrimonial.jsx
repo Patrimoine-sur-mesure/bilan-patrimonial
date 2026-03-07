@@ -330,6 +330,7 @@ export default function FormulaireBudgetPatrimonial() {
 	  
 	  const nom = investorIdentity["Nom"] || "";
       const prenom = investorIdentity["Prénom"] || "";
+	  const email = investorIdentity["Email"] || "";
 	  
 	  const { error } = await supabase
 		.from("formulaires_clients")
@@ -337,6 +338,7 @@ export default function FormulaireBudgetPatrimonial() {
 		  client_id: clientId,
 		  client_nom: nom,
 		  client_prenom: prenom,
+		  client_email: email
 		  data_json: payload,
 		  updated_at: new Date().toISOString(),
         },
