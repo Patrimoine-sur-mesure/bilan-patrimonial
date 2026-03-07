@@ -1,6 +1,6 @@
 import RapportPatrimonialPdf from "./RapportPatrimonialPdf";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "./lib/supabase";
 
@@ -280,12 +280,11 @@ export default function FormulaireBudgetPatrimonial() {
   try {
     setIsGeneratingPdf(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
     const element = document.getElementById("rapport-pdf");
     if (!element) {
       alert("Impossible de générer le PDF.");
-      setIsGeneratingPdf(false);
       return;
     }
 
@@ -297,52 +296,67 @@ export default function FormulaireBudgetPatrimonial() {
       scrollY: 0,
       windowWidth: element.scrollWidth,
       windowHeight: element.scrollHeight,
-      onclone: (clonedDoc) => {
-        const clonedElement = clonedDoc.getElementById("rapport-pdf");
-        if (!clonedElement) return;
+    });
 
-        const all = [clonedElement, ...clonedElement.querySelectorAll("*")];
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
 
-        all.forEach((node) => {
-          if (!(node instanceof clonedDoc.defaultView.HTMLElement)) return;
+    const pageWidth = 210;
+    const pageHeight = 297;
 
-          const style = clonedDoc.defaultView.getComputedStyle(node);
+    // Marges du PDF
+    const marginX = 8;
+    const marginY = 8;
 
-          const safeSet = (prop, fallback) => {
-            const value = style.getPropertyValue(prop);
-            if (value && value.includes("oklch(")) {
-              node.style.setProperty(prop, fallback);
-            }
-          };
+    const usableWidth = pageWidth - marginX * 2;
+    const usableHeight = pageHeight - marginY * 2;
 
-          safeSet("color", "#000000");
-          safeSet("background-color", "#ffffff");
-          safeSet("border-top-color", "#000000");
-          safeSet("border-right-color", "#000000");
-          safeSet("border-bottom-color", "#000000");
-          safeSet("border-left-color", "#000000");
-          safeSet("outline-color", "#000000");
-          safeSet("text-decoration-color", "#000000");
-          safeSet("column-rule-color", "#000000");
-          safeSet("-webkit-text-fill-color", "#000000");
-          safeSet("-webkit-text-stroke-color", "#000000");
+    const imgWidth = usableWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-          if (style.boxShadow && style.boxShadow.includes("oklch(")) {
-            node.style.boxShadow = "none";
-          }
+    let heightLeft = imgHeight;
+    let position = marginY;
 
-          if (style.textShadow && style.textShadow.includes("oklch(")) {
-            node.style.textShadow = "none";
-          }
+    pdf.addImage(imgData, "PNG", marginX, position, imgWidth, imgHeight);
+    heightLeft -= usableHeight;
 
-          if (style.backgroundImage && style.backgroundImage.includes("oklch(")) {
-            node.style.backgroundImage = "none";
-          }
-        });
+    while (heightLeft > 0) {
+      pdf.addPage();
+      position = marginY - (imgHeight - heightLeft);
+      pdf.addImage(imgData, "PNG", marginX, position, imgWidth, imgHeight);
+      heightLeft -= usableHeight;
+    }
 
-        clonedDoc.body.style.backgroundColor = "#ffffff";
-        clonedDoc.body.style.color = "#000000";
-      },
+    const nom = investorIdentity["Nom"] || "client";
+    const prenom = investorIdentity["Prénom"] || "";
+    pdf.save(`bilan-patrimonial-${prenom}-${nom}.pdf`);
+  } catch (err) {
+    console.error("PDF ERROR:", err);
+    alert("Erreur lors de la génération du PDF : " + err.message);
+  } finally {
+    setIsGeneratingPdf(false);
+  }
+};
+
+  try {
+    setIsGeneratingPdf(true);
+
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    const element = document.getElementById("rapport-pdf");
+    if (!element) {
+      alert("Impossible de générer le PDF.");
+      return;
+    }
+
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: element.scrollWidth,
+      windowHeight: element.scrollHeight,
     });
 
     const imgData = canvas.toDataURL("image/png");
