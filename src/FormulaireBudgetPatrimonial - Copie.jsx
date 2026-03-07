@@ -624,6 +624,10 @@ export default function FormulaireBudgetPatrimonial() {
         <button type="button" onClick={handleDownloadPdf} className="border-2 border-black bg-[#d9d9d9] px-4 py-3 font-semibold text-black">
           Télécharger le PDF
         </button>
+
+        <button type="button" onClick={handleSendToAdvisor} className="border-2 border-black bg-black px-4 py-3 font-semibold text-white">
+          Envoyer au conseiller
+        </button>
       </div>
     </div>
   );
