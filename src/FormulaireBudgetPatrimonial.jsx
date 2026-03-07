@@ -622,6 +622,7 @@ export default function FormulaireBudgetPatrimonial() {
             </div>
           </div>
 
+
           <div className="border-2 border-black bg-[#1b7b88] p-0">
             <h3 className={sectionTitle}>Loisirs (mensuel)</h3>
             <div className="p-3">
