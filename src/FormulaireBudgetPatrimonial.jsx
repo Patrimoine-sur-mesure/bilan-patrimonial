@@ -623,6 +623,26 @@ export default function FormulaireBudgetPatrimonial() {
           </div>
 
           <div className="border-2 border-black bg-[#1b7b88] p-0">
+            <h3 className={sectionTitle}>Loisirs (mensuel)</h3>
+            <div className="p-3">
+              {loisirsFields.map((f) => (
+                <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
+                  <label className={label}>{f}</label>
+                  <input
+                    className={input}
+                    type="number"
+                    value={loisirs[f]}
+                    onChange={(e) =>
+                      setLoisirs({ ...loisirs, [f]: e.target.value })
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+            <div className={totalBar}>Total : {euro(totalLoisirs)}</div>
+          </div>
+		  
+		  <div className="border-2 border-black bg-[#1b7b88] p-0">
             <h3 className={sectionTitle}>Epargne mensuelle actuelle</h3>
             <div className="p-3">
               {epargneMensuelle.map((f) => (
@@ -642,26 +662,6 @@ export default function FormulaireBudgetPatrimonial() {
             <div className={totalBar}>
               Total pour les projets : {euro(totalEpargneMensuelle)}
             </div>
-          </div>
-
-          <div className="border-2 border-black bg-[#1b7b88] p-0">
-            <h3 className={sectionTitle}>Loisirs (mensuel)</h3>
-            <div className="p-3">
-              {loisirsFields.map((f) => (
-                <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
-                  <label className={label}>{f}</label>
-                  <input
-                    className={input}
-                    type="number"
-                    value={loisirs[f]}
-                    onChange={(e) =>
-                      setLoisirs({ ...loisirs, [f]: e.target.value })
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-            <div className={totalBar}>Total : {euro(totalLoisirs)}</div>
           </div>
 
           <div className="grid grid-cols-[1fr_auto] overflow-hidden border-2 border-black">
