@@ -12,44 +12,33 @@ export default function PyramidePatrimoineActuel({
   const fmt = (v) =>
     euro ? euro(v) : `${Number(v || 0).toLocaleString("fr-FR")} €`;
 
-  const totalStock = Number(stockCT || 0) + Number(stockMT || 0) + Number(stockLT || 0);
-  const totalFlux = Number(fluxCT || 0) + Number(fluxMT || 0) + Number(fluxLT || 0);
-  
-	const pctCT = totalStock ? Math.round((stockCT / totalStock) * 100) : 0;
-	const pctMT = totalStock ? Math.round((stockMT / totalStock) * 100) : 0;
-	const pctLT = totalStock ? Math.round((stockLT / totalStock) * 100) : 0;
+  const totalStock =
+    Number(stockCT || 0) + Number(stockMT || 0) + Number(stockLT || 0);
 
-	let diagnostic = "";
-	let diagnosticColor = "text-green-600";
+  const totalFlux =
+    Number(fluxCT || 0) + Number(fluxMT || 0) + Number(fluxLT || 0);
 
-	if (pctCT > 60) {
-	  diagnostic = "Surpondération court terme : patrimoine très concentré en liquidités.";
-	  diagnosticColor = "text-orange-600";
-	} else if (pctLT > 70) {
-	  diagnostic = "Surpondération long terme : patrimoine fortement immobilisé.";
-	  diagnosticColor = "text-orange-600";
-	} else if (pctMT > 60) {
-	  diagnostic = "Surpondération moyen terme.";
-	  diagnosticColor = "text-orange-600";
-	} else {
-	  diagnostic = "Répartition patrimoniale globalement équilibrée.";
-	}
-	
-	<div className="mt-8 rounded-xl border border-black bg-white p-4">
-  <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-    Analyse de répartition
-  </div>
+  const pctCT = totalStock ? Math.round((Number(stockCT) / totalStock) * 100) : 0;
+  const pctMT = totalStock ? Math.round((Number(stockMT) / totalStock) * 100) : 0;
+  const pctLT = totalStock ? Math.round((Number(stockLT) / totalStock) * 100) : 0;
 
-  <div className="mt-2 grid grid-cols-3 text-sm font-semibold">
-    <div>Court terme : {pctCT}%</div>
-    <div>Moyen terme : {pctMT}%</div>
-    <div>Long terme : {pctLT}%</div>
-  </div>
+  let diagnostic = "";
+  let diagnosticColor = "text-green-600";
 
-  <div className={`mt-3 text-sm font-semibold ${diagnosticColor}`}>
-    {pctCT > 60 || pctMT > 60 || pctLT > 70 ? "⚠ " : "✓ "} {diagnostic}
-  </div>
-</div>
+  if (pctCT > 60) {
+    diagnostic =
+      "Surpondération court terme : patrimoine très concentré en liquidités.";
+    diagnosticColor = "text-orange-600";
+  } else if (pctLT > 70) {
+    diagnostic =
+      "Surpondération long terme : patrimoine fortement immobilisé.";
+    diagnosticColor = "text-orange-600";
+  } else if (pctMT > 60) {
+    diagnostic = "Surpondération moyen terme.";
+    diagnosticColor = "text-orange-600";
+  } else {
+    diagnostic = "Répartition patrimoniale globalement équilibrée.";
+  }
 
   const pct = (value) => {
     if (!totalStock) return 0;
@@ -59,11 +48,12 @@ export default function PyramidePatrimoineActuel({
   const cardBase =
     "rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]";
   const valueClass = "text-3xl font-bold text-[#5b2be0]";
-  const labelClass = "text-sm font-semibold uppercase tracking-wide text-neutral-500";
+  const labelClass =
+    "text-sm font-semibold uppercase tracking-wide text-neutral-500";
 
   return (
     <div className="mt-10 rounded-2xl border-2 border-black bg-[#f6f3ee] p-6 shadow-[0_8px_0_rgba(0,0,0,0.08)]">
-      <div className="mb-6 flex items-end justify-between gap-4">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
             Analyse patrimoniale
@@ -73,23 +63,25 @@ export default function PyramidePatrimoineActuel({
           </h3>
         </div>
 
-        <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
-          <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Stock total
+        <div className="flex flex-wrap gap-3">
+          <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
+            <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+              Stock total
+            </div>
+            <div className="text-2xl font-bold text-black">{fmt(totalStock)}</div>
           </div>
-          <div className="text-2xl font-bold text-black">{fmt(totalStock)}</div>
-        </div>
-      </div>
-	  
-	  <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
-          <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Stock total
+
+          <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
+            <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+              Flux mensuel total
+            </div>
+            <div className="text-2xl font-bold text-black">
+              {fmt(totalFlux)}/mois
+            </div>
           </div>
-          <div className="text-2xl font-bold text-black">{fmt(totalFlux)}</div>
         </div>
       </div>
 
-      {/* Barre de répartition */}
       <div className="mb-8 overflow-hidden rounded-full border-2 border-black bg-white">
         <div className="flex h-5 w-full">
           <div
@@ -132,7 +124,9 @@ export default function PyramidePatrimoineActuel({
 
             <div>
               <div className={labelClass}>Flux mensuel</div>
-              <div className="text-xl font-bold text-black">{fmt(fluxCT)}/mois</div>
+              <div className="text-xl font-bold text-black">
+                {fmt(fluxCT)}/mois
+              </div>
             </div>
 
             <div className="rounded-xl border border-black bg-[#faf7f1] p-3 text-sm text-neutral-700">
@@ -162,7 +156,9 @@ export default function PyramidePatrimoineActuel({
 
             <div>
               <div className={labelClass}>Flux mensuel</div>
-              <div className="text-xl font-bold text-black">{fmt(fluxMT)}/mois</div>
+              <div className="text-xl font-bold text-black">
+                {fmt(fluxMT)}/mois
+              </div>
             </div>
 
             <div className="rounded-xl border border-black bg-[#faf7f1] p-3 text-sm text-neutral-700">
@@ -192,7 +188,9 @@ export default function PyramidePatrimoineActuel({
 
             <div>
               <div className={labelClass}>Flux mensuel</div>
-              <div className="text-xl font-bold text-black">{fmt(fluxLT)}/mois</div>
+              <div className="text-xl font-bold text-black">
+                {fmt(fluxLT)}/mois
+              </div>
             </div>
 
             <div className="rounded-xl border border-black bg-[#faf7f1] p-3 text-sm text-neutral-700">
@@ -202,7 +200,23 @@ export default function PyramidePatrimoineActuel({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-4">
+      <div className="mt-8 rounded-xl border border-black bg-white p-4">
+        <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+          Analyse de répartition
+        </div>
+
+        <div className="mt-2 grid grid-cols-1 gap-2 text-sm font-semibold md:grid-cols-3">
+          <div>Court terme : {pctCT}%</div>
+          <div>Moyen terme : {pctMT}%</div>
+          <div>Long terme : {pctLT}%</div>
+        </div>
+
+        <div className={`mt-3 text-sm font-semibold ${diagnosticColor}`}>
+          {pctCT > 60 || pctMT > 60 || pctLT > 70 ? "⚠ " : "✓ "} {diagnostic}
+        </div>
+      </div>
+
+      <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-4">
         <div className="rounded-xl border border-black bg-white p-4">
           <div className={labelClass}>Lecture court terme</div>
           <div className="mt-2 text-sm text-neutral-700">
