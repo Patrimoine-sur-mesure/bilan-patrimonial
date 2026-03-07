@@ -1,10 +1,51 @@
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import { useMemo, useState } from "react";
 
 export default function FormulaireBudgetPatrimonial() {
   const label = "text-white text-sm font-semibold";
-  const input = "w-full border border-black bg-[#d9d9d9] px-2 py-1 text-sm text-black outline-none";
-  const sectionTitle = "bg-[#e6c08f] text-black font-bold text-center px-2 py-1 border-b border-black";
-  const totalBar = "bg-[#e6c08f] text-black font-bold px-2 py-1 border-t border-black";
+  const input =
+    "w-full border border-black bg-[#d9d9d9] px-2 py-1 text-sm text-black outline-none";
+  const sectionTitle =
+    "bg-[#e6c08f] text-black font-bold text-center px-2 py-1 border-b border-black";
+  const totalBar =
+    "bg-[#e6c08f] text-black font-bold px-2 py-1 border-t border-black";
+
+  const genererPDF = async () => {
+    const element = document.getElementById("formulaire-pdf");
+    if (!element) return;
+
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#1b7b88",
+      scrollY: -window.scrollY,
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+
+    const imgWidth = pdfWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+    }
+
+    pdf.save("bilan-patrimonial.pdf");
+  };
 
   const investorIdentityFields = [
     "Nom",
@@ -73,7 +114,11 @@ export default function FormulaireBudgetPatrimonial() {
     "Autres",
   ];
 
-  const epargneMensuelle = ["Livrets", "Assurance vie", "Investissement locatif"];
+  const epargneMensuelle = [
+    "Livrets",
+    "Assurance vie",
+    "Investissement locatif",
+  ];
 
   const assetGroups = {
     "Court terme": [
@@ -93,7 +138,12 @@ export default function FormulaireBudgetPatrimonial() {
       "Assurance vie",
       "Autres placements moyen terme",
     ],
-    "Long terme": ["PERCO", "PERP", "SCPI", "Autres placements long terme"],
+    "Long terme": [
+      "PERCO",
+      "PERP",
+      "SCPI",
+      "Autres placements long terme",
+    ],
   };
 
   const realEstateTypes = [
@@ -137,15 +187,30 @@ export default function FormulaireBudgetPatrimonial() {
     }))
   );
 
-  const totalIncome = useMemo(() => Object.values(income).reduce((a, b) => a + toNumber(b), 0), [income]);
-  const totalCharges = useMemo(() => Object.values(charges).reduce((a, b) => a + toNumber(b), 0), [charges]);
-  const totalLoisirs = useMemo(() => Object.values(loisirs).reduce((a, b) => a + toNumber(b), 0), [loisirs]);
-  const totalEpargneMensuelle = useMemo(() => Object.values(epargne).reduce((a, b) => a + toNumber(b), 0), [epargne]);
+  const totalIncome = useMemo(
+    () => Object.values(income).reduce((a, b) => a + toNumber(b), 0),
+    [income]
+  );
+  const totalCharges = useMemo(
+    () => Object.values(charges).reduce((a, b) => a + toNumber(b), 0),
+    [charges]
+  );
+  const totalLoisirs = useMemo(
+    () => Object.values(loisirs).reduce((a, b) => a + toNumber(b), 0),
+    [loisirs]
+  );
+  const totalEpargneMensuelle = useMemo(
+    () => Object.values(epargne).reduce((a, b) => a + toNumber(b), 0),
+    [epargne]
+  );
 
   const budgetDisponible = totalIncome - totalCharges;
   const budgetProjet = budgetDisponible - totalEpargneMensuelle - totalLoisirs;
 
-  const totalAssets = useMemo(() => assets.reduce((s, a) => s + toNumber(a.montant), 0), [assets]);
+  const totalAssets = useMemo(
+    () => assets.reduce((s, a) => s + toNumber(a.montant), 0),
+    [assets]
+  );
   const assetsByCat = useMemo(() => {
     const r = { "Court terme": 0, "Moyen terme": 0, "Long terme": 0 };
     assets.forEach((a) => {
@@ -154,55 +219,107 @@ export default function FormulaireBudgetPatrimonial() {
     return r;
   }, [assets]);
 
-  const totalImmo = useMemo(() => realEstate.reduce((s, a) => s + toNumber(a.valeur), 0), [realEstate]);
-  const totalMensualitesImmo = useMemo(() => realEstate.reduce((s, a) => s + toNumber(a.mensualite), 0), [realEstate]);
-  const totalResteImmo = useMemo(() => realEstate.reduce((s, a) => s + toNumber(a.reste), 0), [realEstate]);
+  const totalImmo = useMemo(
+    () => realEstate.reduce((s, a) => s + toNumber(a.valeur), 0),
+    [realEstate]
+  );
+  const totalMensualitesImmo = useMemo(
+    () => realEstate.reduce((s, a) => s + toNumber(a.mensualite), 0),
+    [realEstate]
+  );
+  const totalResteImmo = useMemo(
+    () => realEstate.reduce((s, a) => s + toNumber(a.reste), 0),
+    [realEstate]
+  );
   const epargnePrecautionReco = useMemo(() => totalCharges * 6, [totalCharges]);
-  const patrimoineBrut = useMemo(() => totalAssets + totalImmo, [totalAssets, totalImmo]);
-  const tauxCharges = useMemo(() => (totalIncome > 0 ? (totalCharges / totalIncome) * 100 : 0), [totalIncome, totalCharges]);
+  const patrimoineBrut = useMemo(
+    () => totalAssets + totalImmo,
+    [totalAssets, totalImmo]
+  );
+  const tauxCharges = useMemo(
+    () => (totalIncome > 0 ? (totalCharges / totalIncome) * 100 : 0),
+    [totalIncome, totalCharges]
+  );
 
   const updateAsset = (i, key, value) => {
-    setAssets((prev) => prev.map((row, index) => (index === i ? { ...row, [key]: value } : row)));
+    setAssets((prev) =>
+      prev.map((row, index) =>
+        index === i ? { ...row, [key]: value } : row
+      )
+    );
   };
 
   const updateImmo = (i, key, value) => {
-    setRealEstate((prev) => prev.map((row, index) => (index === i ? { ...row, [key]: value } : row)));
+    setRealEstate((prev) =>
+      prev.map((row, index) =>
+        index === i ? { ...row, [key]: value } : row
+      )
+    );
   };
 
   const handleSave = () => {
-    alert("Brouillon enregistré (fonction à connecter à une base de données sécurisée).");
+    alert(
+      "Brouillon enregistré (fonction à connecter à une base de données sécurisée)."
+    );
   };
 
   const handleDownloadPdf = () => {
-    window.print();
+    genererPDF();
   };
 
   const handleSendToAdvisor = () => {
-    window.open("https://ton-lien-netexplorer.fr", "_blank", "noopener,noreferrer");
+    window.open(
+      "https://ton-lien-netexplorer.fr",
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   return (
-    <div className="min-h-screen bg-[#1b7b88] p-6 text-sm">
+    <div
+      id="formulaire-pdf"
+      className="min-h-screen bg-[#1b7b88] p-6 text-sm"
+    >
       <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
         <div className="border-2 border-black overflow-hidden">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">Revenus mensuels</div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">{euro(totalIncome)}</div>
+          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
+            Revenus mensuels
+          </div>
+          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
+            {euro(totalIncome)}
+          </div>
         </div>
         <div className="border-2 border-black overflow-hidden">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">Charges incompressibles</div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">{euro(totalCharges)}</div>
+          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
+            Charges incompressibles
+          </div>
+          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
+            {euro(totalCharges)}
+          </div>
         </div>
         <div className="border-2 border-black overflow-hidden">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">Budget disponible</div>
-          <div className="bg-[#f5ddd7] px-3 py-3 text-lg font-bold text-black">{euro(budgetDisponible)}</div>
+          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
+            Budget disponible
+          </div>
+          <div className="bg-[#f5ddd7] px-3 py-3 text-lg font-bold text-black">
+            {euro(budgetDisponible)}
+          </div>
         </div>
         <div className="border-2 border-black overflow-hidden">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">Patrimoine brut</div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">{euro(patrimoineBrut)}</div>
+          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
+            Patrimoine brut
+          </div>
+          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
+            {euro(patrimoineBrut)}
+          </div>
         </div>
         <div className="border-2 border-black overflow-hidden">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">Taux de charges</div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">{tauxCharges.toFixed(0)}%</div>
+          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
+            Taux de charges
+          </div>
+          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
+            {tauxCharges.toFixed(0)}%
+          </div>
         </div>
       </div>
 
@@ -212,7 +329,10 @@ export default function FormulaireBudgetPatrimonial() {
 
           <div className="border-b-2 border-black p-3">
             {investorIdentityFields.map((f) => (
-              <div key={f} className="grid grid-cols-[1.1fr_1.3fr] gap-2 mb-1 items-center">
+              <div
+                key={f}
+                className="grid grid-cols-[1.1fr_1.3fr] gap-2 mb-1 items-center"
+              >
                 <label className={label}>{f} :</label>
                 <input className={input} />
               </div>
@@ -221,7 +341,10 @@ export default function FormulaireBudgetPatrimonial() {
 
           <div className="border-b-2 border-black p-3">
             {investorFamilyFields.map((f) => (
-              <div key={f} className="grid grid-cols-[1.1fr_1.3fr] gap-2 mb-1 items-center">
+              <div
+                key={f}
+                className="grid grid-cols-[1.1fr_1.3fr] gap-2 mb-1 items-center"
+              >
                 <label className={label}>{f} :</label>
                 <input className={input} />
               </div>
@@ -243,7 +366,10 @@ export default function FormulaireBudgetPatrimonial() {
 
           <div className="p-3">
             {investorProfessionalFields.map((f) => (
-              <div key={f} className="grid grid-cols-[1.1fr_1.3fr] gap-2 mb-1 items-center">
+              <div
+                key={f}
+                className="grid grid-cols-[1.1fr_1.3fr] gap-2 mb-1 items-center"
+              >
                 <label className={label}>{f} :</label>
                 <input className={input} />
               </div>
@@ -258,7 +384,14 @@ export default function FormulaireBudgetPatrimonial() {
               {incomeFields.map((f) => (
                 <div key={f} className="grid grid-cols-2 gap-2 items-center mb-1">
                   <label className={label}>{f}</label>
-                  <input className={input} type="number" value={income[f]} onChange={(e) => setIncome({ ...income, [f]: e.target.value })} />
+                  <input
+                    className={input}
+                    type="number"
+                    value={income[f]}
+                    onChange={(e) =>
+                      setIncome({ ...income, [f]: e.target.value })
+                    }
+                  />
                 </div>
               ))}
             </div>
@@ -271,7 +404,14 @@ export default function FormulaireBudgetPatrimonial() {
               {chargesFields.map((f) => (
                 <div key={f} className="grid grid-cols-2 gap-2 items-center mb-1">
                   <label className={label}>{f}</label>
-                  <input className={input} type="number" value={charges[f]} onChange={(e) => setCharges({ ...charges, [f]: e.target.value })} />
+                  <input
+                    className={input}
+                    type="number"
+                    value={charges[f]}
+                    onChange={(e) =>
+                      setCharges({ ...charges, [f]: e.target.value })
+                    }
+                  />
                 </div>
               ))}
             </div>
@@ -279,8 +419,12 @@ export default function FormulaireBudgetPatrimonial() {
           </div>
 
           <div className="grid grid-cols-[1fr_auto] border-2 border-black overflow-hidden">
-            <div className="bg-black text-white p-2 text-center font-bold">Budget = Revenus - Charges incompressibles</div>
-            <div className="bg-[#f5ddd7] text-black p-2 font-bold">{euro(budgetDisponible)}</div>
+            <div className="bg-black text-white p-2 text-center font-bold">
+              Budget = Revenus - Charges incompressibles
+            </div>
+            <div className="bg-[#f5ddd7] text-black p-2 font-bold">
+              {euro(budgetDisponible)}
+            </div>
           </div>
 
           <div className="border-2 border-black bg-[#1b7b88] p-0">
@@ -289,11 +433,20 @@ export default function FormulaireBudgetPatrimonial() {
               {epargneMensuelle.map((f) => (
                 <div key={f} className="grid grid-cols-2 gap-2 items-center mb-1">
                   <label className={label}>{f}</label>
-                  <input className={input} type="number" value={epargne[f]} onChange={(e) => setEpargne({ ...epargne, [f]: e.target.value })} />
+                  <input
+                    className={input}
+                    type="number"
+                    value={epargne[f]}
+                    onChange={(e) =>
+                      setEpargne({ ...epargne, [f]: e.target.value })
+                    }
+                  />
                 </div>
               ))}
             </div>
-            <div className={totalBar}>Total pour les projets : {euro(totalEpargneMensuelle)}</div>
+            <div className={totalBar}>
+              Total pour les projets : {euro(totalEpargneMensuelle)}
+            </div>
           </div>
 
           <div className="border-2 border-black bg-[#1b7b88] p-0">
@@ -302,7 +455,14 @@ export default function FormulaireBudgetPatrimonial() {
               {loisirsFields.map((f) => (
                 <div key={f} className="grid grid-cols-2 gap-2 items-center mb-1">
                   <label className={label}>{f}</label>
-                  <input className={input} type="number" value={loisirs[f]} onChange={(e) => setLoisirs({ ...loisirs, [f]: e.target.value })} />
+                  <input
+                    className={input}
+                    type="number"
+                    value={loisirs[f]}
+                    onChange={(e) =>
+                      setLoisirs({ ...loisirs, [f]: e.target.value })
+                    }
+                  />
                 </div>
               ))}
             </div>
@@ -310,28 +470,43 @@ export default function FormulaireBudgetPatrimonial() {
           </div>
 
           <div className="grid grid-cols-[1fr_auto] border-2 border-black overflow-hidden">
-            <div className="bg-black text-white p-2 text-center font-bold">Budget Projets théorique</div>
-            <div className="bg-[#f3c316] text-black p-2 font-bold">{euro(budgetProjet)}</div>
+            <div className="bg-black text-white p-2 text-center font-bold">
+              Budget Projets théorique
+            </div>
+            <div className="bg-[#f3c316] text-black p-2 font-bold">
+              {euro(budgetProjet)}
+            </div>
           </div>
         </div>
 
         <div className="space-y-4">
           <div className="border-2 border-black bg-[#1b7b88] p-0">
-            <h3 className="bg-[#0f7fb3] text-white font-bold text-center px-2 py-1 border-b border-black">Epargne / Stock</h3>
+            <h3 className="bg-[#0f7fb3] text-white font-bold text-center px-2 py-1 border-b border-black">
+              Epargne / Stock
+            </h3>
             <div className="p-3 overflow-x-auto">
               <table className="w-full text-xs border-collapse">
                 <thead>
                   <tr className="bg-[#e6c08f] text-black">
                     <th className="border border-black px-1 py-1 text-left"></th>
-                    <th className="border border-black px-1 py-1 text-left">Type de compte / placements</th>
-                    <th className="border border-black px-1 py-1 text-left">Montant</th>
-                    <th className="border border-black px-1 py-1 text-left">Banque / organisme</th>
+                    <th className="border border-black px-1 py-1 text-left">
+                      Type de compte / placements
+                    </th>
+                    <th className="border border-black px-1 py-1 text-left">
+                      Montant
+                    </th>
+                    <th className="border border-black px-1 py-1 text-left">
+                      Banque / organisme
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {assets.map((a, i) => {
-                    const showCategory = i === 0 || assets[i - 1].categorie !== a.categorie;
-                    const rowSpan = assets.filter((item) => item.categorie === a.categorie).length;
+                    const showCategory =
+                      i === 0 || assets[i - 1].categorie !== a.categorie;
+                    const rowSpan = assets.filter(
+                      (item) => item.categorie === a.categorie
+                    ).length;
 
                     return (
                       <tr key={i}>
@@ -343,12 +518,27 @@ export default function FormulaireBudgetPatrimonial() {
                             {a.categorie}
                           </td>
                         )}
-                        <td className="text-white border border-black px-1 py-0.5">{a.type}</td>
-                        <td className="border border-black">
-                          <input className={input} type="number" value={a.montant} onChange={(e) => updateAsset(i, "montant", e.target.value)} />
+                        <td className="text-white border border-black px-1 py-0.5">
+                          {a.type}
                         </td>
                         <td className="border border-black">
-                          <input className={input} value={a.banque} onChange={(e) => updateAsset(i, "banque", e.target.value)} />
+                          <input
+                            className={input}
+                            type="number"
+                            value={a.montant}
+                            onChange={(e) =>
+                              updateAsset(i, "montant", e.target.value)
+                            }
+                          />
+                        </td>
+                        <td className="border border-black">
+                          <input
+                            className={input}
+                            value={a.banque}
+                            onChange={(e) =>
+                              updateAsset(i, "banque", e.target.value)
+                            }
+                          />
                         </td>
                       </tr>
                     );
@@ -357,10 +547,18 @@ export default function FormulaireBudgetPatrimonial() {
               </table>
 
               <div className="grid grid-cols-4 gap-px mt-2 border-2 border-black overflow-hidden bg-black">
-                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">Court terme : {euro(assetsByCat["Court terme"])}</div>
-                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">Moyen terme : {euro(assetsByCat["Moyen terme"])}</div>
-                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">Long terme : {euro(assetsByCat["Long terme"])}</div>
-                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">Total : {euro(totalAssets)}</div>
+                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">
+                  Court terme : {euro(assetsByCat["Court terme"])}
+                </div>
+                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">
+                  Moyen terme : {euro(assetsByCat["Moyen terme"])}
+                </div>
+                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">
+                  Long terme : {euro(assetsByCat["Long terme"])}
+                </div>
+                <div className="bg-[#e6c08f] text-black font-bold px-2 py-1">
+                  Total : {euro(totalAssets)}
+                </div>
               </div>
             </div>
           </div>
@@ -369,62 +567,147 @@ export default function FormulaireBudgetPatrimonial() {
             <h3 className={sectionTitle}>Epargne de précaution</h3>
             <div className="grid gap-3 p-3 md:grid-cols-2">
               <div>
-                <div className="mb-1 text-white font-semibold">Montant disponible</div>
-                <input className={input} type="number" value={precaution} onChange={(e) => setPrecaution(e.target.value)} />
+                <div className="mb-1 text-white font-semibold">
+                  Montant disponible
+                </div>
+                <input
+                  className={input}
+                  type="number"
+                  value={precaution}
+                  onChange={(e) => setPrecaution(e.target.value)}
+                />
               </div>
               <div className="border border-black bg-[#d9d9d9] px-3 py-2 text-black">
-                <div className="text-xs font-bold uppercase">Recommandation CGP</div>
-                <div className="mt-1 text-base font-bold">{euro(epargnePrecautionReco)}</div>
-                <div className="mt-1 text-xs">Base : 6 mois de charges incompressibles</div>
+                <div className="text-xs font-bold uppercase">
+                  Recommandation CGP
+                </div>
+                <div className="mt-1 text-base font-bold">
+                  {euro(epargnePrecautionReco)}
+                </div>
+                <div className="mt-1 text-xs">
+                  Base : 6 mois de charges incompressibles
+                </div>
               </div>
             </div>
           </div>
 
           <div className="border-2 border-black bg-[#1b7b88] p-0">
-            <h3 className="bg-[#0f7fb3] text-white font-bold text-center px-2 py-1 border-b border-black">Biens immobiliers</h3>
+            <h3 className="bg-[#0f7fb3] text-white font-bold text-center px-2 py-1 border-b border-black">
+              Biens immobiliers
+            </h3>
             <div className="p-3 space-y-4">
               {realEstate.map((r, i) => (
                 <div key={i} className="border-2 border-black bg-[#166e79]">
-                  <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">{r.type}</div>
+                  <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
+                    {r.type}
+                  </div>
                   <div className="grid gap-3 p-3 md:grid-cols-2">
                     <div>
-                      <div className="mb-1 text-white font-semibold">Valeur estimée</div>
-                      <input className={input} type="number" value={r.valeur} onChange={(e) => updateImmo(i, "valeur", e.target.value)} />
+                      <div className="mb-1 text-white font-semibold">
+                        Valeur estimée
+                      </div>
+                      <input
+                        className={input}
+                        type="number"
+                        value={r.valeur}
+                        onChange={(e) =>
+                          updateImmo(i, "valeur", e.target.value)
+                        }
+                      />
                     </div>
                     <div>
-                      <div className="mb-1 text-white font-semibold">Surface / m²</div>
-                      <input className={input} type="number" value={r.surface} onChange={(e) => updateImmo(i, "surface", e.target.value)} />
+                      <div className="mb-1 text-white font-semibold">
+                        Surface / m²
+                      </div>
+                      <input
+                        className={input}
+                        type="number"
+                        value={r.surface}
+                        onChange={(e) =>
+                          updateImmo(i, "surface", e.target.value)
+                        }
+                      />
                     </div>
                     <div className="md:col-span-2">
-                      <div className="mb-1 text-white font-semibold">Adresse</div>
-                      <input className={input} value={r.adresse} onChange={(e) => updateImmo(i, "adresse", e.target.value)} />
+                      <div className="mb-1 text-white font-semibold">
+                        Adresse
+                      </div>
+                      <input
+                        className={input}
+                        value={r.adresse}
+                        onChange={(e) =>
+                          updateImmo(i, "adresse", e.target.value)
+                        }
+                      />
                     </div>
                   </div>
                   <div className="grid gap-3 border-t-2 border-black p-3 md:grid-cols-4">
                     <div>
-                      <div className="mb-1 text-white font-semibold">Date acquisition</div>
-                      <input className={input} type="date" value={r.dateAcquisition} onChange={(e) => updateImmo(i, "dateAcquisition", e.target.value)} />
+                      <div className="mb-1 text-white font-semibold">
+                        Date acquisition
+                      </div>
+                      <input
+                        className={input}
+                        type="date"
+                        value={r.dateAcquisition}
+                        onChange={(e) =>
+                          updateImmo(i, "dateAcquisition", e.target.value)
+                        }
+                      />
                     </div>
                     <div>
-                      <div className="mb-1 text-white font-semibold">Date fin</div>
-                      <input className={input} type="date" value={r.dateFin} onChange={(e) => updateImmo(i, "dateFin", e.target.value)} />
+                      <div className="mb-1 text-white font-semibold">
+                        Date fin
+                      </div>
+                      <input
+                        className={input}
+                        type="date"
+                        value={r.dateFin}
+                        onChange={(e) =>
+                          updateImmo(i, "dateFin", e.target.value)
+                        }
+                      />
                     </div>
                     <div>
-                      <div className="mb-1 text-white font-semibold">Mensualité</div>
-                      <input className={input} type="number" value={r.mensualite} onChange={(e) => updateImmo(i, "mensualite", e.target.value)} />
+                      <div className="mb-1 text-white font-semibold">
+                        Mensualité
+                      </div>
+                      <input
+                        className={input}
+                        type="number"
+                        value={r.mensualite}
+                        onChange={(e) =>
+                          updateImmo(i, "mensualite", e.target.value)
+                        }
+                      />
                     </div>
                     <div>
-                      <div className="mb-1 text-white font-semibold">Reste à rembourser</div>
-                      <input className={input} type="number" value={r.reste} onChange={(e) => updateImmo(i, "reste", e.target.value)} />
+                      <div className="mb-1 text-white font-semibold">
+                        Reste à rembourser
+                      </div>
+                      <input
+                        className={input}
+                        type="number"
+                        value={r.reste}
+                        onChange={(e) =>
+                          updateImmo(i, "reste", e.target.value)
+                        }
+                      />
                     </div>
                   </div>
                 </div>
               ))}
 
               <div className="grid gap-px border-2 border-black bg-black md:grid-cols-3 overflow-hidden">
-                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">Total immobilier : {euro(totalImmo)}</div>
-                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">Mensualités : {euro(totalMensualitesImmo)}</div>
-                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">Capital restant : {euro(totalResteImmo)}</div>
+                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
+                  Total immobilier : {euro(totalImmo)}
+                </div>
+                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
+                  Mensualités : {euro(totalMensualitesImmo)}
+                </div>
+                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
+                  Capital restant : {euro(totalResteImmo)}
+                </div>
               </div>
             </div>
           </div>
