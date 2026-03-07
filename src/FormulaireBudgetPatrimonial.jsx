@@ -338,7 +338,7 @@ export default function FormulaireBudgetPatrimonial() {
 		  client_id: clientId,
 		  client_nom: nom,
 		  client_prenom: prenom,
-		  client_email: email
+		  client_email: email,
 		  data_json: payload,
 		  updated_at: new Date().toISOString(),
         },
