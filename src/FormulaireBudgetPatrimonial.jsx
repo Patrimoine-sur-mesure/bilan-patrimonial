@@ -1,3 +1,4 @@
+import { supabase } from "../lib/supabase";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useMemo, useState } from "react";
@@ -257,10 +258,39 @@ export default function FormulaireBudgetPatrimonial() {
     );
   };
 
-  const handleSave = () => {
-    alert(
-      "Brouillon enregistré (fonction à connecter à une base de données sécurisée)."
-    );
+  const handleSave = async () => {
+
+  const params = new URLSearchParams(window.location.search);
+  const clientId = params.get("client") || "demo";
+
+  const payload = {
+    investorIdentity,
+    investorFamily,
+    investorProfessional,
+    childrenData,
+    income,
+    charges,
+    loisirs,
+    epargne,
+    precaution,
+    assets,
+    realEstate
+  };
+
+  const { error } = await supabase
+    .from("formulaires_clients")
+    .upsert({
+      client_id: clientId,
+      data_json: payload
+    });
+
+  if (error) {
+    console.error(error);
+    alert("Erreur lors de la sauvegarde");
+  } else {
+    alert("Formulaire sauvegardé");
+  }
+
   };
 
   const handleDownloadPdf = () => {
