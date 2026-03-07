@@ -12,126 +12,177 @@ export default function PyramidePatrimoineActuel({
   const fmt = (v) =>
     euro ? euro(v) : `${Number(v || 0).toLocaleString("fr-FR")} €`;
 
+  const totalStock = Number(stockCT || 0) + Number(stockMT || 0) + Number(stockLT || 0);
+
+  const pct = (value) => {
+    if (!totalStock) return 0;
+    return Math.round((Number(value || 0) / totalStock) * 100);
+  };
+
+  const cardBase =
+    "rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]";
+  const valueClass = "text-3xl font-bold text-[#5b2be0]";
+  const labelClass = "text-sm font-semibold uppercase tracking-wide text-neutral-500";
+
   return (
-    <div className="mt-10 border-2 border-black bg-[#f4f4f4] px-6 py-8">
-      <div className="mb-8 text-center text-4xl font-bold text-[#c6923f]">
-        Stocks / Flux actuels
+    <div className="mt-10 rounded-2xl border-2 border-black bg-[#f6f3ee] p-6 shadow-[0_8px_0_rgba(0,0,0,0.08)]">
+      <div className="mb-6 flex items-end justify-between gap-4">
+        <div>
+          <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
+            Analyse patrimoniale
+          </div>
+          <h3 className="mt-1 text-4xl font-bold text-[#c6923f]">
+            Allocation patrimoniale actuelle
+          </h3>
+        </div>
+
+        <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
+          <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+            Stock total
+          </div>
+          <div className="text-2xl font-bold text-black">{fmt(totalStock)}</div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-[180px_1fr_220px] items-center gap-6">
-        {/* Colonne gauche */}
-        <div className="relative h-[560px]">
-          <div className="absolute left-2 top-0 text-3xl font-black text-black">
-            PERFORMANT
-          </div>
+      {/* Barre de répartition */}
+      <div className="mb-8 overflow-hidden rounded-full border-2 border-black bg-white">
+        <div className="flex h-5 w-full">
+          <div
+            className="h-full bg-[#dcc79b]"
+            style={{ width: `${pct(stockCT)}%` }}
+            title={`Court terme ${pct(stockCT)}%`}
+          />
+          <div
+            className="h-full bg-[#c9b07a]"
+            style={{ width: `${pct(stockMT)}%` }}
+            title={`Moyen terme ${pct(stockMT)}%`}
+          />
+          <div
+            className="h-full bg-[#b98d4a]"
+            style={{ width: `${pct(stockLT)}%` }}
+            title={`Long terme ${pct(stockLT)}%`}
+          />
+        </div>
+      </div>
 
-          <div className="absolute left-6 top-10 h-[470px] w-[10px] bg-[#2b2840]" />
-          <div className="absolute left-[-2px] top-0 h-0 w-0 border-l-[33px] border-r-[33px] border-b-[42px] border-l-transparent border-r-transparent border-b-[#2b2840]" />
-          <div className="absolute left-[42px] top-[2px] flex h-[56px] w-[56px] items-center justify-center rounded-full bg-black text-[42px] font-bold text-white">
-            +
-          </div>
-
-          <div className="absolute left-6 top-[125px]">
-            <div className="mb-2 text-lg font-bold text-black">Long terme</div>
-            <div className="inline-block rounded bg-[#eadfc8] px-3 py-1 text-base font-bold text-[#6c2bd9]">
-              {fmt(fluxLT)}/mois
+      <div className="mb-4 grid grid-cols-1 gap-5 xl:grid-cols-3">
+        <div className={cardBase}>
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <div className={labelClass}>Court terme</div>
+              <div className="mt-1 text-lg font-bold text-black">
+                Liquidité forte
+              </div>
+            </div>
+            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
+              {pct(stockCT)}%
             </div>
           </div>
 
-          <div className="absolute left-6 top-[265px]">
-            <div className="mb-2 text-lg font-bold text-black">Moyen terme</div>
-            <div className="inline-block rounded bg-[#eadfc8] px-3 py-1 text-base font-bold text-[#6c2bd9]">
-              {fmt(fluxMT)}/mois
+          <div className="space-y-4">
+            <div>
+              <div className={labelClass}>Stock actuel</div>
+              <div className={valueClass}>{fmt(stockCT)}</div>
             </div>
-          </div>
 
-          <div className="absolute left-6 top-[420px]">
-            <div className="mb-2 text-lg font-bold text-black">Court terme</div>
-            <div className="inline-block rounded bg-[#eadfc8] px-3 py-1 text-base font-bold text-[#6c2bd9]">
-              {fmt(fluxCT)}/mois
+            <div>
+              <div className={labelClass}>Flux mensuel</div>
+              <div className="text-xl font-bold text-black">{fmt(fluxCT)}/mois</div>
+            </div>
+
+            <div className="rounded-xl border border-black bg-[#faf7f1] p-3 text-sm text-neutral-700">
+              Livrets, disponibilités, épargne de précaution, trésorerie mobilisable.
             </div>
           </div>
         </div>
 
-        {/* Centre */}
-        <div className="relative mx-auto h-[560px] w-[760px]">
-          {/* Pyramide */}
-          <div
-            className="absolute bottom-0 left-1/2 h-[470px] w-[560px] -translate-x-1/2"
-            style={{
-              clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)",
-              background: "#e6dcc8",
-              border: "2px solid #c6923f",
-            }}
-          />
-
-          {/* Séparations */}
-          <div className="absolute left-1/2 top-[155px] w-[250px] -translate-x-1/2 border-t-2 border-dashed border-black" />
-          <div className="absolute left-1/2 top-[300px] w-[380px] -translate-x-1/2 border-t-2 border-dashed border-black" />
-
-          {/* LT */}
-          <div className="absolute left-1/2 top-[68px] -translate-x-1/2 text-center">
-            <div className="text-[18px] text-[#c6923f]">Immo locatif · SCPI · PER · AV</div>
-            <div className="mt-2 text-[36px] font-bold text-[#6c2bd9]">{fmt(stockLT)}</div>
-            <div className="mt-1 text-[28px] font-semibold text-black">Long terme</div>
-          </div>
-
-          {/* MT */}
-          <div className="absolute left-1/2 top-[225px] -translate-x-1/2 text-center">
-            <div className="text-[18px] text-[#c6923f]">Assurance vie · PEA · PEL</div>
-            <div className="mt-2 text-[36px] font-bold text-[#6c2bd9]">{fmt(stockMT)}</div>
-            <div className="mt-1 text-[28px] font-semibold text-black">Moyen terme</div>
-          </div>
-
-          {/* CT */}
-          <div className="absolute bottom-[36px] left-1/2 w-[480px] -translate-x-1/2 text-center">
-            <div className="text-[20px] text-[#c6923f]">
-              Liquidités et livrets :
-              <span className="ml-2 font-bold text-[#6c2bd9]">{fmt(stockCT)}</span>
+        <div className={cardBase}>
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <div className={labelClass}>Moyen terme</div>
+              <div className="mt-1 text-lg font-bold text-black">
+                Équilibre / flexibilité
+              </div>
             </div>
-            <div className="mt-2 text-[30px] font-semibold text-black">Court terme</div>
+            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
+              {pct(stockMT)}%
+            </div>
           </div>
 
-          {/* RP diagonale beaucoup plus fine */}
-          <div
-            className="absolute right-[145px] top-[130px] h-[300px] w-[24px] bg-[#f9f7f2]"
-            style={{
-              border: "2px solid #c6923f",
-              transform: "rotate(38deg)",
-              transformOrigin: "center",
-            }}
-          />
-          <div
-            className="absolute right-[105px] top-[205px] text-[18px] text-black"
-            style={{ transform: "rotate(58deg)" }}
-          >
-            Résidence principale
+          <div className="space-y-4">
+            <div>
+              <div className={labelClass}>Stock actuel</div>
+              <div className={valueClass}>{fmt(stockMT)}</div>
+            </div>
+
+            <div>
+              <div className={labelClass}>Flux mensuel</div>
+              <div className="text-xl font-bold text-black">{fmt(fluxMT)}/mois</div>
+            </div>
+
+            <div className="rounded-xl border border-black bg-[#faf7f1] p-3 text-sm text-neutral-700">
+              Assurance vie, PEA, PEL et placements de capitalisation à horizon intermédiaire.
+            </div>
           </div>
         </div>
 
-        {/* Colonne droite */}
-        <div className="relative h-[560px]">
-          <div className="absolute right-2 top-0 text-right text-3xl font-black text-black">
-            CONTRAIGNANT
+        <div className={cardBase}>
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <div className={labelClass}>Long terme</div>
+              <div className="mt-1 text-lg font-bold text-black">
+                Vision patrimoniale
+              </div>
+            </div>
+            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
+              {pct(stockLT)}%
+            </div>
           </div>
 
-          <div className="absolute right-6 top-10 h-[470px] w-[10px] bg-[#2b2840]" />
-          <div className="absolute right-[-2px] top-0 h-0 w-0 border-l-[33px] border-r-[33px] border-b-[42px] border-l-transparent border-r-transparent border-b-[#2b2840]" />
-          <div className="absolute right-[42px] top-[2px] flex h-[56px] w-[56px] items-center justify-center rounded-full bg-black text-[42px] font-bold text-white">
-            +
-          </div>
+          <div className="space-y-4">
+            <div>
+              <div className={labelClass}>Stock actuel</div>
+              <div className={valueClass}>{fmt(stockLT)}</div>
+            </div>
 
-          <div className="absolute right-0 top-[130px] text-right text-[22px] font-bold text-[#ff5a36]">
-            Bloqué ; Fixé
+            <div>
+              <div className={labelClass}>Flux mensuel</div>
+              <div className="text-xl font-bold text-black">{fmt(fluxLT)}/mois</div>
+            </div>
+
+            <div className="rounded-xl border border-black bg-[#faf7f1] p-3 text-sm text-neutral-700">
+              Immobilier locatif, SCPI, PER, placements de préparation retraite et de transmission.
+            </div>
           </div>
-          <div className="absolute right-0 top-[195px] text-right text-[22px] font-bold text-[#ff5a36]">
-            Bloqué ; Non fixé
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-4">
+        <div className="rounded-xl border border-black bg-white p-4">
+          <div className={labelClass}>Lecture court terme</div>
+          <div className="mt-2 text-sm text-neutral-700">
+            Capital disponible rapidement, utile pour sécurité et projets proches.
           </div>
-          <div className="absolute right-0 top-[335px] text-right text-[22px] font-bold text-[#ff5a36]">
-            Non bloqué ; Non fixé
+        </div>
+
+        <div className="rounded-xl border border-black bg-white p-4">
+          <div className={labelClass}>Lecture moyen terme</div>
+          <div className="mt-2 text-sm text-neutral-700">
+            Zone charnière entre flexibilité, rendement potentiel et horizon d’attente.
           </div>
-          <div className="absolute right-0 top-[455px] text-right text-[22px] font-bold text-[#ff5a36]">
-            Épargne de précaution
+        </div>
+
+        <div className="rounded-xl border border-black bg-white p-4">
+          <div className={labelClass}>Lecture long terme</div>
+          <div className="mt-2 text-sm text-neutral-700">
+            Poche de construction patrimoniale, moins liquide mais plus stratégique.
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-black bg-[#fff8ea] p-4">
+          <div className={labelClass}>Objectif du visuel</div>
+          <div className="mt-2 text-sm text-neutral-700">
+            Visualiser immédiatement la répartition entre sécurité, équilibre et projection long terme.
           </div>
         </div>
       </div>
