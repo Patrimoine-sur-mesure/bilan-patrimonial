@@ -13,6 +13,43 @@ export default function PyramidePatrimoineActuel({
     euro ? euro(v) : `${Number(v || 0).toLocaleString("fr-FR")} €`;
 
   const totalStock = Number(stockCT || 0) + Number(stockMT || 0) + Number(stockLT || 0);
+  const totalFlux = Number(fluxCT || 0) + Number(fluxMT || 0) + Number(fluxLT || 0);
+  
+	const pctCT = totalStock ? Math.round((stockCT / totalStock) * 100) : 0;
+	const pctMT = totalStock ? Math.round((stockMT / totalStock) * 100) : 0;
+	const pctLT = totalStock ? Math.round((stockLT / totalStock) * 100) : 0;
+
+	let diagnostic = "";
+	let diagnosticColor = "text-green-600";
+
+	if (pctCT > 60) {
+	  diagnostic = "Surpondération court terme : patrimoine très concentré en liquidités.";
+	  diagnosticColor = "text-orange-600";
+	} else if (pctLT > 70) {
+	  diagnostic = "Surpondération long terme : patrimoine fortement immobilisé.";
+	  diagnosticColor = "text-orange-600";
+	} else if (pctMT > 60) {
+	  diagnostic = "Surpondération moyen terme.";
+	  diagnosticColor = "text-orange-600";
+	} else {
+	  diagnostic = "Répartition patrimoniale globalement équilibrée.";
+	}
+	
+	<div className="mt-8 rounded-xl border border-black bg-white p-4">
+  <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+    Analyse de répartition
+  </div>
+
+  <div className="mt-2 grid grid-cols-3 text-sm font-semibold">
+    <div>Court terme : {pctCT}%</div>
+    <div>Moyen terme : {pctMT}%</div>
+    <div>Long terme : {pctLT}%</div>
+  </div>
+
+  <div className={`mt-3 text-sm font-semibold ${diagnosticColor}`}>
+    {pctCT > 60 || pctMT > 60 || pctLT > 70 ? "⚠ " : "✓ "} {diagnostic}
+  </div>
+</div>
 
   const pct = (value) => {
     if (!totalStock) return 0;
@@ -41,6 +78,14 @@ export default function PyramidePatrimoineActuel({
             Stock total
           </div>
           <div className="text-2xl font-bold text-black">{fmt(totalStock)}</div>
+        </div>
+      </div>
+	  
+	  <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
+          <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+            Stock total
+          </div>
+          <div className="text-2xl font-bold text-black">{fmt(totalFlux)}</div>
         </div>
       </div>
 
