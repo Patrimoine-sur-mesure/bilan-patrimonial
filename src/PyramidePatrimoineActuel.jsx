@@ -276,30 +276,6 @@ export default function PyramidePatrimoineActuel({
             Liquidités · Livrets · Épargne disponible · Précaution
           </text>
 
-          {/* résidence principale */}
-          <g transform="rotate(38 1020 470)">
-            <rect
-              x="1007"
-              y="260"
-              width="26"
-              height="390"
-              rx="8"
-              fill="#f8f4ec"
-              stroke="#c8ae7d"
-              strokeWidth="2"
-            />
-          </g>
-          <text
-            x="1020"
-            y="470"
-            textAnchor="middle"
-            fontSize="20"
-            fill="#2b2b2b"
-            transform="rotate(58 1020 470)"
-          >
-            Résidence principale
-          </text>
-
           {/* labels droite */}
           <text x="1360" y="250" textAnchor="end" fontSize="20" fontWeight="600" fill="#d4552d">
             Fixé · Bloqué
