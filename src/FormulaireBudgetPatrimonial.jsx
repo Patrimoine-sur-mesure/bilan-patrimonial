@@ -1,3 +1,4 @@
+import RapportPatrimonialPdf from "./RapportPatrimonialPdf";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useEffect, useMemo, useState } from "react";
@@ -131,6 +132,7 @@ export default function FormulaireBudgetPatrimonial() {
   const [investorIdentity, setInvestorIdentity] = useState(mapInit(investorIdentityFields));
   const [investorFamily, setInvestorFamily] = useState(mapInit(investorFamilyFields));
   const [investorProfessional, setInvestorProfessional] = useState(mapInit(investorProfessionalFields));
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [childrenData, setChildrenData] = useState(
     Array.from({ length: investorChildrenCount }, () => ({ prenom: "", naissance: "" }))
   );
@@ -275,39 +277,61 @@ export default function FormulaireBudgetPatrimonial() {
   };
 
   const genererPDF = async () => {
-  const element = document.getElementById("formulaire-pdf");
+  try {
+    setIsGeneratingPdf(true);
 
-  const canvas = await html2canvas(element, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: "#ffffff",
-  });
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
-  const imgData = canvas.toDataURL("image/png");
+    const element = document.getElementById("rapport-pdf");
+    if (!element) {
+      alert("Impossible de générer le PDF.");
+      setIsGeneratingPdf(false);
+      return;
+    }
 
-  const pdf = new jsPDF("p", "mm", "a4");
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: element.scrollWidth,
+      windowHeight: element.scrollHeight,
+    });
 
-  const imgWidth = 210;
-  const pageHeight = 297;
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
 
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const margin = 0;
 
-  let heightLeft = imgHeight;
-  let position = 0;
+    const imgWidth = pageWidth - margin * 2;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    let heightLeft = imgHeight;
+    let position = 0;
 
-  heightLeft -= pageHeight;
-
-  while (heightLeft > 0) {
-    position = heightLeft - imgHeight;
-    pdf.addPage();
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    pdf.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
-  }
 
-  pdf.save("bilan-patrimonial.pdf");
- };
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    const nom = investorIdentity["Nom"] || "client";
+    const prenom = investorIdentity["Prénom"] || "";
+    pdf.save(`bilan-patrimonial-${prenom}-${nom}.pdf`);
+  } catch (err) {
+    console.error("PDF ERROR:", err);
+    alert("Erreur lors de la génération du PDF : " + err.message);
+  } finally {
+    setIsGeneratingPdf(false);
+  }
+};
 
   const handleSave = async () => {
     try {
@@ -615,6 +639,39 @@ export default function FormulaireBudgetPatrimonial() {
           </div>
         </div>
       </div>
+	  
+	  {isGeneratingPdf && (
+  <div className="fixed left-[-99999px] top-0">
+    <RapportPatrimonialPdf
+      investorIdentity={investorIdentity}
+      investorFamily={investorFamily}
+      investorProfessional={investorProfessional}
+      childrenData={childrenData}
+      income={income}
+      charges={charges}
+      loisirs={loisirs}
+      epargne={epargne}
+      precaution={precaution}
+      assets={assets}
+      realEstate={realEstate}
+      totalIncome={totalIncome}
+      totalCharges={totalCharges}
+      totalLoisirs={totalLoisirs}
+      totalEpargneMensuelle={totalEpargneMensuelle}
+      budgetDisponible={budgetDisponible}
+      budgetProjet={budgetProjet}
+      totalAssets={totalAssets}
+      assetsByCat={assetsByCat}
+      totalImmo={totalImmo}
+      totalMensualitesImmo={totalMensualitesImmo}
+      totalResteImmo={totalResteImmo}
+      epargnePrecautionReco={epargnePrecautionReco}
+      patrimoineBrut={patrimoineBrut}
+      tauxCharges={tauxCharges}
+    />
+  </div>
+   )}
+	  
 
        <div className="mt-10 w-full flex justify-center">
       <div className="flex gap-8">
