@@ -304,26 +304,16 @@ export default function FormulaireBudgetPatrimonial() {
   };
 
   const genererPDF = async () => {
-  try {
-    setIsGeneratingPdf(true);
+    try {
+      setIsGeneratingPdf(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 400));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-    const pageIds = ["pdf-page-1", "pdf-page-2", "pdf-page-3"];
-    const pdf = new jsPDF("p", "mm", "a4");
-
-    const pageWidth = 210;
-    const pageHeight = 297;
-    const marginX = 8;
-    const marginY = 8;
-    const usableWidth = pageWidth - marginX * 2;
-    const usableHeight = pageHeight - marginY * 2;
-
-    let isFirstRenderedPage = true;
-
-    for (const pageId of pageIds) {
-      const element = document.getElementById(pageId);
-      if (!element) continue;
+      const element = document.getElementById("rapport-pdf");
+      if (!element) {
+        alert("Impossible de générer le PDF.");
+        return;
+      }
 
       const canvas = await html2canvas(element, {
         scale: 2,
@@ -336,15 +326,21 @@ export default function FormulaireBudgetPatrimonial() {
       });
 
       const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pageWidth = 210;
+      const pageHeight = 297;
+      const marginX = 8;
+      const marginY = 8;
+
+      const usableWidth = pageWidth - marginX * 2;
+      const usableHeight = pageHeight - marginY * 2;
+
       const imgWidth = usableWidth;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       let heightLeft = imgHeight;
       let position = marginY;
-
-      if (!isFirstRenderedPage) {
-        pdf.addPage();
-      }
 
       pdf.addImage(imgData, "PNG", marginX, position, imgWidth, imgHeight);
       heightLeft -= usableHeight;
@@ -356,19 +352,16 @@ export default function FormulaireBudgetPatrimonial() {
         heightLeft -= usableHeight;
       }
 
-      isFirstRenderedPage = false;
+      const nom = investorIdentity["Nom"] || "client";
+      const prenom = investorIdentity["Prénom"] || "";
+      pdf.save(`bilan-patrimonial-${prenom}-${nom}.pdf`);
+    } catch (err) {
+      console.error("PDF ERROR:", err);
+      alert("Erreur lors de la génération du PDF : " + err.message);
+    } finally {
+      setIsGeneratingPdf(false);
     }
-
-    const nom = investorIdentity["Nom"] || "client";
-    const prenom = investorIdentity["Prénom"] || "";
-    pdf.save(`bilan-patrimonial-${prenom}-${nom}.pdf`);
-  } catch (err) {
-    console.error("PDF ERROR:", err);
-    alert("Erreur lors de la génération du PDF : " + err.message);
-  } finally {
-    setIsGeneratingPdf(false);
-  }
-};
+  };
 
   const handleSave = async () => {
     try {

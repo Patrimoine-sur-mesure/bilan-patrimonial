@@ -186,8 +186,7 @@ export default function RapportPatrimonialPdf({
   );
 
   return (
-  <div id="rapport-pdf" style={styles.page}>
-    <div id="pdf-page-1">
+    <div id="rapport-pdf" style={styles.page}>
       <div style={styles.topCards}>
         <div style={styles.statCard}>
           <div style={styles.statHead}>Revenus mensuels</div>
@@ -287,9 +286,7 @@ export default function RapportPatrimonialPdf({
                   </tr>
                 ))}
                 <tr>
-                  <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>
-                    Total
-                  </td>
+                  <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>Total</td>
                   <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>
                     {euro(totalIncome)}
                   </td>
@@ -311,9 +308,7 @@ export default function RapportPatrimonialPdf({
                   </tr>
                 ))}
                 <tr>
-                  <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>
-                    Total
-                  </td>
+                  <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>Total</td>
                   <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>
                     {euro(totalCharges)}
                   </td>
@@ -337,9 +332,7 @@ export default function RapportPatrimonialPdf({
                   </tr>
                 ))}
                 <tr>
-                  <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>
-                    Total
-                  </td>
+                  <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>Total</td>
                   <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>
                     {euro(totalLoisirs)}
                   </td>
@@ -361,9 +354,7 @@ export default function RapportPatrimonialPdf({
                   </tr>
                 ))}
                 <tr>
-                  <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>
-                    Total
-                  </td>
+                  <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>Total</td>
                   <td style={{ ...styles.td, fontWeight: "700", backgroundColor: "#f7f1e8" }}>
                     {euro(totalEpargneMensuelle)}
                   </td>
@@ -385,9 +376,7 @@ export default function RapportPatrimonialPdf({
           </div>
         </div>
       </div>
-    </div>
 
-    <div id="pdf-page-2" style={{ marginTop: "20px" }}>
       <div style={{ ...styles.card, ...styles.pageBreakAvoid }}>
         <div style={styles.sectionTitle}>Épargne / stock</div>
         <div style={styles.sectionBody}>
@@ -426,9 +415,7 @@ export default function RapportPatrimonialPdf({
           </div>
         </div>
       </div>
-    </div>
 
-    <div id="pdf-page-3" style={{ marginTop: "20px" }}>
       <div style={{ ...styles.card, ...styles.pageBreakAvoid }}>
         <div style={styles.sectionTitle}>Biens immobiliers</div>
         <div style={styles.sectionBody}>
@@ -473,6 +460,5 @@ export default function RapportPatrimonialPdf({
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
