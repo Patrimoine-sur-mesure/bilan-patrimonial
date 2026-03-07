@@ -641,7 +641,17 @@ export default function FormulaireBudgetPatrimonial() {
       </div>
 	  
 	  {isGeneratingPdf && (
-  <div className="fixed left-[-99999px] top-0">
+  <div
+    style={{
+      position: "fixed",
+      left: "-99999px",
+      top: "0",
+      background: "#ffffff",
+      color: "#000000",
+      width: "1200px",
+      zIndex: -1,
+    }}
+   >
     <RapportPatrimonialPdf
       investorIdentity={investorIdentity}
       investorFamily={investorFamily}
