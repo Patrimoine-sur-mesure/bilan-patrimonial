@@ -3,6 +3,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas-pro";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "./lib/supabase";
+import PyramidePatrimoineActuel from "./PyramidePatrimoineActuel";
 
 export default function FormulaireBudgetPatrimonial() {
   const label = "text-white text-sm font-semibold";
