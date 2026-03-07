@@ -622,9 +622,6 @@ page: {
         </div>
         <div style={styles.blackBig}>Court terme</div>
       </div>
-
-      <div style={styles.rpBar} />
-      <div style={styles.rpText}>Résidence Principale</div>
     </div>
 
     <div style={styles.rightLegend}>
