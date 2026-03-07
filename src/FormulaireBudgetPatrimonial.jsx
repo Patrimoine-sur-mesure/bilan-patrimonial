@@ -978,7 +978,17 @@ const epargneMensuelleLT = useMemo(
       )}
   
 
-      <div className="mt-10 flex w-full justify-center">
+			  <PyramidePatrimoineActuel
+		  euro={euro}
+		  stockCT={assetsByCat["Court terme"]}
+		  stockMT={assetsByCat["Moyen terme"]}
+		  stockLT={assetsByCat["Long terme"]}
+		  fluxCT={epargneMensuelleCT}
+		  fluxMT={epargneMensuelleMT}
+		  fluxLT={epargneMensuelleLT}
+		/>
+
+<div className="mt-10 flex w-full justify-center">
         <div className="flex gap-8">
           <button
             type="button"
