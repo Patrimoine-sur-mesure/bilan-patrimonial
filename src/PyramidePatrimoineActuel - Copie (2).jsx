@@ -35,19 +35,19 @@ export default function PyramidePatrimoineActuel({
   const pctMT = totalStock ? Math.round((Number(stockMT || 0) / totalStock) * 100) : 0;
   const pctLT = totalStock ? Math.round((Number(stockLT || 0) / totalStock) * 100) : 0;
 
-  let diagnostic = "Structure patrimoniale cohérente au regard des horizons de détention.";
+  let diagnostic = "Répartition patrimoniale globalement équilibrée.";
   let diagnosticColor = "#15803d";
 
   if (pctCT > 60) {
     diagnostic =
-      "Concentration élevée sur les actifs liquides, suggérant un redéploiement progressif.";
+      "Surpondération court terme : patrimoine très concentré en liquidités.";
     diagnosticColor = "#c2410c";
   } else if (pctLT > 70) {
     diagnostic =
-      "Structure fortement orientée long terme, avec une flexibilité patrimoniale plus réduite.";
+      "Surpondération long terme : patrimoine fortement immobilisé.";
     diagnosticColor = "#c2410c";
   } else if (pctMT > 60) {
-    diagnostic = "Poids significatif de la poche intermédiaire, traduisant une bonne flexibilité patrimoniale.";
+    diagnostic = "Surpondération moyen terme.";
     diagnosticColor = "#c2410c";
   }
 
@@ -55,55 +55,55 @@ export default function PyramidePatrimoineActuel({
     "text-sm font-semibold uppercase tracking-wide text-neutral-500";
 
   return (
-    <div className="mt-10 rounded-[28px] border border-[#ddd6ca] bg-[#f8f5ef] p-8 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+    <div className="mt-10 rounded-2xl border-2 border-black bg-[#f6f3ee] p-6 shadow-[0_8px_0_rgba(0,0,0,0.08)]">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8b8175]">
-  Analyse patrimoniale
-</div>
+          <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
+            Analyse patrimoniale
+          </div>
 
-<h3 className="mt-2 text-4xl font-semibold tracking-tight text-[#1f2937]">
-  Pyramide patrimoniale actuelle
-</h3>
+          <h3 className="mt-1 text-4xl font-bold text-[#c6923f]">
+            Pyramide patrimoniale actuelle
+          </h3>
 
-<p className="mt-3 max-w-3xl text-sm leading-6 text-[#6b7280]">
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-neutral-600">
             Cette cartographie met en perspective la structuration actuelle du patrimoine
             entre liquidité immédiate, flexibilité intermédiaire et capitalisation long terme.
           </p>
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <div className="rounded-2xl border border-[#ddd6ca] bg-white px-5 py-4 text-right shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
-            className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8b8175]"
+          <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
+            <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
               Stock total
             </div>
-            <div className="text-2xl font-semibold text-[#1f2937]">{fmt(totalStock)}</div>
+            <div className="text-2xl font-bold text-black">{fmt(totalStock)}</div>
           </div>
 
-          <div className="rounded-2xl border border-[#ddd6ca] bg-white px-5 py-4 text-right shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
-            className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8b8175]"
+          <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
+            <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
               Flux mensuel total
             </div>
-            <div className="text-2xl font-semibold text-[#1f2937]">{fmt(totalFlux)}/mois</div>
+            <div className="text-2xl font-bold text-black">{fmt(totalFlux)}/mois</div>
           </div>
 
-          <div className="rounded-2xl border border-[#ddd6ca] bg-white px-5 py-4 text-right shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
-            className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8b8175]"
+          <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
+            <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
               Score patrimonial
             </div>
-            <div className="text-2xl font-semibold text-[#1f2937]">{scorePatrimonial} / 10</div>
+            <div className="text-2xl font-bold text-black">{scorePatrimonial} / 10</div>
           </div>
         </div>
       </div>
 
       <div className="mb-4 grid grid-cols-1 gap-5 xl:grid-cols-3">
-        <div className="rounded-[24px] border border-[#ddd6ca] bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-0.5">
+        <div className="rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
           <div className="mb-4 flex items-center justify-between">
             <div>
               <div className={labelClass}>Court terme</div>
               <div className="mt-1 text-lg font-bold text-black">Liquidité forte</div>
             </div>
-            <div className="rounded-full border border-[#ddd6ca] bg-[#faf7f2] px-3 py-1 text-sm font-semibold text-[#223046]">
+            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
               {pctCT}%
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function PyramidePatrimoineActuel({
           <div className="space-y-4">
             <div>
               <div className={labelClass}>Stock actuel</div>
-              <div className="text-3xl font-semibold tracking-tight text-[#223046]">{fmt(stockCT)}</div>
+              <div className="text-3xl font-bold text-[#5b2be0]">{fmt(stockCT)}</div>
             </div>
 
             <div>
@@ -128,13 +128,13 @@ export default function PyramidePatrimoineActuel({
           </div>
         </div>
 
-        <div className="rounded-[24px] border border-[#ddd6ca] bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-0.5">
+        <div className="rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
           <div className="mb-4 flex items-center justify-between">
             <div>
               <div className={labelClass}>Moyen terme</div>
               <div className="mt-1 text-lg font-bold text-black">Équilibre / flexibilité</div>
             </div>
-            <div className="rounded-full border border-[#ddd6ca] bg-[#faf7f2] px-3 py-1 text-sm font-semibold text-[#223046]">
+            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
               {pctMT}%
             </div>
           </div>
@@ -149,7 +149,7 @@ export default function PyramidePatrimoineActuel({
           <div className="space-y-4">
             <div>
               <div className={labelClass}>Stock actuel</div>
-              <div className="text-3xl font-semibold tracking-tight text-[#223046]">{fmt(stockMT)}</div>
+              <div className="text-3xl font-bold text-[#5b2be0]">{fmt(stockMT)}</div>
             </div>
 
             <div>
@@ -159,13 +159,13 @@ export default function PyramidePatrimoineActuel({
           </div>
         </div>
 
-        <div className="rounded-[24px] border border-[#ddd6ca] bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-0.5">
+        <div className="rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
           <div className="mb-4 flex items-center justify-between">
             <div>
               <div className={labelClass}>Long terme</div>
               <div className="mt-1 text-lg font-bold text-black">Vision patrimoniale</div>
             </div>
-            <div className="rounded-full border border-[#ddd6ca] bg-[#faf7f2] px-3 py-1 text-sm font-semibold text-[#223046]">
+            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
               {pctLT}%
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function PyramidePatrimoineActuel({
           <div className="space-y-4">
             <div>
               <div className={labelClass}>Stock actuel</div>
-              <div className="text-3xl font-semibold tracking-tight text-[#223046]">{fmt(stockLT)}</div>
+              <div className="text-3xl font-bold text-[#5b2be0]">{fmt(stockLT)}</div>
             </div>
 
             <div>
@@ -191,12 +191,12 @@ export default function PyramidePatrimoineActuel({
         </div>
       </div>
 
-      <div className="mb-8 rounded-[24px] border border-[#ddd6ca] bg-white p-5 shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
-        <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8b8175]">
+      <div className="mb-8 rounded-2xl border border-black bg-white p-4">
+        <div className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
           Architecture patrimoniale
         </div>
 
-        <p className="mb-4 text-sm leading-6 text-[#6b7280]">
+        <p className="mb-4 text-sm text-neutral-600">
           Lecture des stocks patrimoniaux et des flux mensuels par horizon d’investissement.
         </p>
 
@@ -225,7 +225,7 @@ export default function PyramidePatrimoineActuel({
             y1="235"
             x2="745"
             y2="235"
-            stroke="#cdbfaa"
+            stroke="#000"
             strokeWidth="2"
             strokeDasharray="7 7"
           />
@@ -234,7 +234,7 @@ export default function PyramidePatrimoineActuel({
             y1="390"
             x2="835"
             y2="390"
-            stroke="#cdbfaa"
+            stroke="#000"
             strokeWidth="2"
             strokeDasharray="7 7"
           />
@@ -256,7 +256,7 @@ export default function PyramidePatrimoineActuel({
             textAnchor="middle"
             fontSize="34"
             fontWeight="700"
-            fill="#223046"
+            fill="#5b2be0"
           >
             {fmt(stockLT)}
           </text>
@@ -287,7 +287,7 @@ export default function PyramidePatrimoineActuel({
             textAnchor="middle"
             fontSize="34"
             fontWeight="700"
-            fill="#223046"
+            fill="#5b2be0"
           >
             {fmt(stockMT)}
           </text>
@@ -318,7 +318,7 @@ export default function PyramidePatrimoineActuel({
             textAnchor="middle"
             fontSize="34"
             fontWeight="700"
-            fill="#223046"
+            fill="#5b2be0"
           >
             {fmt(stockCT)}
           </text>
@@ -332,80 +332,80 @@ export default function PyramidePatrimoineActuel({
             Liquidités · livrets · épargne de précaution
           </text>
 
-          <text x="70" y="170" fontSize="18" fontWeight="700" fill="#1f2937">
+          <text x="70" y="170" fontSize="18" fontWeight="700" fill="#111">
             Long terme
           </text>
-          <rect x="70" y="180" rx="10" ry="10" width="145" height="38" fill="#f3ead8" stroke="#cdbfaa" />
-          <text x="142" y="205" textAnchor="middle" fontSize="18" fontWeight="700" fill="#223046">
+          <rect x="70" y="180" rx="10" ry="10" width="145" height="38" fill="#f3ead8" stroke="#000" />
+          <text x="142" y="205" textAnchor="middle" fontSize="18" fontWeight="700" fill="#5b2be0">
             {fmt(fluxLT)}/mois
           </text>
 
-          <text x="70" y="330" fontSize="18" fontWeight="700" fill="#1f2937">
+          <text x="70" y="330" fontSize="18" fontWeight="700" fill="#111">
             Moyen terme
           </text>
-          <rect x="70" y="340" rx="10" ry="10" width="145" height="38" fill="#f3ead8" stroke="#cdbfaa" />
-          <text x="142" y="365" textAnchor="middle" fontSize="18" fontWeight="700" fill="#223046">
+          <rect x="70" y="340" rx="10" ry="10" width="145" height="38" fill="#f3ead8" stroke="#000" />
+          <text x="142" y="365" textAnchor="middle" fontSize="18" fontWeight="700" fill="#5b2be0">
             {fmt(fluxMT)}/mois
           </text>
 
-          <text x="70" y="500" fontSize="18" fontWeight="700" fill="#1f2937">
+          <text x="70" y="500" fontSize="18" fontWeight="700" fill="#111">
             Court terme
           </text>
-          <rect x="70" y="510" rx="10" ry="10" width="145" height="38" fill="#f3ead8" stroke="#cdbfaa" />
-          <text x="142" y="535" textAnchor="middle" fontSize="18" fontWeight="700" fill="#223046">
+          <rect x="70" y="510" rx="10" ry="10" width="145" height="38" fill="#f3ead8" stroke="#000" />
+          <text x="142" y="535" textAnchor="middle" fontSize="18" fontWeight="700" fill="#5b2be0">
             {fmt(fluxCT)}/mois
           </text>
 
-          <text x="1130" y="190" textAnchor="end" fontSize="18" fontWeight="700" fill="#8b6b36">
+          <text x="1130" y="190" textAnchor="end" fontSize="18" fontWeight="700" fill="#d4552d">
             Bloqué · Fixé
           </text>
-          <text x="1130" y="240" textAnchor="end" fontSize="18" fontWeight="700" fill="#8b6b36">
+          <text x="1130" y="240" textAnchor="end" fontSize="18" fontWeight="700" fill="#d4552d">
             Bloqué · Non fixé
           </text>
-          <text x="1130" y="355" textAnchor="end" fontSize="18" fontWeight="700" fill="#8b6b36">
+          <text x="1130" y="355" textAnchor="end" fontSize="18" fontWeight="700" fill="#d4552d">
             Non bloqué · Non fixé
           </text>
-          <text x="1130" y="510" textAnchor="end" fontSize="18" fontWeight="700" fill="#8b6b36">
+          <text x="1130" y="510" textAnchor="end" fontSize="18" fontWeight="700" fill="#d4552d">
             Épargne de précaution
           </text>
         </svg>
       </div>
 
       <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="rounded-2xl border border-[#ddd6ca] bg-white p-5 shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
-          className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8b8175]"
-            Atout principal
+        <div className="rounded-xl border border-black bg-white p-4">
+          <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+            Force patrimoniale
           </div>
-          <p className="mt-2 text-sm leading-6 text-[#1f2937]">
+          <p className="mt-2 text-sm text-black">
             {analysePatrimoniale.force}
           </p>
         </div>
 
-        <div className="rounded-2xl border border-[#ddd6ca] bg-white p-5 shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
-          className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8b8175]"
+        <div className="rounded-xl border border-black bg-white p-4">
+          <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
             Point de vigilance
           </div>
-          <p className="mt-2 text-sm leading-6 text-[#1f2937]">
+          <p className="mt-2 text-sm text-black">
             {analysePatrimoniale.vigilance}
           </p>
         </div>
 
-        <div className="rounded-2xl border border-[#ddd6ca] bg-white p-5 shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
-          className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8b8175]"
-            Orientation patrimoniale
+        <div className="rounded-xl border border-black bg-white p-4">
+          <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+            Orientation possible
           </div>
-          <p className="mt-2 text-sm leading-6 text-[#1f2937]">
+          <p className="mt-2 text-sm text-black">
             {analysePatrimoniale.orientation}
           </p>
         </div>
       </div>
 
-      <div className="mt-8 rounded-2xl border border-[#ddd6ca] bg-white p-5 shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
-        className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8b8175]"
+      <div className="mt-8 rounded-xl border border-black bg-white p-4">
+        <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
           Analyse de répartition
         </div>
 
-        <div className="mt-3 grid grid-cols-1 gap-3 text-sm font-semibold text-[#1f2937] md:grid-cols-3">
+        <div className="mt-2 grid grid-cols-1 gap-2 text-sm font-semibold md:grid-cols-3">
           <div>Court terme : {pctCT}%</div>
           <div>Moyen terme : {pctMT}%</div>
           <div>Long terme : {pctLT}%</div>
