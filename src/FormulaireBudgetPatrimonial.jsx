@@ -318,19 +318,12 @@ const epargneMensuelleLT = useMemo(
 
       const { data: accessRow, error: accessError } = await supabase
         .from("access_tokens")
-        .select("formulaire_id, expires_at")
+        .select("client_id, expires_at")
         .eq("token", token)
         .maybeSingle();
 
-      if (accessError) {
+      if (accessError || !accessRow) {
         console.error("ACCESS TOKEN ERROR:", accessError);
-        setSaveStatus("Accès refusé.");
-        setIsAuthorized(false);
-        setIsCheckingAccess(false);
-        return;
-      }
-
-      if (!accessRow) {
         setSaveStatus("Accès refusé.");
         setIsAuthorized(false);
         setIsCheckingAccess(false);
@@ -347,39 +340,37 @@ const epargneMensuelleLT = useMemo(
       const { data, error } = await supabase
         .from("formulaires_clients")
         .select("id, data_json, updated_at, client_nom, client_prenom, client_email")
-        .eq("id", accessRow.formulaire_id)
+        .eq("client_id", accessRow.client_id)
         .maybeSingle();
 
       if (error) {
         console.error("LOAD FORM ERROR:", error);
-        setSaveStatus("Accès refusé.");
+        setSaveStatus("Erreur de chargement.");
         setIsAuthorized(false);
         setIsCheckingAccess(false);
         return;
       }
 
-      if (!data) {
-        setSaveStatus("Accès refusé.");
-        setIsAuthorized(false);
-        setIsCheckingAccess(false);
-        return;
+      if (data) {
+        const saved = data.data_json || {};
+
+        if (saved.investorIdentity) setInvestorIdentity(saved.investorIdentity);
+        if (saved.investorFamily) setInvestorFamily(saved.investorFamily);
+        if (saved.investorProfessional) setInvestorProfessional(saved.investorProfessional);
+        if (saved.childrenData) setChildrenData(saved.childrenData);
+        if (saved.income) setIncome(saved.income);
+        if (saved.charges) setCharges(saved.charges);
+        if (saved.loisirs) setLoisirs(saved.loisirs);
+        if (saved.epargne) setEpargne(saved.epargne);
+        if (typeof saved.precaution === "string") setPrecaution(saved.precaution);
+        if (saved.assets) setAssets(saved.assets);
+        if (saved.realEstate) setRealEstate(saved.realEstate);
+
+        setSaveStatus("Brouillon rechargé depuis le serveur.");
+      } else {
+        setSaveStatus("Nouveau formulaire prêt à être complété.");
       }
 
-      const saved = data.data_json || {};
-
-      if (saved.investorIdentity) setInvestorIdentity(saved.investorIdentity);
-      if (saved.investorFamily) setInvestorFamily(saved.investorFamily);
-      if (saved.investorProfessional) setInvestorProfessional(saved.investorProfessional);
-      if (saved.childrenData) setChildrenData(saved.childrenData);
-      if (saved.income) setIncome(saved.income);
-      if (saved.charges) setCharges(saved.charges);
-      if (saved.loisirs) setLoisirs(saved.loisirs);
-      if (saved.epargne) setEpargne(saved.epargne);
-      if (typeof saved.precaution === "string") setPrecaution(saved.precaution);
-      if (saved.assets) setAssets(saved.assets);
-      if (saved.realEstate) setRealEstate(saved.realEstate);
-
-      setSaveStatus("Brouillon rechargé depuis le serveur.");
       setIsAuthorized(true);
       setIsCheckingAccess(false);
     } catch (err) {
@@ -491,7 +482,7 @@ const epargneMensuelleLT = useMemo(
 
     const { data: accessRow, error: accessError } = await supabase
       .from("access_tokens")
-      .select("formulaire_id, expires_at")
+      .select("client_id, expires_at")
       .eq("token", token)
       .maybeSingle();
 
@@ -525,21 +516,54 @@ const epargneMensuelleLT = useMemo(
     const prenom = investorIdentity["Prénom"] || "";
     const email = investorIdentity["Email"] || "";
 
-    const { error } = await supabase
+    const { data: existing, error: checkError } = await supabase
       .from("formulaires_clients")
-      .update({
-        client_nom: nom,
-        client_prenom: prenom,
-        client_email: email,
-        data_json: payload,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", accessRow.formulaire_id);
+      .select("id")
+      .eq("client_id", accessRow.client_id)
+      .maybeSingle();
 
-    if (error) {
-      console.error("UPDATE ERROR:", error);
-      alert("Erreur lors de la sauvegarde : " + error.message);
+    if (checkError) {
+      console.error("CHECK ERROR:", checkError);
+      alert("Erreur lors de la vérification du formulaire.");
       return;
+    }
+
+    if (existing) {
+      const { error } = await supabase
+        .from("formulaires_clients")
+        .update({
+          client_nom: nom,
+          client_prenom: prenom,
+          client_email: email,
+          data_json: payload,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("client_id", accessRow.client_id);
+
+      if (error) {
+        console.error("UPDATE ERROR:", error);
+        alert("Erreur lors de la sauvegarde : " + error.message);
+        return;
+      }
+    } else {
+      const { error } = await supabase
+        .from("formulaires_clients")
+        .insert([
+          {
+            client_id: accessRow.client_id,
+            client_nom: nom,
+            client_prenom: prenom,
+            client_email: email,
+            data_json: payload,
+            updated_at: new Date().toISOString(),
+          },
+        ]);
+
+      if (error) {
+        console.error("INSERT ERROR:", error);
+        alert("Erreur lors de la création : " + error.message);
+        return;
+      }
     }
 
     setSaveStatus("Brouillon enregistré sur le serveur.");
