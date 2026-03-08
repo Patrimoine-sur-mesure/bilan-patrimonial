@@ -616,7 +616,7 @@ export default function RapportPatrimonialPdf({
               </div>
 
               <div style={{ ...styles.summaryBox, marginTop: "12px" }}>
-                Épargne de précaution disponible : {euro(precaution)}
+                Épargne de précaution : {euro(precaution)}
               </div>
             </div>
           </div>
