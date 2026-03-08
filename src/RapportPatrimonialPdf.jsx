@@ -697,7 +697,7 @@ export default function RapportPatrimonialPdf({
         </div>
       </div>
 
-<div id="pdf-page-2" style={{ marginTop: "20px" }}>
+<div id="pdf-page-2">
   <div style={styles.header}>
     <div style={styles.headerLeft}>
       <div style={styles.headerEyebrow}>Bilan patrimonial</div>
@@ -759,7 +759,7 @@ export default function RapportPatrimonialPdf({
         </div>
       </div>
 
-<div id="pdf-page-3" style={{ marginTop: "20px" }}>
+<div id="pdf-page-3">
   <div style={styles.header}>
     <div style={styles.headerLeft}>
       <div style={styles.headerEyebrow}>Bilan patrimonial</div>
