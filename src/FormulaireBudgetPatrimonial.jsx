@@ -403,14 +403,22 @@ const epargneMensuelleLT = useMemo(
       });
 
       const imgData = canvas.toDataURL("image/png");
-      const imgWidth = usableWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      const widthRatio = usableWidth / canvas.width;
+      const heightRatio = usableHeight / canvas.height;
+      const ratio = Math.min(widthRatio, heightRatio);
+
+      const renderWidth = canvas.width * ratio;
+      const renderHeight = canvas.height * ratio;
+
+      const x = marginX + (usableWidth - renderWidth) / 2;
+      const y = marginY + (usableHeight - renderHeight) / 2;
 
       if (!isFirstRenderedPage) {
         pdf.addPage();
       }
 
-      pdf.addImage(imgData, "PNG", marginX, marginY, imgWidth, imgHeight);
+      pdf.addImage(imgData, "PNG", x, y, renderWidth, renderHeight);
       isFirstRenderedPage = false;
     }
 
