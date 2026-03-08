@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "./lib/supabase";
 import PyramidePatrimoineActuel from "./PyramidePatrimoineActuel";
 
+
 export default function FormulaireBudgetPatrimonial() {
   const label = "text-[13px] font-medium text-[#4b5563]";
 const input =
@@ -298,7 +299,7 @@ const epargneMensuelleLT = useMemo(
 }, [assetsByCat, totalAssets]);
 
 
-  const getClientId = () => {
+  const getTokenFromUrl = () => {
   const params = new URLSearchParams(window.location.search);
   return params.get("token")?.trim() || null;
 };
@@ -306,10 +307,38 @@ const epargneMensuelleLT = useMemo(
   useEffect(() => {
   const loadFromSupabase = async () => {
     try {
-      const clientId = getClientId();
+      const token = getTokenFromUrl();
 
-      if (!clientId) {
+      if (!token) {
         setSaveStatus("Accès refusé.");
+        setIsAuthorized(false);
+        setIsCheckingAccess(false);
+        return;
+      }
+
+      const { data: accessRow, error: accessError } = await supabase
+        .from("access_tokens")
+        .select("formulaire_id, expires_at")
+        .eq("token", token)
+        .maybeSingle();
+
+      if (accessError) {
+        console.error("ACCESS TOKEN ERROR:", accessError);
+        setSaveStatus("Accès refusé.");
+        setIsAuthorized(false);
+        setIsCheckingAccess(false);
+        return;
+      }
+
+      if (!accessRow) {
+        setSaveStatus("Accès refusé.");
+        setIsAuthorized(false);
+        setIsCheckingAccess(false);
+        return;
+      }
+
+      if (new Date(accessRow.expires_at) < new Date()) {
+        setSaveStatus("Lien expiré.");
         setIsAuthorized(false);
         setIsCheckingAccess(false);
         return;
@@ -317,12 +346,12 @@ const epargneMensuelleLT = useMemo(
 
       const { data, error } = await supabase
         .from("formulaires_clients")
-        .select("data_json, updated_at")
-        .eq("client_id", clientId)
+        .select("id, data_json, updated_at, client_nom, client_prenom, client_email")
+        .eq("id", accessRow.formulaire_id)
         .maybeSingle();
 
       if (error) {
-        console.error("LOAD ERROR:", error);
+        console.error("LOAD FORM ERROR:", error);
         setSaveStatus("Accès refusé.");
         setIsAuthorized(false);
         setIsCheckingAccess(false);
@@ -453,10 +482,27 @@ const epargneMensuelleLT = useMemo(
 
   const handleSave = async () => {
   try {
-    const clientId = getClientId();
+    const token = getTokenFromUrl();
 
-    if (!clientId) {
+    if (!token) {
       alert("Lien invalide.");
+      return;
+    }
+
+    const { data: accessRow, error: accessError } = await supabase
+      .from("access_tokens")
+      .select("formulaire_id, expires_at")
+      .eq("token", token)
+      .maybeSingle();
+
+    if (accessError || !accessRow) {
+      console.error("SAVE ACCESS ERROR:", accessError);
+      alert("Lien invalide.");
+      return;
+    }
+
+    if (new Date(accessRow.expires_at) < new Date()) {
+      alert("Lien expiré.");
       return;
     }
 
@@ -479,23 +525,6 @@ const epargneMensuelleLT = useMemo(
     const prenom = investorIdentity["Prénom"] || "";
     const email = investorIdentity["Email"] || "";
 
-    const { data: existing, error: checkError } = await supabase
-      .from("formulaires_clients")
-      .select("id")
-      .eq("client_id", clientId)
-      .maybeSingle();
-
-    if (checkError) {
-      console.error("CHECK ERROR:", checkError);
-      alert("Erreur lors de la vérification du lien.");
-      return;
-    }
-
-    if (!existing) {
-      alert("Ce lien n'existe pas. Vous ne pouvez pas créer un nouveau formulaire.");
-      return;
-    }
-
     const { error } = await supabase
       .from("formulaires_clients")
       .update({
@@ -505,7 +534,7 @@ const epargneMensuelleLT = useMemo(
         data_json: payload,
         updated_at: new Date().toISOString(),
       })
-      .eq("client_id", clientId);
+      .eq("id", accessRow.formulaire_id);
 
     if (error) {
       console.error("UPDATE ERROR:", error);
