@@ -70,7 +70,121 @@ export default function PyramidePatrimoineActuel({
         </div>
       </div>
 
-      <div className="mb-8 rounded-2xl border border-black bg-white p-4">
+
+
+      <div className="mb-4 grid grid-cols-1 gap-5 xl:grid-cols-3">
+        <div className="rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <div className={labelClass}>Court terme</div>
+              <div className="mt-1 text-lg font-bold text-black">Liquidité forte</div>
+            </div>
+            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
+              {pctCT}%
+            </div>
+          </div>
+
+          <div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
+            <div
+              className="h-full rounded-full bg-[#dcc79b] transition-all duration-700"
+              style={{ width: `${pctCT}%` }}
+            />
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <div className={labelClass}>Stock actuel</div>
+              <div className="text-3xl font-bold text-[#5b2be0]">{fmt(stockCT)}</div>
+            </div>
+
+            <div>
+              <div className={labelClass}>Flux mensuel</div>
+              <div className="text-xl font-bold text-black">{fmt(fluxCT)}/mois</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <div className={labelClass}>Moyen terme</div>
+              <div className="mt-1 text-lg font-bold text-black">Équilibre / flexibilité</div>
+            </div>
+            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
+              {pctMT}%
+            </div>
+          </div>
+
+          <div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
+            <div
+              className="h-full rounded-full bg-[#c9b07a] transition-all duration-700"
+              style={{ width: `${pctMT}%` }}
+            />
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <div className={labelClass}>Stock actuel</div>
+              <div className="text-3xl font-bold text-[#5b2be0]">{fmt(stockMT)}</div>
+            </div>
+
+            <div>
+              <div className={labelClass}>Flux mensuel</div>
+              <div className="text-xl font-bold text-black">{fmt(fluxMT)}/mois</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <div className={labelClass}>Long terme</div>
+              <div className="mt-1 text-lg font-bold text-black">Vision patrimoniale</div>
+            </div>
+            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
+              {pctLT}%
+            </div>
+          </div>
+
+          <div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
+            <div
+              className="h-full rounded-full bg-[#b98d4a] transition-all duration-700"
+              style={{ width: `${pctLT}%` }}
+            />
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <div className={labelClass}>Stock actuel</div>
+              <div className="text-3xl font-bold text-[#5b2be0]">{fmt(stockLT)}</div>
+            </div>
+
+            <div>
+              <div className={labelClass}>Flux mensuel</div>
+              <div className="text-xl font-bold text-black">{fmt(fluxLT)}/mois</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 rounded-xl border border-black bg-white p-4">
+        <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+          Analyse de répartition
+        </div>
+
+        <div className="mt-2 grid grid-cols-1 gap-2 text-sm font-semibold md:grid-cols-3">
+          <div>Court terme : {pctCT}%</div>
+          <div>Moyen terme : {pctMT}%</div>
+          <div>Long terme : {pctLT}%</div>
+        </div>
+
+        <div className="mt-3 text-sm font-semibold" style={{ color: diagnosticColor }}>
+          {pctCT > 60 || pctMT > 60 || pctLT > 70 ? "⚠ " : "✓ "} {diagnostic}
+        </div>
+      </div>
+    </div>
+	
+	      <div className="mb-8 rounded-2xl border border-black bg-white p-4">
         <svg
           viewBox="0 0 1200 620"
           className="h-auto w-full"
@@ -232,31 +346,7 @@ export default function PyramidePatrimoineActuel({
           <text x="142" y="535" textAnchor="middle" fontSize="18" fontWeight="700" fill="#5b2be0">
             {fmt(fluxCT)}/mois
           </text>
-
-          {/* Résidence principale en diagonale */}
-          <g transform="rotate(39 860 345)">
-            <rect
-              x="848"
-              y="170"
-              width="24"
-              height="350"
-              rx="8"
-              fill="#faf7f1"
-              stroke="#c6923f"
-              strokeWidth="2"
-            />
-          </g>
-          <text
-            x="850"
-            y="340"
-            textAnchor="middle"
-            fontSize="20"
-            fill="#222"
-            transform="rotate(58 850 340)"
-          >
-            Résidence principale
-          </text>
-
+		  
           {/* Contraintes droite */}
           <text x="1130" y="190" textAnchor="end" fontSize="18" fontWeight="700" fill="#d4552d">
             Bloqué · Fixé
@@ -272,117 +362,5 @@ export default function PyramidePatrimoineActuel({
           </text>
         </svg>
       </div>
-
-      <div className="mb-4 grid grid-cols-1 gap-5 xl:grid-cols-3">
-        <div className="rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <div className={labelClass}>Court terme</div>
-              <div className="mt-1 text-lg font-bold text-black">Liquidité forte</div>
-            </div>
-            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
-              {pctCT}%
-            </div>
-          </div>
-
-          <div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
-            <div
-              className="h-full rounded-full bg-[#dcc79b] transition-all duration-700"
-              style={{ width: `${pctCT}%` }}
-            />
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <div className={labelClass}>Stock actuel</div>
-              <div className="text-3xl font-bold text-[#5b2be0]">{fmt(stockCT)}</div>
-            </div>
-
-            <div>
-              <div className={labelClass}>Flux mensuel</div>
-              <div className="text-xl font-bold text-black">{fmt(fluxCT)}/mois</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <div className={labelClass}>Moyen terme</div>
-              <div className="mt-1 text-lg font-bold text-black">Équilibre / flexibilité</div>
-            </div>
-            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
-              {pctMT}%
-            </div>
-          </div>
-
-          <div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
-            <div
-              className="h-full rounded-full bg-[#c9b07a] transition-all duration-700"
-              style={{ width: `${pctMT}%` }}
-            />
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <div className={labelClass}>Stock actuel</div>
-              <div className="text-3xl font-bold text-[#5b2be0]">{fmt(stockMT)}</div>
-            </div>
-
-            <div>
-              <div className={labelClass}>Flux mensuel</div>
-              <div className="text-xl font-bold text-black">{fmt(fluxMT)}/mois</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <div className={labelClass}>Long terme</div>
-              <div className="mt-1 text-lg font-bold text-black">Vision patrimoniale</div>
-            </div>
-            <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
-              {pctLT}%
-            </div>
-          </div>
-
-          <div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
-            <div
-              className="h-full rounded-full bg-[#b98d4a] transition-all duration-700"
-              style={{ width: `${pctLT}%` }}
-            />
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <div className={labelClass}>Stock actuel</div>
-              <div className="text-3xl font-bold text-[#5b2be0]">{fmt(stockLT)}</div>
-            </div>
-
-            <div>
-              <div className={labelClass}>Flux mensuel</div>
-              <div className="text-xl font-bold text-black">{fmt(fluxLT)}/mois</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-8 rounded-xl border border-black bg-white p-4">
-        <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-          Analyse de répartition
-        </div>
-
-        <div className="mt-2 grid grid-cols-1 gap-2 text-sm font-semibold md:grid-cols-3">
-          <div>Court terme : {pctCT}%</div>
-          <div>Moyen terme : {pctMT}%</div>
-          <div>Long terme : {pctLT}%</div>
-        </div>
-
-        <div className="mt-3 text-sm font-semibold" style={{ color: diagnosticColor }}>
-          {pctCT > 60 || pctMT > 60 || pctLT > 70 ? "⚠ " : "✓ "} {diagnostic}
-        </div>
-      </div>
-    </div>
   );
 }
