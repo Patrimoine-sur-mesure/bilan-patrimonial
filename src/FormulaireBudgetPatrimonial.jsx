@@ -412,7 +412,7 @@ const epargneMensuelleLT = useMemo(
       const renderHeight = canvas.height * ratio;
 
       const x = marginX + (usableWidth - renderWidth) / 2;
-      const y = marginY + (usableHeight - renderHeight) / 2;
+      const y = marginY;
 
       if (!isFirstRenderedPage) {
         pdf.addPage();
