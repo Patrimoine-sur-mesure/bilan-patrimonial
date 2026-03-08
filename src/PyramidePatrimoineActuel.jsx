@@ -118,6 +118,14 @@ export default function PyramidePatrimoineActuel({
               {pct(stockCT)}%
             </div>
           </div>
+		  
+		  <div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
+			<div
+			  className="h-full rounded-full bg-[#dcc79b]"
+			  style={{ width: `${pct(stockCT)}%` }}
+			/>
+		  </div>
+
 
           <div className="space-y-4">
             <div>
@@ -140,7 +148,7 @@ export default function PyramidePatrimoineActuel({
 
         <div className={cardBase}>
 		  <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
-		  {pct(stockCT)}%
+		  {pct(stockMT)}%
 		</div>
           <div className="mb-4 flex items-center justify-between">
             <div>
@@ -153,6 +161,14 @@ export default function PyramidePatrimoineActuel({
               {pct(stockMT)}%
             </div>
           </div>
+		  
+		  		<div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
+			<div
+			  className="h-full rounded-full bg-[#dcc79b]"
+			  style={{ width: `${pct(stockMT)}%` }}
+			/>
+		  </div>
+
 
           <div className="space-y-4">
             <div>
@@ -175,7 +191,7 @@ export default function PyramidePatrimoineActuel({
 
         <div className={cardBase}>
 		  <div className="rounded-full border border-black bg-[#f3ead8] px-3 py-1 text-sm font-bold text-black">
-		  {pct(stockCT)}%
+		  {pct(stockLT)}%
 		</div>
           <div className="mb-4 flex items-center justify-between">
             <div>
@@ -188,6 +204,13 @@ export default function PyramidePatrimoineActuel({
               {pct(stockLT)}%
             </div>
           </div>
+		  
+		<div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
+			<div
+			  className="h-full rounded-full bg-[#dcc79b]"
+			  style={{ width: `${pct(stockLT)}%` }}
+			/>
+		  </div>
 
           <div className="space-y-4">
             <div>
