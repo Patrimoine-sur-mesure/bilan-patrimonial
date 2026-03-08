@@ -71,6 +71,7 @@ export default function PyramidePatrimoineActuel({
       </div>
 
 
+
       <div className="mb-4 grid grid-cols-1 gap-5 xl:grid-cols-3">
         <div className="rounded-2xl border-2 border-black bg-white p-5 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
           <div className="mb-4 flex items-center justify-between">
@@ -165,24 +166,7 @@ export default function PyramidePatrimoineActuel({
           </div>
         </div>
       </div>
-
-      <div className="mt-8 rounded-xl border border-black bg-white p-4">
-        <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-          Analyse de répartition
-        </div>
-
-        <div className="mt-2 grid grid-cols-1 gap-2 text-sm font-semibold md:grid-cols-3">
-          <div>Court terme : {pctCT}%</div>
-          <div>Moyen terme : {pctMT}%</div>
-          <div>Long terme : {pctLT}%</div>
-        </div>
-
-        <div className="mt-3 text-sm font-semibold" style={{ color: diagnosticColor }}>
-          {pctCT > 60 || pctMT > 60 || pctLT > 70 ? "⚠ " : "✓ "} {diagnostic}
-        </div>
-      </div>
-	  
-	        <div className="mb-8 rounded-2xl border border-black bg-white p-4">
+	         <div className="mb-8 rounded-2xl border border-black bg-white p-4">
         <svg
           viewBox="0 0 1200 620"
           className="h-auto w-full"
@@ -360,6 +344,25 @@ export default function PyramidePatrimoineActuel({
           </text>
         </svg>
       </div>
+	  
+	  
+      <div className="mt-8 rounded-xl border border-black bg-white p-4">
+        <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+          Analyse de répartition
+        </div>
+
+        <div className="mt-2 grid grid-cols-1 gap-2 text-sm font-semibold md:grid-cols-3">
+          <div>Court terme : {pctCT}%</div>
+          <div>Moyen terme : {pctMT}%</div>
+          <div>Long terme : {pctLT}%</div>
+        </div>
+
+        <div className="mt-3 text-sm font-semibold" style={{ color: diagnosticColor }}>
+          {pctCT > 60 || pctMT > 60 || pctLT > 70 ? "⚠ " : "✓ "} {diagnostic}
+        </div>
+      </div>
+	  
+	  
     </div>
   );
 }
