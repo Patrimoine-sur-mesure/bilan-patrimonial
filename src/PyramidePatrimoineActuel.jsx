@@ -87,30 +87,39 @@ export default function PyramidePatrimoineActuel({
 
     {/* Long terme */}
     <div
-      className="absolute bottom-0 left-1/2 -translate-x-1/2 
-      w-[420px] h-[160px] bg-[#b98d4a] 
-      clip-path-[polygon(50%_0%,100%_100%,0%_100%)]
-      flex items-end justify-center pb-6 text-white font-bold text-lg"
+      className="absolute bottom-0 left-1/2 -translate-x-1/2 flex items-end justify-center pb-6 text-white font-bold text-lg"
+      style={{
+        width: "420px",
+        height: "160px",
+        background: "#b98d4a",
+        clipPath: "polygon(50% 0%,100% 100%,0% 100%)"
+      }}
     >
       Long terme {pct(stockLT)}%
     </div>
 
     {/* Moyen terme */}
     <div
-      className="absolute bottom-0 left-1/2 -translate-x-1/2 
-      w-[300px] h-[120px] bg-[#c9b07a] 
-      clip-path-[polygon(50%_0%,100%_100%,0%_100%)]
-      flex items-end justify-center pb-5 text-black font-bold"
+      className="absolute bottom-0 left-1/2 -translate-x-1/2 flex items-end justify-center pb-5 text-black font-bold"
+      style={{
+        width: "300px",
+        height: "120px",
+        background: "#c9b07a",
+        clipPath: "polygon(50% 0%,100% 100%,0% 100%)"
+      }}
     >
       Moyen terme {pct(stockMT)}%
     </div>
 
     {/* Court terme */}
     <div
-      className="absolute bottom-0 left-1/2 -translate-x-1/2 
-      w-[180px] h-[80px] bg-[#dcc79b] 
-      clip-path-[polygon(50%_0%,100%_100%,0%_100%)]
-      flex items-end justify-center pb-4 text-black font-bold text-sm"
+      className="absolute bottom-0 left-1/2 -translate-x-1/2 flex items-end justify-center pb-4 text-black font-bold text-sm"
+      style={{
+        width: "180px",
+        height: "80px",
+        background: "#dcc79b",
+        clipPath: "polygon(50% 0%,100% 100%,0% 100%)"
+      }}
     >
       Court terme {pct(stockCT)}%
     </div>
