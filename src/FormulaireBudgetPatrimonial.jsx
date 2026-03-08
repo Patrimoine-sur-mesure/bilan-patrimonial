@@ -7,13 +7,13 @@ import PyramidePatrimoineActuel from "./PyramidePatrimoineActuel";
 import PyramidePatrimoineActuelSvg from "./PyramidePatrimoineActuel";
 
 export default function FormulaireBudgetPatrimonial() {
-  const label = "text-white text-sm font-semibold";
-  const input =
-    "w-full border border-black bg-[#d9d9d9] px-2 py-1 text-sm text-black outline-none";
-  const sectionTitle =
-    "bg-[#e6c08f] text-black font-bold text-center px-2 py-1 border-b border-black";
-  const totalBar =
-    "bg-[#e6c08f] text-black font-bold px-2 py-1 border-t border-black";
+  const label = "text-[13px] font-medium text-[#4b5563]";
+const input =
+  "w-full rounded-xl border border-[#d8d1c5] bg-white px-3 py-2.5 text-sm text-[#111827] shadow-sm outline-none transition focus:border-[#b08a4a] focus:ring-2 focus:ring-[#b08a4a]/20";
+const sectionTitle =
+  "border-b border-[#ece6dc] bg-gradient-to-r from-[#1f3b57] to-[#2c4d6f] px-4 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-white";
+const totalBar =
+  "border-t border-[#ece6dc] bg-[#faf7f2] px-4 py-3 text-sm font-semibold text-[#1f2937]";
 
   const investorIdentityFields = [
     "Nom",
@@ -453,9 +453,88 @@ const epargneMensuelleLT = useMemo(
 
 
   return (
-    <div id="formulaire-pdf" className="min-h-screen bg-[#1b7b88] p-6 text-sm">
+    <div id="formulaire-pdf" className="min-h-screen bg-[#f6f3ee] px-4 py-8 text-sm text-[#111827] md:px-8">
+	
+	<div className="mb-8 overflow-hidden rounded-[28px] border border-[#e6ded2] bg-gradient-to-r from-[#10273d] via-[#1f3b57] to-[#2c4d6f] px-6 py-7 text-white shadow-[0_18px_50px_rgba(16,39,61,0.18)]">
+  <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div>
+      <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">
+        Bilan patrimonial
+      </div>
+      <h1 className="mt-2 text-3xl font-semibold tracking-tight">
+        Synthèse patrimoniale client
+      </h1>
+      <p className="mt-2 max-w-2xl text-sm text-white/80">
+        Vision consolidée des revenus, charges, capacités d’épargne,
+        actifs financiers et patrimoine immobilier.
+      </p>
+    </div>
 
-      <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
+    <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
+      <div className="text-[11px] uppercase tracking-[0.14em] text-white/70">
+        Client
+      </div>
+      <div className="mt-1 text-base font-medium">
+        {investorIdentity["Prénom"] || "Prénom"} {investorIdentity["Nom"] || "Nom"}
+      </div>
+    </div>
+  </div>
+</div>
+
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
+  {[
+    {
+      title: "Revenus mensuels",
+      value: euro(totalIncome),
+      tone: "gold",
+    },
+    {
+      title: "Charges incompressibles",
+      value: euro(totalCharges),
+      tone: "navy",
+    },
+    {
+      title: "Budget disponible",
+      value: euro(budgetDisponible),
+      tone: "rose",
+    },
+    {
+      title: "Patrimoine brut",
+      value: euro(patrimoineBrut),
+      tone: "gold",
+    },
+    {
+      title: "Taux de charges",
+      value: `${tauxCharges.toFixed(0)}%`,
+      tone: "navy",
+    },
+  ].map((item) => (
+    <div
+      key={item.title}
+      className="rounded-2xl border border-[#e6ded2] bg-white p-4 shadow-[0_10px_30px_rgba(17,24,39,0.05)]"
+    >
+      <div className="mb-2 flex items-center justify-between">
+        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
+          {item.title}
+        </div>
+        <div
+          className={`h-2.5 w-2.5 rounded-full ${
+            item.tone === "gold"
+              ? "bg-[#b08a4a]"
+              : item.tone === "rose"
+              ? "bg-[#d8a48f]"
+              : "bg-[#1f3b57]"
+          }`}
+        />
+      </div>
+      <div className="text-2xl font-semibold tracking-tight text-[#111827]">
+        {item.value}
+      </div>
+    </div>
+  ))}
+</div>
+
+
         <div className="overflow-hidden border-2 border-black">
           <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
             Revenus mensuels
@@ -503,7 +582,7 @@ const epargneMensuelleLT = useMemo(
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <div className="border-2 border-black bg-[#1b7b88] p-0">
+        <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
           <h2 className={sectionTitle}>INFORMATION INVESTISSEUR</h2>
 
           <div className="border-b-2 border-black p-3">
@@ -550,7 +629,7 @@ const epargneMensuelleLT = useMemo(
 
           {Array.from({ length: investorChildrenCount }).map((_, i) => (
             <div key={i} className="border-b-2 border-black p-3">
-              <div className="mb-1 grid grid-cols-[1.1fr_1.3fr] items-center gap-2">
+              <div className="mb-3 grid grid-cols-1 gap-1.5 md:grid-cols-[1fr_1.25fr] md:items-center md:gap-3">
                 <label className={label}>Prénom enfant :</label>
                 <input
                   className={input}
@@ -593,7 +672,7 @@ const epargneMensuelleLT = useMemo(
         </div>
 
         <div className="space-y-4">
-          <div className="border-2 border-black bg-[#1b7b88] p-0">
+          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
             <h3 className={sectionTitle}>Revenus (mensuel)</h3>
             <div className="p-3">
               {incomeFields.map((f) => (
@@ -613,7 +692,7 @@ const epargneMensuelleLT = useMemo(
             <div className={totalBar}>Total : {euro(totalIncome)}</div>
           </div>
 
-          <div className="border-2 border-black bg-[#1b7b88] p-0">
+          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
             <h3 className={sectionTitle}>Charges incompressibles (mensuel)</h3>
             <div className="p-3">
               {chargesFields.map((f) => (
@@ -633,7 +712,22 @@ const epargneMensuelleLT = useMemo(
             <div className={totalBar}>Total : {euro(totalCharges)}</div>
           </div>
 
-          <div className="grid grid-cols-[1fr_auto] overflow-hidden border-2 border-black">
+          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+			  <div className="flex items-center justify-between gap-4 px-5 py-4">
+				<div>
+				  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
+					Budget disponible
+				  </div>
+				  <div className="mt-1 text-sm text-[#4b5563]">
+					Revenus - charges incompressibles
+				  </div>
+				</div>
+				<div className="rounded-xl bg-[#f8efe2] px-4 py-2 text-lg font-semibold text-[#8b6b36]">
+				  {euro(budgetDisponible)}
+				</div>
+			  </div>
+		  </div>
+		
             <div className="bg-black p-2 text-center font-bold text-white">
               Budget = Revenus - Charges incompressibles
             </div>
@@ -643,7 +737,7 @@ const epargneMensuelleLT = useMemo(
           </div>
 
 
-          <div className="border-2 border-black bg-[#1b7b88] p-0">
+          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
             <h3 className={sectionTitle}>Loisirs (mensuel)</h3>
             <div className="p-3">
               {loisirsFields.map((f) => (
@@ -664,7 +758,7 @@ const epargneMensuelleLT = useMemo(
           </div>
 		  		  
 		  
-		  <div className="border-2 border-black bg-[#1b7b88] p-0">
+		  <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
             <h3 className={sectionTitle}>Epargne mensuelle actuelle</h3>
             <div className="p-3">
               {epargneMensuelle.map((f) => (
@@ -698,26 +792,26 @@ const epargneMensuelleLT = useMemo(
         </div>
 
         <div className="space-y-4">
-          <div className="border-2 border-black bg-[#1b7b88] p-0">
+          <<div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
             <h3 className="border-b border-black bg-[#0f7fb3] px-2 py-1 text-center font-bold text-white">
               Epargne / Stock
             </h3>
             <div className="overflow-x-auto p-3">
-              <table className="w-full border-collapse text-xs">
-                <thead>
-                  <tr className="bg-[#e6c08f] text-black">
-                    <th className="border border-black px-1 py-1 text-left"></th>
-                    <th className="border border-black px-1 py-1 text-left">
-                      Type de compte / placements
-                    </th>
-                    <th className="border border-black px-1 py-1 text-left">
-                      Montant
-                    </th>
-                    <th className="border border-black px-1 py-1 text-left">
-                      Banque / organisme
-                    </th>
-                  </tr>
-                </thead>
+              <table className="w-full border-separate border-spacing-0 overflow-hidden text-sm">
+  <thead>
+    <tr className="bg-[#f8f5ef] text-[#374151]">
+      <th className="border-b border-[#e7dfd4] px-3 py-3 text-left font-semibold"></th>
+      <th className="border-b border-[#e7dfd4] px-3 py-3 text-left font-semibold">
+        Type de compte / placements
+      </th>
+      <th className="border-b border-[#e7dfd4] px-3 py-3 text-left font-semibold">
+        Montant
+      </th>
+      <th className="border-b border-[#e7dfd4] px-3 py-3 text-left font-semibold">
+        Banque / organisme
+      </th>
+    </tr>
+  </thead>
                 <tbody>
                   {assets.map((a, i) => {
                     const showCategory =
@@ -730,13 +824,13 @@ const epargneMensuelleLT = useMemo(
                       <tr key={i}>
                         {showCategory && (
                           <td
-                            rowSpan={rowSpan}
-                            className="align-middle border border-black px-1 py-0.5 text-center font-semibold text-white [writing-mode:vertical-rl] rotate-180"
-                          >
-                            {a.categorie}
-                          </td>
+							  rowSpan={rowSpan}
+							  className="border-b border-[#f1ece4] bg-[#faf7f2] px-2 text-center text-[11px] font-semibold uppercase tracking-[0.12em] text-[#8b6b36] [writing-mode:vertical-rl] rotate-180"
+							>
+							  {a.categorie}
+							</td>
                         )}
-                        <td className="border border-black px-1 py-0.5 text-white">
+                        <td className="border-b border-[#f1ece4] px-3 py-2.5 text-[#1f2937]">
                           {a.type}
                         </td>
                         <td className="border border-black">
@@ -781,7 +875,7 @@ const epargneMensuelleLT = useMemo(
             </div>
           </div>
 
-          <div className="border-2 border-black bg-[#1b7b88] p-0">
+          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
             <h3 className={sectionTitle}>Epargne de précaution</h3>
             <div className="grid gap-3 p-3 md:grid-cols-2">
               <div>
@@ -809,7 +903,7 @@ const epargneMensuelleLT = useMemo(
             </div>
           </div>
 
-          <div className="border-2 border-black bg-[#1b7b88] p-0">
+          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
             <h3 className="border-b border-black bg-[#0f7fb3] px-2 py-1 text-center font-bold text-white">
               Biens immobiliers
             </h3>
@@ -985,23 +1079,23 @@ const epargneMensuelleLT = useMemo(
 		  fluxLT={epargneMensuelleLT}
 		/>
 
-<div className="mt-10 flex w-full justify-center">
-        <div className="flex gap-8">
+<div className="mt-12 flex w-full justify-center">
+  <div className="flex flex-wrap justify-center gap-4">
           <button
-            type="button"
-            onClick={handleSave}
-            className="rounded border-2 border-black bg-[#e6c08f] px-8 py-3 font-semibold text-black"
-          >
-            Enregistrer
-          </button>
+			  type="button"
+			  onClick={handleSave}
+			  className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-8 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868]"
+			>
+			  Enregistrer
+			</button>
 
-          <button
-            type="button"
-            onClick={handleDownloadPdf}
-            className="rounded border-2 border-black bg-[#d9d9d9] px-8 py-3 font-semibold text-black"
-          >
-            Télécharger le PDF
-          </button>
+			<button
+			  type="button"
+			  onClick={handleDownloadPdf}
+			  className="rounded-2xl border border-[#d7c8ae] bg-white px-8 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.10)] transition hover:-translate-y-0.5 hover:bg-[#fcfaf7]"
+			>
+			  Télécharger le PDF
+			</button>
         </div>
       </div>
     </div>
