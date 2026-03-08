@@ -233,30 +233,6 @@ export default function PyramidePatrimoineActuel({
             {fmt(fluxCT)}/mois
           </text>
 
-          {/* Résidence principale en diagonale */}
-          <g transform="rotate(39 860 345)">
-            <rect
-              x="848"
-              y="170"
-              width="24"
-              height="350"
-              rx="8"
-              fill="#faf7f1"
-              stroke="#c6923f"
-              strokeWidth="2"
-            />
-          </g>
-          <text
-            x="850"
-            y="340"
-            textAnchor="middle"
-            fontSize="20"
-            fill="#222"
-            transform="rotate(58 850 340)"
-          >
-            Résidence principale
-          </text>
-
           {/* Contraintes droite */}
           <text x="1130" y="190" textAnchor="end" fontSize="18" fontWeight="700" fill="#d4552d">
             Bloqué · Fixé
