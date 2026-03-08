@@ -8,10 +8,22 @@ export default function PyramidePatrimoineActuel({
   fluxCT = 0,
   fluxMT = 0,
   fluxLT = 0,
+  scorePatrimonial = "0.0",
+  analysePatrimoniale = {
+    force: "",
+    vigilance: "",
+    orientation: "",
+  },
 }) {
-  const fmt = (v) =>
-    euro ? euro(v) : `${Number(v || 0).toLocaleString("fr-FR")} €`;
+  const fmt = (v) => {
+  const n = Number(v || 0);
 
+  if (euro) return euro(n);
+  if (n >= 1000000) return `${(n / 1000000).toFixed(2).replace(".", ",")} M€`;
+  if (n >= 1000) return `${Math.round(n / 1000)} k€`;
+
+  return `${n.toLocaleString("fr-FR")} €`;
+};
   const totalStock =
     Number(stockCT || 0) + Number(stockMT || 0) + Number(stockLT || 0);
 
@@ -40,18 +52,55 @@ export default function PyramidePatrimoineActuel({
 
   const labelClass =
     "text-sm font-semibold uppercase tracking-wide text-neutral-500";
+	
+	const score =
+  10 -
+  Math.abs(pctCT - 30) / 10 -
+  Math.abs(pctMT - 40) / 10 -
+  Math.abs(pctLT - 30) / 10;
+
+const finalScore = Math.max(0, Math.min(10, score)).toFixed(1);
 
   return (
     <div className="mt-10 rounded-2xl border-2 border-black bg-[#f6f3ee] p-6 shadow-[0_8px_0_rgba(0,0,0,0.08)]">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
-            Analyse patrimoniale
-          </div>
-          <h3 className="mt-1 text-4xl font-bold text-[#c6923f]">
-            Pyramide patrimoniale actuelle
-          </h3>
-        </div>
+  <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
+    Analyse patrimoniale
+  </div>
+
+  <h3 className="mt-1 text-4xl font-bold text-[#c6923f]">
+    Pyramide patrimoniale actuelle
+  </h3>
+
+  <p className="mt-2 max-w-3xl text-sm leading-6 text-neutral-600">
+    Cette cartographie met en perspective la structuration actuelle du patrimoine
+    entre liquidité immédiate, flexibilité intermédiaire et capitalisation long terme.
+  </p>
+</div>
+		
+		<div className="flex flex-wrap gap-3">
+  <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
+  <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+    Score patrimonial
+  </div>
+  <div className="text-2xl font-bold text-black">{scorePatrimonial} / 10</div>
+</div>
+
+  <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
+    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      Flux mensuel total
+    </div>
+    <div className="text-2xl font-bold text-black">{fmt(totalFlux)}/mois</div>
+  </div>
+
+  <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
+    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      Score patrimonial
+    </div>
+    <div className="text-2xl font-bold text-black">{finalScore} / 10</div>
+  </div>
+</div>
 
         <div className="flex flex-wrap gap-3">
           <div className="rounded-xl border border-black bg-white px-4 py-3 text-right">
@@ -165,9 +214,16 @@ export default function PyramidePatrimoineActuel({
             </div>
           </div>
         </div>
-      </div>
-	         <div className="mb-8 rounded-2xl border border-black bg-white p-4">
-        <svg
+      <div className="mb-8 rounded-2xl border border-black bg-white p-4">
+  <div className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
+    Architecture patrimoniale
+  </div>
+
+  <p className="mb-4 text-sm text-neutral-600">
+    Lecture des stocks patrimoniaux et des flux mensuels par horizon d’investissement.
+  </p>
+
+  <svg
           viewBox="0 0 1200 620"
           className="h-auto w-full"
           role="img"
@@ -344,6 +400,35 @@ export default function PyramidePatrimoineActuel({
           </text>
         </svg>
       </div>
+	  
+	  <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
+  <div className="rounded-xl border border-black bg-white p-4">
+    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      Force patrimoniale
+    </div>
+    <p className="mt-2 text-sm text-black">
+      {analysePatrimoniale.force}
+    </p>
+  </div>
+
+  <div className="rounded-xl border border-black bg-white p-4">
+    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      Point de vigilance
+    </div>
+    <p className="mt-2 text-sm text-black">
+      {analysePatrimoniale.vigilance}
+    </p>
+  </div>
+
+  <div className="rounded-xl border border-black bg-white p-4">
+    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      Orientation possible
+    </div>
+    <p className="mt-2 text-sm text-black">
+      {analysePatrimoniale.orientation}
+    </p>
+  </div>
+</div>
 	  
 	  
       <div className="mt-8 rounded-xl border border-black bg-white p-4">

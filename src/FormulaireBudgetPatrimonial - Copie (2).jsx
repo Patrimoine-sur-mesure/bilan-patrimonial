@@ -248,52 +248,6 @@ const epargneMensuelleLT = useMemo(
     () => (totalIncome > 0 ? (totalCharges / totalIncome) * 100 : 0),
     [totalIncome, totalCharges]
   );
-  
-  const scorePatrimonial = useMemo(() => {
-  const ct = totalAssets > 0 ? (assetsByCat["Court terme"] / totalAssets) * 100 : 0;
-  const mt = totalAssets > 0 ? (assetsByCat["Moyen terme"] / totalAssets) * 100 : 0;
-  const lt = totalAssets > 0 ? (assetsByCat["Long terme"] / totalAssets) * 100 : 0;
-
-  const score =
-    10 -
-    Math.abs(ct - 30) / 10 -
-    Math.abs(mt - 40) / 10 -
-    Math.abs(lt - 30) / 10;
-
-  return Math.max(0, Math.min(10, score)).toFixed(1);
-}, [assetsByCat, totalAssets]);
-
-	const analysePatrimoniale = useMemo(() => {
-  const ct = totalAssets > 0 ? (assetsByCat["Court terme"] / totalAssets) * 100 : 0;
-  const mt = totalAssets > 0 ? (assetsByCat["Moyen terme"] / totalAssets) * 100 : 0;
-  const lt = totalAssets > 0 ? (assetsByCat["Long terme"] / totalAssets) * 100 : 0;
-
-  let force = "Bonne base de capitalisation patrimoniale.";
-  let vigilance = "Répartition globalement cohérente.";
-  let orientation = "Maintenir une allocation disciplinée dans le temps.";
-
-  if (lt >= 45) {
-    force = "Capacité de projection long terme déjà bien installée.";
-  } else if (ct >= 35) {
-    force = "Bonne disponibilité immédiate pour la sécurité patrimoniale.";
-  } else if (mt >= 30) {
-    force = "Poche intermédiaire intéressante pour la flexibilité.";
-  }
-
-  if (ct > 50) {
-    vigilance = "Concentration élevée sur les actifs liquides.";
-    orientation = "Redéployer progressivement une partie du court terme vers le moyen ou long terme.";
-  } else if (lt > 70) {
-    vigilance = "Patrimoine très orienté long terme, avec moindre flexibilité.";
-    orientation = "Renforcer la poche intermédiaire afin d'améliorer l'agilité patrimoniale.";
-  } else if (mt < 15) {
-    vigilance = "Poche moyen terme relativement faible.";
-    orientation = "Consolider les supports intermédiaires pour mieux équilibrer la structure.";
-  }
-
-  return { force, vigilance, orientation };
-}, [assetsByCat, totalAssets]);
-
 
   const getClientId = () => {
     const params = new URLSearchParams(window.location.search);
@@ -1063,17 +1017,15 @@ const epargneMensuelleLT = useMemo(
       )}
   
 
-			<PyramidePatrimoineActuel
-			  euro={euro}
-			  stockCT={assetsByCat["Court terme"]}
-			  stockMT={assetsByCat["Moyen terme"]}
-			  stockLT={assetsByCat["Long terme"]}
-			  fluxCT={epargneMensuelleCT}
-			  fluxMT={epargneMensuelleMT}
-			  fluxLT={epargneMensuelleLT}
-			  scorePatrimonial={scorePatrimonial}
-			  analysePatrimoniale={analysePatrimoniale}
-			/>
+			  <PyramidePatrimoineActuel
+		  euro={euro}
+		  stockCT={assetsByCat["Court terme"]}
+		  stockMT={assetsByCat["Moyen terme"]}
+		  stockLT={assetsByCat["Long terme"]}
+		  fluxCT={epargneMensuelleCT}
+		  fluxMT={epargneMensuelleMT}
+		  fluxLT={epargneMensuelleLT}
+		/>
 
 <div className="mt-12 flex w-full justify-center">
   <div className="flex flex-wrap justify-center gap-4">
