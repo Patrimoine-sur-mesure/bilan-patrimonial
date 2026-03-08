@@ -82,41 +82,25 @@ export default function PyramidePatrimoineActuel({
         </div>
       </div>
 
-      <div className="mb-10 flex justify-center">
-  <div className="relative w-[420px] h-[260px]">
-
-    {/* Long terme */}
-    <div
-      className="absolute bottom-0 left-1/2 -translate-x-1/2 
-      w-[420px] h-[160px] bg-[#b98d4a] 
-      clip-path-[polygon(50%_0%,100%_100%,0%_100%)]
-      flex items-end justify-center pb-6 text-white font-bold text-lg"
-    >
-      Long terme {pct(stockLT)}%
-    </div>
-
-    {/* Moyen terme */}
-    <div
-      className="absolute bottom-0 left-1/2 -translate-x-1/2 
-      w-[300px] h-[120px] bg-[#c9b07a] 
-      clip-path-[polygon(50%_0%,100%_100%,0%_100%)]
-      flex items-end justify-center pb-5 text-black font-bold"
-    >
-      Moyen terme {pct(stockMT)}%
-    </div>
-
-    {/* Court terme */}
-    <div
-      className="absolute bottom-0 left-1/2 -translate-x-1/2 
-      w-[180px] h-[80px] bg-[#dcc79b] 
-      clip-path-[polygon(50%_0%,100%_100%,0%_100%)]
-      flex items-end justify-center pb-4 text-black font-bold text-sm"
-    >
-      Court terme {pct(stockCT)}%
-    </div>
-
-  </div>
-</div>
+      <div className="mb-8 overflow-hidden rounded-full border-2 border-black bg-white">
+        <div className="flex h-5 w-full">
+          <div
+            className="h-full bg-[#dcc79b]"
+            style={{ width: `${pct(stockCT)}%` }}
+            title={`Court terme ${pct(stockCT)}%`}
+          />
+          <div
+            className="h-full bg-[#c9b07a]"
+            style={{ width: `${pct(stockMT)}%` }}
+            title={`Moyen terme ${pct(stockMT)}%`}
+          />
+          <div
+            className="h-full bg-[#b98d4a]"
+            style={{ width: `${pct(stockLT)}%` }}
+            title={`Long terme ${pct(stockLT)}%`}
+          />
+        </div>
+      </div>
 
       <div className="mb-4 grid grid-cols-1 gap-5 xl:grid-cols-3">
         <div className={cardBase}>
