@@ -453,6 +453,7 @@ const epargneMensuelleLT = useMemo(
 
 
   return (
+    <div id="formulaire-pdf" className="min-h-screen bg-[#1b7b88] p-6 text-sm">
 
       <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
         <div className="overflow-hidden border-2 border-black">
