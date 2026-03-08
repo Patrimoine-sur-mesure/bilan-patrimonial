@@ -376,7 +376,7 @@ const epargneMensuelleLT = useMemo(
 
     await new Promise((resolve) => setTimeout(resolve, 400));
 
-    const pageIds = ["pdf-page-1", "pdf-page-2", "pdf-page-3"];
+    const pageIds = ["pdf-page-1", "pdf-page-2", "pdf-page-3", "pdf-page-4"];
     const pdf = new jsPDF("p", "mm", "a4");
 
     const pageWidth = 210;
@@ -406,23 +406,11 @@ const epargneMensuelleLT = useMemo(
       const imgWidth = usableWidth;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-      let heightLeft = imgHeight;
-      let position = marginY;
-
       if (!isFirstRenderedPage) {
         pdf.addPage();
       }
 
-      pdf.addImage(imgData, "PNG", marginX, position, imgWidth, imgHeight);
-      heightLeft -= usableHeight;
-
-      while (heightLeft > 0) {
-        pdf.addPage();
-        position = marginY - (imgHeight - heightLeft);
-        pdf.addImage(imgData, "PNG", marginX, position, imgWidth, imgHeight);
-        heightLeft -= usableHeight;
-      }
-
+      pdf.addImage(imgData, "PNG", marginX, marginY, imgWidth, imgHeight);
       isFirstRenderedPage = false;
     }
 
