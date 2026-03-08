@@ -54,44 +54,53 @@ export default function RapportPatrimonialPdf({
     page: {
       width: "1120px",
       margin: "0 auto",
-      backgroundColor: "#ffffff",
-      color: "#000000",
+      backgroundColor: "#f8f5ef",
+      color: "#1f2937",
       fontFamily: "Arial, sans-serif",
       padding: "24px",
       boxSizing: "border-box",
     },
 
+    pageBreakAvoid: {
+      breakInside: "avoid",
+      pageBreakInside: "avoid",
+      marginBottom: "16px",
+    },
+
     topCards: {
       display: "grid",
       gridTemplateColumns: "repeat(5, 1fr)",
-      gap: "10px",
-      marginBottom: "20px",
+      gap: "12px",
+      marginBottom: "22px",
     },
     statCard: {
-      border: "2px solid #000000",
+      border: "1px solid #d8d1c5",
+      borderRadius: "18px",
       overflow: "hidden",
+      backgroundColor: "#ffffff",
     },
     statHead: {
-      backgroundColor: "#000000",
+      backgroundColor: "#1f3b57",
       color: "#ffffff",
-      fontSize: "12px",
+      fontSize: "11px",
       fontWeight: "700",
       textTransform: "uppercase",
+      letterSpacing: "1px",
       padding: "10px 12px",
     },
     statValue: {
-      backgroundColor: "#e6c08f",
-      color: "#000000",
-      fontSize: "26px",
+      backgroundColor: "#ffffff",
+      color: "#223046",
+      fontSize: "24px",
       fontWeight: "700",
-      padding: "14px 12px",
+      padding: "16px 12px",
     },
-    statValuePink: {
-      backgroundColor: "#f5ddd7",
-      color: "#000000",
-      fontSize: "26px",
+    statValueSoft: {
+      backgroundColor: "#fcfaf7",
+      color: "#223046",
+      fontSize: "24px",
       fontWeight: "700",
-      padding: "14px 12px",
+      padding: "16px 12px",
     },
 
     row2: {
@@ -102,18 +111,20 @@ export default function RapportPatrimonialPdf({
     },
 
     card: {
-      border: "2px solid #000000",
+      border: "1px solid #d8d1c5",
+      borderRadius: "20px",
       backgroundColor: "#ffffff",
       overflow: "hidden",
     },
     sectionTitle: {
-      backgroundColor: "#000000",
+      background:
+        "linear-gradient(90deg, #10273d 0%, #1f3b57 55%, #2c4d6f 100%)",
       color: "#ffffff",
-      padding: "10px 14px",
-      fontSize: "13px",
+      padding: "11px 14px",
+      fontSize: "12px",
       fontWeight: "700",
       textTransform: "uppercase",
-      letterSpacing: "0.4px",
+      letterSpacing: "0.8px",
     },
     sectionBody: {
       padding: "14px",
@@ -130,19 +141,22 @@ export default function RapportPatrimonialPdf({
       gap: "4px",
     },
     label: {
-      fontSize: "12px",
+      fontSize: "11px",
       fontWeight: "700",
-      color: "#333333",
+      color: "#6b7280",
+      textTransform: "uppercase",
+      letterSpacing: "0.6px",
     },
     value: {
-      minHeight: "28px",
-      border: "1px solid #000000",
-      backgroundColor: "#f3f3f3",
-      padding: "6px 8px",
+      minHeight: "30px",
+      border: "1px solid #ddd6ca",
+      backgroundColor: "#fcfaf7",
+      padding: "7px 9px",
       fontSize: "13px",
-      color: "#000000",
+      color: "#1f2937",
       boxSizing: "border-box",
       wordBreak: "break-word",
+      borderRadius: "8px",
     },
 
     table: {
@@ -151,20 +165,22 @@ export default function RapportPatrimonialPdf({
       tableLayout: "fixed",
     },
     th: {
-      border: "1px solid #000000",
-      backgroundColor: "#e6c08f",
-      color: "#000000",
-      padding: "7px 8px",
-      fontSize: "12px",
+      border: "1px solid #ddd6ca",
+      backgroundColor: "#f8f5ef",
+      color: "#1f2937",
+      padding: "8px 8px",
+      fontSize: "11px",
       fontWeight: "700",
       textAlign: "left",
       verticalAlign: "top",
+      textTransform: "uppercase",
+      letterSpacing: "0.4px",
     },
     td: {
-      border: "1px solid #000000",
-      padding: "7px 8px",
+      border: "1px solid #e7dfd4",
+      padding: "8px 8px",
       fontSize: "12px",
-      color: "#000000",
+      color: "#1f2937",
       verticalAlign: "top",
       wordBreak: "break-word",
     },
@@ -182,138 +198,149 @@ export default function RapportPatrimonialPdf({
       marginTop: "12px",
     },
     summaryBox: {
-      border: "1px solid #000000",
-      backgroundColor: "#f7f1e8",
+      border: "1px solid #ddd6ca",
+      backgroundColor: "#fcfaf7",
       padding: "10px 12px",
-      fontSize: "13px",
-      fontWeight: "700",
-      color: "#000000",
-      boxSizing: "border-box",
-    },
-
-    pageBreakAvoid: {
-      breakInside: "avoid",
-      pageBreakInside: "avoid",
-      marginBottom: "16px",
-    },
-
-    pyramidWrapper: {
-      border: "2px solid #000000",
-      backgroundColor: "#ffffff",
-      padding: "20px",
-      marginBottom: "16px",
-    },
-    pyramidTitle: {
-      textAlign: "center",
-      fontSize: "24px",
-      fontWeight: "700",
-      color: "#c6923f",
-      marginBottom: "18px",
-    },
-    pyramidGrid: {
-      display: "grid",
-      gridTemplateColumns: "180px 1fr 180px",
-      gap: "10px",
-      alignItems: "center",
-    },
-    leftLegend: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-      height: "420px",
-    },
-    legendRow: {
-      display: "flex",
-      alignItems: "center",
-      gap: "8px",
       fontSize: "12px",
       fontWeight: "700",
+      color: "#223046",
+      boxSizing: "border-box",
+      borderRadius: "12px",
     },
-    legendBadge: {
-      backgroundColor: "#f4e3c4",
-      color: "#6d28d9",
-      padding: "6px 8px",
+
+    pyramidCard: {
+      border: "1px solid #d8d1c5",
+      borderRadius: "22px",
+      backgroundColor: "#ffffff",
+      padding: "18px",
+      marginBottom: "16px",
+    },
+    pyramidEyebrow: {
+      fontSize: "11px",
       fontWeight: "700",
-      borderRadius: "4px",
+      textTransform: "uppercase",
+      letterSpacing: "1.2px",
+      color: "#8b8175",
+      marginBottom: "6px",
     },
-    rightLegend: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-      height: "420px",
-      textAlign: "right",
-      color: "#ff5a36",
-      fontWeight: "700",
-      fontSize: "16px",
-    },
-    pyramidBox: {
-      position: "relative",
-      height: "520px",
-      width: "620px",
-      margin: "0 auto",
-    },
-    pyramidTriangle: {
-      position: "absolute",
-      inset: "0",
-      clipPath: "polygon(50% 4%, 98% 96%, 2% 96%)",
-      backgroundColor: "#eadfc8",
-      border: "2px solid #c6923f",
-    },
-    pyramidLineTop: {
-      position: "absolute",
-      left: "16%",
-      right: "16%",
-      top: "33%",
-      borderTop: "2px dashed #000000",
-    },
-    pyramidLineMid: {
-      position: "absolute",
-      left: "28%",
-      right: "28%",
-      top: "61%",
-      borderTop: "2px dashed #000000",
-    },
-    pyramidTopText: {
-      position: "absolute",
-      left: "50%",
-      top: "15%",
-      width: "180px",
-      transform: "translateX(-50%)",
-      textAlign: "center",
-    },
-    pyramidMiddleText: {
-      position: "absolute",
-      left: "50%",
-      top: "44%",
-      width: "260px",
-      transform: "translateX(-50%)",
-      textAlign: "center",
-    },
-    pyramidBottomText: {
-      position: "absolute",
-      left: "50%",
-      bottom: "8%",
-      width: "420px",
-      transform: "translateX(-50%)",
-      textAlign: "center",
-    },
-    purpleBig: {
+    pyramidTitle: {
       fontSize: "24px",
       fontWeight: "700",
-      color: "#6d28d9",
+      color: "#1f2937",
+      marginBottom: "6px",
     },
-    goldText: {
-      marginTop: "6px",
+    pyramidText: {
       fontSize: "13px",
-      color: "#c6923f",
+      lineHeight: 1.5,
+      color: "#6b7280",
+      marginBottom: "18px",
     },
-    blackBig: {
-      marginTop: "4px",
-      fontSize: "24px",
-      fontWeight: "600",
-      color: "#000000",
+    pyramidKpis: {
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 1fr)",
+      gap: "12px",
+      marginBottom: "18px",
+    },
+    pyramidKpi: {
+      border: "1px solid #ddd6ca",
+      backgroundColor: "#fcfaf7",
+      borderRadius: "14px",
+      padding: "10px 12px",
+    },
+    pyramidKpiLabel: {
+      fontSize: "10px",
+      fontWeight: "700",
+      textTransform: "uppercase",
+      letterSpacing: "1px",
+      color: "#8b8175",
+      marginBottom: "4px",
+    },
+    pyramidKpiValue: {
+      fontSize: "21px",
+      fontWeight: "700",
+      color: "#223046",
+    },
+    pyramidInsights: {
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 1fr)",
+      gap: "12px",
+      marginTop: "16px",
+    },
+    insightBox: {
+      border: "1px solid #ddd6ca",
+      borderRadius: "14px",
+      padding: "12px",
+      backgroundColor: "#ffffff",
+    },
+    insightLabel: {
+      fontSize: "10px",
+      fontWeight: "700",
+      textTransform: "uppercase",
+      letterSpacing: "1px",
+      color: "#8b8175",
+      marginBottom: "6px",
+    },
+    insightText: {
+      fontSize: "12px",
+      lineHeight: 1.5,
+      color: "#1f2937",
     },
   };
+
+  const totalStock =
+    toNumber(assetsByCat?.["Court terme"]) +
+    toNumber(assetsByCat?.["Moyen terme"]) +
+    toNumber(assetsByCat?.["Long terme"]);
+
+  const totalFlux =
+    toNumber(epargneMensuelleCT) +
+    toNumber(epargneMensuelleMT) +
+    toNumber(epargneMensuelleLT);
+
+  const pctCT = totalStock
+    ? Math.round((toNumber(assetsByCat?.["Court terme"]) / totalStock) * 100)
+    : 0;
+  const pctMT = totalStock
+    ? Math.round((toNumber(assetsByCat?.["Moyen terme"]) / totalStock) * 100)
+    : 0;
+  const pctLT = totalStock
+    ? Math.round((toNumber(assetsByCat?.["Long terme"]) / totalStock) * 100)
+    : 0;
+
+  const score =
+    10 -
+    Math.abs(pctCT - 30) / 10 -
+    Math.abs(pctMT - 40) / 10 -
+    Math.abs(pctLT - 30) / 10;
+
+  const scorePatrimonial = Math.max(0, Math.min(10, score)).toFixed(1);
+
+  let force = "Bonne base de capitalisation patrimoniale.";
+  let vigilance = "Répartition globalement cohérente.";
+  let orientation = "Maintenir une allocation disciplinée dans le temps.";
+
+  if (pctLT >= 45) {
+    force = "Capacité de projection long terme déjà bien installée.";
+  } else if (pctCT >= 35) {
+    force = "Bonne disponibilité immédiate pour la sécurité patrimoniale.";
+  } else if (pctMT >= 30) {
+    force = "Poche intermédiaire intéressante pour la flexibilité.";
+  }
+
+  if (pctCT > 50) {
+    vigilance = "Concentration élevée sur les actifs liquides.";
+    orientation =
+      "Redéployer progressivement une partie du court terme vers le moyen ou long terme.";
+  } else if (pctLT > 70) {
+    vigilance =
+      "Patrimoine très orienté long terme, avec moindre flexibilité.";
+    orientation =
+      "Renforcer la poche intermédiaire afin d'améliorer l'agilité patrimoniale.";
+  } else if (pctMT < 15) {
+    vigilance = "Poche moyen terme relativement faible.";
+    orientation =
+      "Consolider les supports intermédiaires pour mieux équilibrer la structure.";
+  }
 
   const renderField = (label, value) => (
     <div style={styles.fieldBlock}>
@@ -336,7 +363,7 @@ export default function RapportPatrimonialPdf({
           </div>
           <div style={styles.statCard}>
             <div style={styles.statHead}>Budget disponible</div>
-            <div style={styles.statValuePink}>{euro(budgetDisponible)}</div>
+            <div style={styles.statValueSoft}>{euro(budgetDisponible)}</div>
           </div>
           <div style={styles.statCard}>
             <div style={styles.statHead}>Patrimoine brut</div>
@@ -448,7 +475,7 @@ export default function RapportPatrimonialPdf({
                       style={{
                         ...styles.td,
                         fontWeight: "700",
-                        backgroundColor: "#f7f1e8",
+                        backgroundColor: "#fcfaf7",
                       }}
                     >
                       Total
@@ -457,7 +484,7 @@ export default function RapportPatrimonialPdf({
                       style={{
                         ...styles.td,
                         fontWeight: "700",
-                        backgroundColor: "#f7f1e8",
+                        backgroundColor: "#fcfaf7",
                       }}
                     >
                       {euro(totalIncome)}
@@ -484,7 +511,7 @@ export default function RapportPatrimonialPdf({
                       style={{
                         ...styles.td,
                         fontWeight: "700",
-                        backgroundColor: "#f7f1e8",
+                        backgroundColor: "#fcfaf7",
                       }}
                     >
                       Total
@@ -493,7 +520,7 @@ export default function RapportPatrimonialPdf({
                       style={{
                         ...styles.td,
                         fontWeight: "700",
-                        backgroundColor: "#f7f1e8",
+                        backgroundColor: "#fcfaf7",
                       }}
                     >
                       {euro(totalCharges)}
@@ -522,7 +549,7 @@ export default function RapportPatrimonialPdf({
                       style={{
                         ...styles.td,
                         fontWeight: "700",
-                        backgroundColor: "#f7f1e8",
+                        backgroundColor: "#fcfaf7",
                       }}
                     >
                       Total
@@ -531,7 +558,7 @@ export default function RapportPatrimonialPdf({
                       style={{
                         ...styles.td,
                         fontWeight: "700",
-                        backgroundColor: "#f7f1e8",
+                        backgroundColor: "#fcfaf7",
                       }}
                     >
                       {euro(totalLoisirs)}
@@ -558,7 +585,7 @@ export default function RapportPatrimonialPdf({
                       style={{
                         ...styles.td,
                         fontWeight: "700",
-                        backgroundColor: "#f7f1e8",
+                        backgroundColor: "#fcfaf7",
                       }}
                     >
                       Total
@@ -567,7 +594,7 @@ export default function RapportPatrimonialPdf({
                       style={{
                         ...styles.td,
                         fontWeight: "700",
-                        backgroundColor: "#f7f1e8",
+                        backgroundColor: "#fcfaf7",
                       }}
                     >
                       {euro(totalEpargneMensuelle)}
@@ -643,76 +670,289 @@ export default function RapportPatrimonialPdf({
 
       <div id="pdf-page-3" style={{ marginTop: "20px" }}>
         <div style={{ ...styles.card, ...styles.pageBreakAvoid }}>
-          <div style={styles.pyramidWrapper}>
-            <div style={styles.pyramidTitle}>Stocks / Flux actuels</div>
+          <div style={styles.pyramidCard}>
+            <div style={styles.pyramidEyebrow}>Analyse patrimoniale</div>
+            <div style={styles.pyramidTitle}>Pyramide patrimoniale actuelle</div>
+            <div style={styles.pyramidText}>
+              Lecture consolidée des stocks patrimoniaux et des flux mensuels par
+              horizon de détention, dans une logique de disponibilité, de
+              flexibilité et de capitalisation long terme.
+            </div>
 
-            <div style={styles.pyramidGrid}>
-              <div style={styles.leftLegend}>
-                <div style={styles.legendRow}>
-                  <span>Long terme :</span>
-                  <span style={styles.legendBadge}>
-                    {euro(epargneMensuelleLT)}/mois
-                  </span>
-                </div>
-                <div style={styles.legendRow}>
-                  <span>Moyen terme :</span>
-                  <span style={styles.legendBadge}>
-                    {euro(epargneMensuelleMT)}/mois
-                  </span>
-                </div>
-                <div style={styles.legendRow}>
-                  <span>Court terme :</span>
-                  <span style={styles.legendBadge}>
-                    {euro(epargneMensuelleCT)}/mois
-                  </span>
-                </div>
+            <div style={styles.pyramidKpis}>
+              <div style={styles.pyramidKpi}>
+                <div style={styles.pyramidKpiLabel}>Stock total</div>
+                <div style={styles.pyramidKpiValue}>{euro(totalStock)}</div>
               </div>
-
-              <div style={styles.pyramidBox}>
-                <div style={styles.pyramidTriangle} />
-                <div style={styles.pyramidLineTop} />
-                <div style={styles.pyramidLineMid} />
-
-                <div style={styles.pyramidTopText}>
-                  <div style={styles.purpleBig}>
-                    {euro(assetsByCat?.["Long terme"])}
-                  </div>
-                  <div style={styles.goldText}>
-                    Immo locatif, SCPI, PER, AV
-                  </div>
-                  <div style={styles.blackBig}>Long terme</div>
-                </div>
-
-                <div style={styles.pyramidMiddleText}>
-                  <div style={styles.purpleBig}>
-                    {euro(assetsByCat?.["Moyen terme"])}
-                  </div>
-                  <div style={styles.goldText}>PEL, AV, PEA, ES</div>
-                  <div style={styles.blackBig}>Moyen terme</div>
-                </div>
-
-                <div style={styles.pyramidBottomText}>
-                  <div style={{ fontSize: "18px", color: "#c6923f" }}>
-                    Livrets bancaires (LA, LB, LDDS, CC Perso &amp; Pro) :
-                    <span
-                      style={{
-                        marginLeft: "8px",
-                        fontWeight: "700",
-                        color: "#6d28d9",
-                      }}
-                    >
-                      {euro(assetsByCat?.["Court terme"])}
-                    </span>
-                  </div>
-                  <div style={styles.blackBig}>Court terme</div>
-                </div>
+              <div style={styles.pyramidKpi}>
+                <div style={styles.pyramidKpiLabel}>Flux mensuel total</div>
+                <div style={styles.pyramidKpiValue}>{euro(totalFlux)}/mois</div>
               </div>
+              <div style={styles.pyramidKpi}>
+                <div style={styles.pyramidKpiLabel}>Score patrimonial</div>
+                <div style={styles.pyramidKpiValue}>{scorePatrimonial} / 10</div>
+              </div>
+            </div>
 
-              <div style={styles.rightLegend}>
-                <div>Bloqué ; Fixé</div>
-                <div>Bloqué ; Non Fixé</div>
-                <div>Non Bloqué ; Non Fixé</div>
-                <div>Épargne de précaution</div>
+            <svg
+              viewBox="0 0 1200 640"
+              width="100%"
+              height="auto"
+              role="img"
+              aria-label="Pyramide patrimoniale"
+            >
+              <defs>
+                <linearGradient id="pdfPyramidBg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#efe4cf" />
+                  <stop offset="100%" stopColor="#deceb0" />
+                </linearGradient>
+              </defs>
+
+              <polygon
+                points="600,70 980,560 220,560"
+                fill="url(#pdfPyramidBg)"
+                stroke="#c6923f"
+                strokeWidth="2.5"
+              />
+
+              <line
+                x1="455"
+                y1="240"
+                x2="745"
+                y2="240"
+                stroke="#cdbfaa"
+                strokeWidth="2"
+                strokeDasharray="7 7"
+              />
+              <line
+                x1="365"
+                y1="400"
+                x2="835"
+                y2="400"
+                stroke="#cdbfaa"
+                strokeWidth="2"
+                strokeDasharray="7 7"
+              />
+
+              <text
+                x="600"
+                y="150"
+                textAnchor="middle"
+                fontSize="16"
+                fontWeight="700"
+                fill="#9b7b3f"
+                letterSpacing="2"
+              >
+                LONG TERME
+              </text>
+              <text
+                x="600"
+                y="190"
+                textAnchor="middle"
+                fontSize="34"
+                fontWeight="700"
+                fill="#223046"
+              >
+                {euro(assetsByCat?.["Long terme"])}
+              </text>
+              <text
+                x="600"
+                y="220"
+                textAnchor="middle"
+                fontSize="16"
+                fill="#8b6e3e"
+              >
+                Immobilier locatif · SCPI · PER · capitalisation longue
+              </text>
+
+              <text
+                x="600"
+                y="320"
+                textAnchor="middle"
+                fontSize="16"
+                fontWeight="700"
+                fill="#9b7b3f"
+                letterSpacing="2"
+              >
+                MOYEN TERME
+              </text>
+              <text
+                x="600"
+                y="360"
+                textAnchor="middle"
+                fontSize="34"
+                fontWeight="700"
+                fill="#223046"
+              >
+                {euro(assetsByCat?.["Moyen terme"])}
+              </text>
+              <text
+                x="600"
+                y="390"
+                textAnchor="middle"
+                fontSize="16"
+                fill="#8b6e3e"
+              >
+                Assurance vie · PEA · PEL · horizon intermédiaire
+              </text>
+
+              <text
+                x="600"
+                y="470"
+                textAnchor="middle"
+                fontSize="16"
+                fontWeight="700"
+                fill="#9b7b3f"
+                letterSpacing="2"
+              >
+                COURT TERME
+              </text>
+              <text
+                x="600"
+                y="510"
+                textAnchor="middle"
+                fontSize="34"
+                fontWeight="700"
+                fill="#223046"
+              >
+                {euro(assetsByCat?.["Court terme"])}
+              </text>
+              <text
+                x="600"
+                y="540"
+                textAnchor="middle"
+                fontSize="16"
+                fill="#8b6e3e"
+              >
+                Liquidités · livrets · épargne de précaution
+              </text>
+
+              <text x="70" y="180" fontSize="18" fontWeight="700" fill="#1f2937">
+                Long terme
+              </text>
+              <rect
+                x="70"
+                y="190"
+                rx="10"
+                ry="10"
+                width="150"
+                height="40"
+                fill="#f3ead8"
+                stroke="#cdbfaa"
+              />
+              <text
+                x="145"
+                y="216"
+                textAnchor="middle"
+                fontSize="18"
+                fontWeight="700"
+                fill="#223046"
+              >
+                {euro(epargneMensuelleLT)}/mois
+              </text>
+
+              <text x="70" y="340" fontSize="18" fontWeight="700" fill="#1f2937">
+                Moyen terme
+              </text>
+              <rect
+                x="70"
+                y="350"
+                rx="10"
+                ry="10"
+                width="150"
+                height="40"
+                fill="#f3ead8"
+                stroke="#cdbfaa"
+              />
+              <text
+                x="145"
+                y="376"
+                textAnchor="middle"
+                fontSize="18"
+                fontWeight="700"
+                fill="#223046"
+              >
+                {euro(epargneMensuelleMT)}/mois
+              </text>
+
+              <text x="70" y="510" fontSize="18" fontWeight="700" fill="#1f2937">
+                Court terme
+              </text>
+              <rect
+                x="70"
+                y="520"
+                rx="10"
+                ry="10"
+                width="150"
+                height="40"
+                fill="#f3ead8"
+                stroke="#cdbfaa"
+              />
+              <text
+                x="145"
+                y="546"
+                textAnchor="middle"
+                fontSize="18"
+                fontWeight="700"
+                fill="#223046"
+              >
+                {euro(epargneMensuelleCT)}/mois
+              </text>
+
+              <text
+                x="1130"
+                y="190"
+                textAnchor="end"
+                fontSize="18"
+                fontWeight="700"
+                fill="#8b6b36"
+              >
+                Bloqué · Fixé
+              </text>
+              <text
+                x="1130"
+                y="245"
+                textAnchor="end"
+                fontSize="18"
+                fontWeight="700"
+                fill="#8b6b36"
+              >
+                Bloqué · Non fixé
+              </text>
+              <text
+                x="1130"
+                y="365"
+                textAnchor="end"
+                fontSize="18"
+                fontWeight="700"
+                fill="#8b6b36"
+              >
+                Non bloqué · Non fixé
+              </text>
+              <text
+                x="1130"
+                y="525"
+                textAnchor="end"
+                fontSize="18"
+                fontWeight="700"
+                fill="#8b6b36"
+              >
+                Épargne de précaution
+              </text>
+            </svg>
+
+            <div style={styles.pyramidInsights}>
+              <div style={styles.insightBox}>
+                <div style={styles.insightLabel}>Atout principal</div>
+                <div style={styles.insightText}>{force}</div>
+              </div>
+              <div style={styles.insightBox}>
+                <div style={styles.insightLabel}>Point de vigilance</div>
+                <div style={styles.insightText}>{vigilance}</div>
+              </div>
+              <div style={styles.insightBox}>
+                <div style={styles.insightLabel}>Orientation patrimoniale</div>
+                <div style={styles.insightText}>{orientation}</div>
               </div>
             </div>
           </div>
