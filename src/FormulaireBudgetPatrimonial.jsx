@@ -434,55 +434,74 @@ const epargneMensuelleLT = useMemo(
 };
 
   const handleSave = async () => {
-    try {
-      const clientId = getClientId();
+  try {
+    const clientId = getClientId();
 
-      const payload = {
-        investorIdentity,
-        investorFamily,
-        investorProfessional,
-        childrenData,
-        income,
-        charges,
-        loisirs,
-        epargne,
-        precaution,
-        assets,
-        realEstate,
-        updatedAt: new Date().toISOString(),
-      };
-
-      const nom = investorIdentity["Nom"] || "";
-      const prenom = investorIdentity["Prénom"] || "";
-      const email = investorIdentity["Email"] || "";
-
-      const { error } = await supabase
-        .from("formulaires_clients")
-        .upsert(
-          {
-            client_id: clientId,
-            client_nom: nom,
-            client_prenom: prenom,
-            client_email: email,
-            data_json: payload,
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: "client_id" }
-        );
-
-      if (error) {
-        console.error("SUPABASE ERROR:", error);
-        alert("Erreur lors de la sauvegarde : " + error.message);
-        return;
-      }
-
-      setSaveStatus("Brouillon enregistré sur le serveur.");
-      alert("Formulaire sauvegardé.");
-    } catch (err) {
-      console.error("SAVE EXCEPTION:", err);
-      alert("Erreur JS : " + err.message);
+    if (!clientId) {
+      alert("Lien invalide.");
+      return;
     }
-  };
+
+    const payload = {
+      investorIdentity,
+      investorFamily,
+      investorProfessional,
+      childrenData,
+      income,
+      charges,
+      loisirs,
+      epargne,
+      precaution,
+      assets,
+      realEstate,
+      updatedAt: new Date().toISOString(),
+    };
+
+    const nom = investorIdentity["Nom"] || "";
+    const prenom = investorIdentity["Prénom"] || "";
+    const email = investorIdentity["Email"] || "";
+
+    const { data: existing, error: checkError } = await supabase
+      .from("formulaires_clients")
+      .select("id")
+      .eq("client_id", clientId)
+      .maybeSingle();
+
+    if (checkError) {
+      console.error("CHECK ERROR:", checkError);
+      alert("Erreur lors de la vérification du lien.");
+      return;
+    }
+
+    if (!existing) {
+      alert("Ce lien n'existe pas. Vous ne pouvez pas créer un nouveau formulaire.");
+      return;
+    }
+
+    const { error } = await supabase
+      .from("formulaires_clients")
+      .update({
+        client_nom: nom,
+        client_prenom: prenom,
+        client_email: email,
+        data_json: payload,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("client_id", clientId);
+
+    if (error) {
+      console.error("UPDATE ERROR:", error);
+      alert("Erreur lors de la sauvegarde : " + error.message);
+      return;
+    }
+
+    setSaveStatus("Brouillon enregistré sur le serveur.");
+    alert("Formulaire sauvegardé.");
+  } catch (err) {
+    console.error("SAVE EXCEPTION:", err);
+    alert("Erreur JS : " + err.message);
+  }
+};
 
   const handleDownloadPdf = () => {
     genererPDF();

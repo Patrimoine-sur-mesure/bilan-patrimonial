@@ -60,6 +60,64 @@ export default function RapportPatrimonialPdf({
       padding: "24px",
       boxSizing: "border-box",
     },
+	
+	  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginBottom: "18px",
+    padding: "14px 18px",
+    border: "1px solid #ddd6ca",
+    borderRadius: "16px",
+    backgroundColor: "#fcfaf7",
+  },
+
+  headerLeft: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "4px",
+  },
+
+  headerEyebrow: {
+    fontSize: "10px",
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: "1.2px",
+    color: "#8b8175",
+  },
+
+  headerTitle: {
+    fontSize: "18px",
+    fontWeight: "700",
+    color: "#1f2937",
+    lineHeight: 1.2,
+  },
+
+  headerSubtitle: {
+    fontSize: "11px",
+    color: "#6b7280",
+  },
+
+  headerRight: {
+    textAlign: "right",
+    display: "flex",
+    flexDirection: "column",
+    gap: "4px",
+  },
+
+  headerClientLabel: {
+    fontSize: "10px",
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: "1.2px",
+    color: "#8b8175",
+  },
+
+  headerClientName: {
+    fontSize: "15px",
+    fontWeight: "700",
+    color: "#223046",
+  },
 
     pageBreakAvoid: {
       breakInside: "avoid",
@@ -351,7 +409,23 @@ export default function RapportPatrimonialPdf({
 
   return (
     <div id="rapport-pdf" style={styles.page}>
-      <div id="pdf-page-1">
+<div id="pdf-page-1">
+  <div style={styles.header}>
+    <div style={styles.headerLeft}>
+      <div style={styles.headerEyebrow}>Bilan patrimonial</div>
+      <div style={styles.headerTitle}>Synthèse patrimoniale client</div>
+      <div style={styles.headerSubtitle}>
+        Vision consolidée des revenus, charges, capacités d’épargne, actifs financiers et patrimoine immobilier.
+      </div>
+    </div>
+
+    <div style={styles.headerRight}>
+      <div style={styles.headerClientLabel}>Client</div>
+      <div style={styles.headerClientName}>
+        {investorIdentity?.["Prénom"] || ""} {investorIdentity?.["Nom"] || ""}
+      </div>
+    </div>
+  </div>
         <div style={styles.topCards}>
           <div style={styles.statCard}>
             <div style={styles.statHead}>Revenus mensuels</div>
@@ -623,7 +697,24 @@ export default function RapportPatrimonialPdf({
         </div>
       </div>
 
-      <div id="pdf-page-2" style={{ marginTop: "20px" }}>
+<div id="pdf-page-2">
+  <div style={styles.header}>
+    <div style={styles.headerLeft}>
+      <div style={styles.headerEyebrow}>Bilan patrimonial</div>
+      <div style={styles.headerTitle}>Structure patrimoniale</div>
+      <div style={styles.headerSubtitle}>
+        Lecture des placements financiers, répartition par horizon de détention et valorisation globale.
+      </div>
+    </div>
+
+    <div style={styles.headerRight}>
+      <div style={styles.headerClientLabel}>Client</div>
+      <div style={styles.headerClientName}>
+        {investorIdentity?.["Prénom"] || ""} {investorIdentity?.["Nom"] || ""}
+      </div>
+    </div>
+  </div>
+	  
         <div style={{ ...styles.card, ...styles.pageBreakAvoid }}>
           <div style={styles.sectionTitle}>Épargne / stock</div>
           <div style={styles.sectionBody}>
@@ -668,7 +759,25 @@ export default function RapportPatrimonialPdf({
         </div>
       </div>
 
-      <div id="pdf-page-3" style={{ marginTop: "20px" }}>
+<div id="pdf-page-3">
+  <div style={styles.header}>
+    <div style={styles.headerLeft}>
+      <div style={styles.headerEyebrow}>Bilan patrimonial</div>
+      <div style={styles.headerTitle}>Analyse patrimoniale</div>
+      <div style={styles.headerSubtitle}>
+        Lecture des stocks, flux mensuels, pyramide patrimoniale et patrimoine immobilier.
+      </div>
+    </div>
+
+    <div style={styles.headerRight}>
+      <div style={styles.headerClientLabel}>Client</div>
+      <div style={styles.headerClientName}>
+        {investorIdentity?.["Prénom"] || ""} {investorIdentity?.["Nom"] || ""}
+      </div>
+    </div>
+  </div>
+
+
         <div style={{ ...styles.card, ...styles.pageBreakAvoid }}>
           <div style={styles.pyramidCard}>
             <div style={styles.pyramidEyebrow}>Analyse patrimoniale</div>
