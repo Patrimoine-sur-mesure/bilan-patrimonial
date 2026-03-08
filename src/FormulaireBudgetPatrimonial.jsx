@@ -133,7 +133,10 @@ const totalBar =
       maximumFractionDigits: 0,
     }).format(Number(v) || 0);
 
-  const [investorIdentity, setInvestorIdentity] = useState(
+  const [isCheckingAccess, setIsCheckingAccess] = useState(true);
+const [isAuthorized, setIsAuthorized] = useState(false);
+
+const [investorIdentity, setInvestorIdentity] = useState(
     mapInit(investorIdentityFields)
   );
   const [investorFamily, setInvestorFamily] = useState(
@@ -296,55 +299,70 @@ const epargneMensuelleLT = useMemo(
 
 
   const getClientId = () => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("client") || params.get("token") || "demo";
-  };
+  const params = new URLSearchParams(window.location.search);
+  return params.get("token")?.trim() || null;
+};
 
   useEffect(() => {
-    const loadFromSupabase = async () => {
-      try {
-        const clientId = getClientId();
-        const { data, error } = await supabase
-          .from("formulaires_clients")
-          .select("data_json, updated_at")
-          .eq("client_id", clientId)
-          .maybeSingle();
+  const loadFromSupabase = async () => {
+    try {
+      const clientId = getClientId();
 
-        if (error) {
-          console.error("LOAD ERROR:", error);
-          setSaveStatus("Erreur au chargement du brouillon.");
-          return;
-        }
-
-        if (!data?.data_json) {
-          setSaveStatus("Aucun brouillon enregistré pour ce lien.");
-          return;
-        }
-
-        const saved = data.data_json;
-
-        if (saved.investorIdentity) setInvestorIdentity(saved.investorIdentity);
-        if (saved.investorFamily) setInvestorFamily(saved.investorFamily);
-        if (saved.investorProfessional)
-          setInvestorProfessional(saved.investorProfessional);
-        if (saved.childrenData) setChildrenData(saved.childrenData);
-        if (saved.income) setIncome(saved.income);
-        if (saved.charges) setCharges(saved.charges);
-        if (saved.loisirs) setLoisirs(saved.loisirs);
-        if (saved.epargne) setEpargne(saved.epargne);
-        if (typeof saved.precaution === "string") setPrecaution(saved.precaution);
-        if (saved.assets) setAssets(saved.assets);
-        if (saved.realEstate) setRealEstate(saved.realEstate);
-
-        setSaveStatus("Brouillon rechargé depuis le serveur.");
-      } catch (err) {
-        console.error("LOAD EXCEPTION:", err);
-        setSaveStatus("Impossible de recharger le brouillon.");
+      if (!clientId) {
+        setSaveStatus("Accès refusé.");
+        setIsAuthorized(false);
+        setIsCheckingAccess(false);
+        return;
       }
-    };
 
-    loadFromSupabase();
-  }, []);
+      const { data, error } = await supabase
+        .from("formulaires_clients")
+        .select("data_json, updated_at")
+        .eq("client_id", clientId)
+        .maybeSingle();
+
+      if (error) {
+        console.error("LOAD ERROR:", error);
+        setSaveStatus("Accès refusé.");
+        setIsAuthorized(false);
+        setIsCheckingAccess(false);
+        return;
+      }
+
+      if (!data) {
+        setSaveStatus("Accès refusé.");
+        setIsAuthorized(false);
+        setIsCheckingAccess(false);
+        return;
+      }
+
+      const saved = data.data_json || {};
+
+      if (saved.investorIdentity) setInvestorIdentity(saved.investorIdentity);
+      if (saved.investorFamily) setInvestorFamily(saved.investorFamily);
+      if (saved.investorProfessional) setInvestorProfessional(saved.investorProfessional);
+      if (saved.childrenData) setChildrenData(saved.childrenData);
+      if (saved.income) setIncome(saved.income);
+      if (saved.charges) setCharges(saved.charges);
+      if (saved.loisirs) setLoisirs(saved.loisirs);
+      if (saved.epargne) setEpargne(saved.epargne);
+      if (typeof saved.precaution === "string") setPrecaution(saved.precaution);
+      if (saved.assets) setAssets(saved.assets);
+      if (saved.realEstate) setRealEstate(saved.realEstate);
+
+      setSaveStatus("Brouillon rechargé depuis le serveur.");
+      setIsAuthorized(true);
+      setIsCheckingAccess(false);
+    } catch (err) {
+      console.error("LOAD EXCEPTION:", err);
+      setSaveStatus("Accès refusé.");
+      setIsAuthorized(false);
+      setIsCheckingAccess(false);
+    }
+  };
+
+  loadFromSupabase();
+}, []);
 
   const updateAsset = (i, key, value) => {
     setAssets((prev) =>
@@ -512,7 +530,35 @@ const epargneMensuelleLT = useMemo(
   };
 
 
+  if (isCheckingAccess) {
   return (
+    <div className="flex min-h-screen items-center justify-center bg-[#f6f3ee]">
+      <div className="rounded-2xl border border-[#e6ded2] bg-white px-6 py-5 text-sm text-[#1f2937] shadow">
+        Vérification de l'accès...
+      </div>
+    </div>
+  );
+}
+
+if (!isAuthorized) {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-[#f6f3ee] px-4">
+      <div className="w-full max-w-md rounded-3xl border border-[#e6ded2] bg-white p-8 text-center shadow-[0_10px_30px_rgba(17,24,39,0.06)]">
+        <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8b6b36]">
+          Accès sécurisé
+        </div>
+        <h1 className="mt-3 text-2xl font-semibold text-[#1f2937]">
+          Accès refusé
+        </h1>
+        <p className="mt-3 text-sm text-[#6b7280]">
+          Ce lien est invalide, expiré ou non autorisé.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+return (
     <div id="formulaire-pdf" className="min-h-screen bg-[#f6f3ee] px-4 py-8 text-sm text-[#111827] md:px-8">
 	
 	<div className="mb-8 overflow-hidden rounded-[28px] border border-[#e6ded2] bg-gradient-to-r from-[#10273d] via-[#1f3b57] to-[#2c4d6f] px-6 py-7 text-white shadow-[0_18px_50px_rgba(16,39,61,0.18)]">
