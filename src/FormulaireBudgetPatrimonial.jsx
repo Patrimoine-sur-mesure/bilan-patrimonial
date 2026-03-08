@@ -239,7 +239,7 @@ const epargneMensuelleLT = useMemo(
     () => realEstate.reduce((s, a) => s + toNumber(a.reste), 0),
     [realEstate]
   );
-  const epargnePrecautionReco = useMemo(() => totalCharges * 6, [totalCharges]);
+  const epargnePrecautionReco = useMemo(() => totalCharges * 3, [totalCharges]);
   const patrimoineBrut = useMemo(
     () => totalAssets + totalImmo,
     [totalAssets, totalImmo]
