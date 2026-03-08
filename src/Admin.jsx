@@ -24,7 +24,7 @@ export default function Admin() {
       return;
     }
 
-    const link = "http://localhost:5174/?token=" + token;
+    const link = window.location.origin + "/?token=" + token;
 
     await navigator.clipboard.writeText(link);
 
