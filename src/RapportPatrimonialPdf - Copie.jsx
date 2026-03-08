@@ -60,16 +60,6 @@ export default function RapportPatrimonialPdf({
       padding: "24px",
       boxSizing: "border-box",
     },
-	
-	page: {
-  width: "1120px",
-  margin: "0 auto",
-  backgroundColor: "#f8f5ef",
-  color: "#1f2937",
-  fontFamily: "Arial, sans-serif",
-  padding: "24px",
-  boxSizing: "border-box",
-},
 
     pageBreakAvoid: {
       breakInside: "avoid",
@@ -362,13 +352,6 @@ export default function RapportPatrimonialPdf({
   return (
     <div id="rapport-pdf" style={styles.page}>
       <div id="pdf-page-1">
-
-  <div style={styles.header}>
-    <div style={styles.headerTitle}>Bilan patrimonial</div>
-    <div style={styles.headerRight}>
-      {investorIdentity?.["Prénom"]} {investorIdentity?.["Nom"]}
-    </div>
-  </div>
         <div style={styles.topCards}>
           <div style={styles.statCard}>
             <div style={styles.statHead}>Revenus mensuels</div>
@@ -641,13 +624,6 @@ export default function RapportPatrimonialPdf({
       </div>
 
       <div id="pdf-page-2" style={{ marginTop: "20px" }}>
-	  <div style={styles.header}>
-    <div style={styles.headerTitle}>Situation financière</div>
-    <div style={styles.headerRight}>
-      {investorIdentity?.["Prénom"]} {investorIdentity?.["Nom"]}
-    </div>
-     </div>
-	  
         <div style={{ ...styles.card, ...styles.pageBreakAvoid }}>
           <div style={styles.sectionTitle}>Épargne / stock</div>
           <div style={styles.sectionBody}>
@@ -693,15 +669,6 @@ export default function RapportPatrimonialPdf({
       </div>
 
       <div id="pdf-page-3" style={{ marginTop: "20px" }}>
-	  
-	  <div style={styles.header}>
-  <div style={styles.headerTitle}>Structure patrimoniale</div>
-  <div style={styles.headerRight}>
-    {investorIdentity?.["Prénom"]} {investorIdentity?.["Nom"]}
-  </div>
-</div>
-
-
         <div style={{ ...styles.card, ...styles.pageBreakAvoid }}>
           <div style={styles.pyramidCard}>
             <div style={styles.pyramidEyebrow}>Analyse patrimoniale</div>
