@@ -4,7 +4,6 @@ import html2canvas from "html2canvas-pro";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "./lib/supabase";
 import PyramidePatrimoineActuel from "./PyramidePatrimoineActuel";
-import PyramidePatrimoineActuelSvg from "./PyramidePatrimoineActuel";
 
 export default function FormulaireBudgetPatrimonial() {
   const label = "text-[13px] font-medium text-[#4b5563]";
@@ -535,51 +534,7 @@ const epargneMensuelleLT = useMemo(
 </div>
 
 
-        <div className="overflow-hidden border-2 border-black">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
-            Revenus mensuels
-          </div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
-            {euro(totalIncome)}
-          </div>
-        </div>
-
-        <div className="overflow-hidden border-2 border-black">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
-            Charges incompressibles
-          </div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
-            {euro(totalCharges)}
-          </div>
-        </div>
-
-        <div className="overflow-hidden border-2 border-black">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
-            Budget disponible
-          </div>
-          <div className="bg-[#f5ddd7] px-3 py-3 text-lg font-bold text-black">
-            {euro(budgetDisponible)}
-          </div>
-        </div>
-
-        <div className="overflow-hidden border-2 border-black">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
-            Patrimoine brut
-          </div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
-            {euro(patrimoineBrut)}
-          </div>
-        </div>
-
-        <div className="overflow-hidden border-2 border-black">
-          <div className="bg-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-white">
-            Taux de charges
-          </div>
-          <div className="bg-[#e6c08f] px-3 py-3 text-lg font-bold text-black">
-            {tauxCharges.toFixed(0)}%
-          </div>
-        </div>
-      </div>
+        
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
@@ -728,13 +683,6 @@ const epargneMensuelleLT = useMemo(
 			  </div>
 		  </div>
 		
-            <div className="bg-black p-2 text-center font-bold text-white">
-              Budget = Revenus - Charges incompressibles
-            </div>
-            <div className="bg-[#f5ddd7] p-2 font-bold text-black">
-              {euro(budgetDisponible)}
-            </div>
-          </div>
 
 
           <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
@@ -792,7 +740,7 @@ const epargneMensuelleLT = useMemo(
         </div>
 
         <div className="space-y-4">
-          <<div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
             <h3 className="border-b border-black bg-[#0f7fb3] px-2 py-1 text-center font-bold text-white">
               Epargne / Stock
             </h3>
