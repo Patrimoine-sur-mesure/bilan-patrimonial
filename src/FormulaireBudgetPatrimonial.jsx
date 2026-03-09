@@ -670,7 +670,7 @@ return (
   ].map((item) => (
     <div
       key={item.title}
-      className="rounded-2xl border border-[#e6ded2] bg-white p-4 shadow-[0_10px_30px_rgba(17,24,39,0.05)]"
+      className="rounded-2xl border border-[#e6ded2] bg-[#f7f4ee] p-4 shadow-[0_8px_20px_rgba(17,24,39,0.04)]"
     >
       <div className="mb-2 flex items-center justify-between">
         <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
@@ -687,8 +687,12 @@ return (
         />
       </div>
       <div className="text-2xl font-semibold tracking-tight text-[#111827]">
-        {item.value}
-      </div>
+  {item.value}
+</div>
+
+<div className="mt-1 text-[10px] text-[#8b6b36]/70 uppercase tracking-[0.12em]">
+  calcul automatique
+</div>
     </div>
   ))}
 </div>
