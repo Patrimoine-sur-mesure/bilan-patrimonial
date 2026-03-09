@@ -696,7 +696,41 @@ return (
   }`}
 >
   {item.value}
+  
 </div>
+
+{item.title === "Budget disponible" && (
+  <div className="mt-3">
+
+    <div className="h-2 overflow-hidden rounded-full bg-[#ece7de]">
+      <div
+        className={`h-full rounded-full ${
+          budgetDisponible < 0
+            ? "bg-[#c94c4c]"
+            : budgetDisponible < 500
+            ? "bg-[#d8a48f]"
+            : budgetDisponible < 1500
+            ? "bg-[#b08a4a]"
+            : "bg-[#6c8f6b]"
+        }`}
+        style={{
+          width: `${Math.max(5, Math.min(100, (budgetDisponible / 2000) * 100))}%`,
+        }}
+      />
+    </div>
+
+    <div className="mt-1 text-[10px] uppercase tracking-[0.1em] text-[#6b7280]">
+      {budgetDisponible < 0
+        ? "Déficit budgétaire"
+        : budgetDisponible < 500
+        ? "Zone fragile"
+        : budgetDisponible < 1500
+        ? "Zone de confort"
+        : "Situation solide"}
+    </div>
+
+  </div>
+)}
 
 {item.title === "Budget disponible" && budgetDisponible < 0 && (
   <div className="text-[10px] text-[#c94c4c] mt-1 uppercase tracking-[0.1em]">
