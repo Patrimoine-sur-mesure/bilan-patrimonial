@@ -653,10 +653,10 @@ return (
       tone: "navy",
     },
     {
-      title: "Budget disponible",
-      value: euro(budgetDisponible),
-      tone: "rose",
-    },
+  title: "Budget disponible",
+  value: euro(budgetDisponible),
+  tone: budgetDisponible < 0 ? "danger" : "rose",
+},
     {
       title: "Patrimoine brut",
       value: euro(patrimoineBrut),
@@ -679,16 +679,30 @@ return (
         <div
           className={`h-2.5 w-2.5 rounded-full ${
             item.tone === "gold"
-              ? "bg-[#b08a4a]"
-              : item.tone === "rose"
-              ? "bg-[#d8a48f]"
-              : "bg-[#1f3b57]"
+  ? "bg-[#b08a4a]"
+  : item.tone === "rose"
+  ? "bg-[#d8a48f]"
+  : item.tone === "danger"
+  ? "bg-[#c94c4c]"
+  : "bg-[#1f3b57]"
           }`}
         />
       </div>
-      <div className="text-2xl font-semibold tracking-tight text-[#111827]">
+      <div
+  className={`text-2xl font-semibold tracking-tight ${
+    item.title === "Budget disponible" && budgetDisponible < 0
+      ? "text-[#c94c4c]"
+      : "text-[#111827]"
+  }`}
+>
   {item.value}
 </div>
+
+{item.title === "Budget disponible" && budgetDisponible < 0 && (
+  <div className="text-[10px] text-[#c94c4c] mt-1 uppercase tracking-[0.1em]">
+    Déficit mensuel
+  </div>
+)}
 
 <div className="mt-1 text-[10px] text-[#8b6b36]/70 uppercase tracking-[0.12em]">
   calcul automatique
