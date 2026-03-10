@@ -1259,13 +1259,19 @@ return (
 			  Enregistrer
 			</button>
 
-			<button
-			  type="button"
-			  onClick={handleDownloadPdf}
-			  className="rounded-2xl border border-[#d7c8ae] bg-white px-8 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.10)] transition hover:-translate-y-0.5 hover:bg-[#fcfaf7]"
-			>
-			  Télécharger le PDF
-			</button>
+			<div className="flex flex-col items-center">
+  <button
+    type="button"
+    onClick={handleDownloadPdf}
+    className="rounded-2xl border border-[#d7c8ae] bg-white px-8 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.10)] transition hover:-translate-y-0.5 hover:bg-[#fcfaf7]"
+  >
+    Télécharger le PDF
+  </button>
+
+  <div className="mt-2 text-[11px] text-[#6b7280]">
+    Télécharger une synthèse sans enregistrer les informations.
+  </div>
+</div>
         </div>
       </div>
     </div>
