@@ -628,8 +628,12 @@ return (
         actifs financiers et patrimoine immobilier.
       </p>
 	  <div className="mt-4 rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-xs text-white/90 backdrop-blur">
-  🔒 Accès sécurisé — Ce formulaire est accessible uniquement via le lien personnel qui vous a été transmis par votre conseiller.
-  Les informations saisies sont strictement confidentielles et destinées exclusivement à votre accompagnement patrimonial.
+  🔒 Accès sécurisé — Ce formulaire est accessible uniquement via le lien personnel transmis par votre conseiller.
+
+		Les informations saisies restent confidentielles.
+
+		Vous pouvez télécharger votre synthèse en PDF sans enregistrer le formulaire.
+		Dans ce cas, aucune donnée ne sera sauvegardée sur le serveur.
 </div>
     </div>
 
