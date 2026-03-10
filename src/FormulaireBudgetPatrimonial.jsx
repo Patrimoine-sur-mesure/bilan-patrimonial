@@ -627,6 +627,10 @@ return (
         Vision consolidée des revenus, charges, capacités d’épargne,
         actifs financiers et patrimoine immobilier.
       </p>
+	  <div className="mt-4 rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-xs text-white/90 backdrop-blur">
+  🔒 Accès sécurisé — Ce formulaire est accessible uniquement via le lien personnel qui vous a été transmis par votre conseiller.
+  Les informations saisies sont strictement confidentielles et destinées exclusivement à votre accompagnement patrimonial.
+</div>
     </div>
 
     <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
