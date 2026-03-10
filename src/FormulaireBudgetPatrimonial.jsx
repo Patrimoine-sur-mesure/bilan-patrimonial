@@ -1250,19 +1250,26 @@ return (
 			/>
 
 <div className="mt-12 flex w-full justify-center">
-  <div className="flex flex-wrap justify-center gap-4">
-          <button
-			  type="button"
-			  onClick={handleSave}
-			  className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-8 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868]"
-			>
-			  Enregistrer
-			</button>
+  <div className="flex flex-col items-center">
+  <button
+    type="button"
+    onClick={handleSave}
+    className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-8 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868]"
+  >
+    Enregistrer
+  </button>
+
+  <div className="mt-2 text-[11px] text-[#6b7280]">
+    Vous pouvez enregistrer votre formulaire et le compléter ultérieurement avec ce même lien sécurisé.
+  </div>
+</div>
+</div>
 
 			<div className="flex flex-col items-center">
   <button
     type="button"
     onClick={handleDownloadPdf}
+	
     className="rounded-2xl border border-[#d7c8ae] bg-white px-8 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.10)] transition hover:-translate-y-0.5 hover:bg-[#fcfaf7]"
   >
     Télécharger le PDF
