@@ -42,55 +42,33 @@ const totalBar =
   const investorChildrenCount = 4;
 
   const incomeFields = [
-    "Salaire mensuel net avant prélèvement",
-    "Revenus locatifs",
-    "Revenus mobiliers",
-    "Revenus BIC",
-    "Revenus BNC",
-    "Revenus BA",
-    "Pensions",
-    "Retraite",
-    "Primes mensualisées",
-  ];
+  "Revenus professionnels nets",
+  "Revenus locatifs",
+  "Revenus financiers (dividendes, intérêts)",
+  "Autres revenus récurrents",
+];
 
   const chargesFields = [
-    "Loyer charges comprises",
-    "Impôt mensuel",
-    "Impôt foncier",
-    "Taxe foncière",
-    "Taxe d'habitation",
-    "Nourriture",
-    "Pass Navigo",
-    "Transport",
-    "Parking",
-    "Electricité / eau / chauffage",
-    "Internet",
-    "Téléphone",
-    "Assurance",
-    "Crédit résidence principale",
-    "Autres crédits",
-    "Pensions alimentaires",
-    "Charges copropriété",
-    "Autres charges",
-  ];
+  "Habitation (loyer / crédit / charges)",
+  "Fiscalité mensuelle",
+  "Crédits en cours",
+  "Assurances et protections",
+  "Dépenses de vie courante",
+  "Autres engagements récurrents",
+];
 
   const loisirsFields = [
-    "Restaurants",
-    "Sorties",
-    "Sports",
-    "Vacances",
-    "Vêtements / décoration",
-    "Autres",
-  ];
+  "Train de vie (loisirs, restaurants, sorties)",
+  "Voyages et déplacements",
+  "Autres dépenses discrétionnaires",
+];
 
   const epargneMensuelle = [
-    "Livrets",
-	"Autres épargne CT",
-    "Assurance vie",
-	"Autres épargne MT",
-    "Investissement locatif",
-	"Autres épargne LT",
-  ];
+  "Épargne de sécurité (court terme)",
+  "Épargne financière (assurance vie, PEA)",
+  "Investissements immobiliers",
+  "Autres investissements long terme",
+];
 
   const assetGroups = {
     "Court terme": [
@@ -180,6 +158,20 @@ const [investorIdentity, setInvestorIdentity] = useState(
   );
 
   const [saveStatus, setSaveStatus] = useState("");
+  
+const [step, setStep] = useState(1);
+const totalSteps = 5;
+
+const stepTitles = {
+  1: "Profil client",
+  2: "Flux mensuels",
+  3: "Patrimoine financier",
+  4: "Patrimoine immobilier",
+  5: "Synthèse patrimoniale",
+};
+
+const goNext = () => setStep((prev) => Math.min(prev + 1, totalSteps));
+const goBack = () => setStep((prev) => Math.max(prev - 1, 1));
 
   const totalIncome = useMemo(
     () => Object.values(income).reduce((a, b) => a + toNumber(b), 0),
@@ -644,6 +636,11 @@ return (
       <div className="mt-1 text-base font-medium">
         {investorIdentity["Prénom"] || "Prénom"} {investorIdentity["Nom"] || "Nom"}
       </div>
+	  
+	  <div className="mt-2 inline-flex items-center rounded-full bg-[#efe8da] px-3 py-1 text-[10px] uppercase tracking-[0.12em] text-[#8b6b36]">
+  Conseil patrimonial indépendant
+</div>
+
     </div>
   </div>
 </div>
@@ -848,7 +845,7 @@ return (
 
         <div className="space-y-4">
           <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-            <h3 className={sectionTitle}>Revenus (mensuel)</h3>
+            <h3 className={sectionTitle}>Flux de revenus mensuels</h3>
             <div className="p-3">
               {incomeFields.map((f) => (
                 <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
@@ -868,7 +865,7 @@ return (
           </div>
 
           <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-            <h3 className={sectionTitle}>Charges incompressibles (mensuel)</h3>
+            <h3 className={sectionTitle}>Engagements financiers mensuels</h3>
             <div className="p-3">
               {chargesFields.map((f) => (
                 <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
@@ -906,7 +903,7 @@ return (
 
 
           <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-            <h3 className={sectionTitle}>Loisirs (mensuel)</h3>
+            <h3 className={sectionTitle}>Train de vie discrétionnaire</h3>
             <div className="p-3">
               {loisirsFields.map((f) => (
                 <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
