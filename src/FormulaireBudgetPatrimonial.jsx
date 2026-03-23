@@ -663,7 +663,7 @@ return (
         Client
       </div>
 	  
-      <div className="mt-2 text-base font-medium text-white">
+      <div className="mt-1 text-base font-medium">
         {investorIdentity["Prénom"] || "Prénom"} {investorIdentity["Nom"] || "Nom"}
       </div>
 	  
