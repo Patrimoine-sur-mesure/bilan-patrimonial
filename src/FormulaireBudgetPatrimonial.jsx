@@ -158,8 +158,7 @@ const [investorIdentity, setInvestorIdentity] = useState(
   );
 
   const [saveStatus, setSaveStatus] = useState("");
-  const [saveStatus, setSaveStatus] =
-  
+  const [saveStatus, setSaveStatus] = useState(false);  
 const [step, setStep] = useState(1);
 const totalSteps = 5;
 
@@ -202,20 +201,20 @@ const goBack = async () => {
     [epargne]
   );
   
-  const epargneMensuelleCT = useMemo(
-  () => toNumber(epargne["Livrets"]) + toNumber(epargne["Autres épargne CT"]),
+const epargneMensuelleCT = useMemo(
+  () => toNumber(epargne["Épargne de sécurité (court terme)"]),
   [epargne]
 );
 
 const epargneMensuelleMT = useMemo(
-  () => toNumber(epargne["Assurance vie"]) + toNumber(epargne["Autres épargne MT"]),
+  () => toNumber(epargne["Épargne financière (assurance vie, PEA)"]),
   [epargne]
 );
 
 const epargneMensuelleLT = useMemo(
   () =>
-    toNumber(epargne["Investissement locatif"]) +
-    toNumber(epargne["Autres épargne LT"]),
+    toNumber(epargne["Investissements immobiliers"]) +
+    toNumber(epargne["Autres investissements long terme"]),
   [epargne]
 );
 
