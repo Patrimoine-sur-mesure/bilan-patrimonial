@@ -39,7 +39,6 @@ export default function RapportPatrimonialPdf({
   const visibleChildren =
     childrenData?.filter((c) => c?.prenom || c?.naissance) || [];
 
-  // ✅ Adapté aux nouvelles clés du formulaire
   const epargneMensuelleCT = toNumber(
     epargne?.["Épargne de sécurité (court terme)"]
   );
@@ -78,6 +77,7 @@ export default function RapportPatrimonialPdf({
       display: "flex",
       flexDirection: "column",
       gap: "4px",
+      maxWidth: "72%",
     },
 
     headerEyebrow: {
@@ -98,6 +98,7 @@ export default function RapportPatrimonialPdf({
     headerSubtitle: {
       fontSize: "11px",
       color: "#6b7280",
+      lineHeight: 1.45,
     },
 
     headerRight: {
@@ -461,11 +462,11 @@ export default function RapportPatrimonialPdf({
             <div style={styles.statValue}>{euro(totalIncome)}</div>
           </div>
           <div style={styles.statCard}>
-            <div style={styles.statHead}>Charges</div>
+            <div style={styles.statHead}>Charges structurelles</div>
             <div style={styles.statValue}>{euro(totalCharges)}</div>
           </div>
           <div style={styles.statCard}>
-            <div style={styles.statHead}>Budget disponible</div>
+            <div style={styles.statHead}>Capacité disponible</div>
             <div style={styles.statValueSoft}>{euro(budgetDisponible)}</div>
           </div>
           <div style={styles.statCard}>
@@ -480,7 +481,7 @@ export default function RapportPatrimonialPdf({
 
         <div style={styles.row2}>
           <div style={styles.card}>
-            <div style={styles.sectionTitle}>Informations investisseur</div>
+            <div style={styles.sectionTitle}>Identité du client</div>
             <div style={styles.sectionBody}>
               <div style={styles.fieldsGrid}>
                 {renderField("Nom", investorIdentity?.["Nom"])}
@@ -563,7 +564,7 @@ export default function RapportPatrimonialPdf({
 
         <div style={styles.row2}>
           <div style={styles.card}>
-            <div style={styles.sectionTitle}>Revenus mensuels</div>
+            <div style={styles.sectionTitle}>Revenus récurrents</div>
             <div style={styles.sectionBody}>
               <table style={styles.table}>
                 <tbody>
@@ -599,7 +600,7 @@ export default function RapportPatrimonialPdf({
           </div>
 
           <div style={styles.card}>
-            <div style={styles.sectionTitle}>Charges incompressibles</div>
+            <div style={styles.sectionTitle}>Charges structurelles</div>
             <div style={styles.sectionBody}>
               <table style={styles.table}>
                 <tbody>
@@ -637,7 +638,7 @@ export default function RapportPatrimonialPdf({
 
         <div style={styles.row2}>
           <div style={styles.card}>
-            <div style={styles.sectionTitle}>Loisirs</div>
+            <div style={styles.sectionTitle}>Train de vie</div>
             <div style={styles.sectionBody}>
               <table style={styles.table}>
                 <tbody>
@@ -708,18 +709,18 @@ export default function RapportPatrimonialPdf({
 
               <div style={styles.summaryGrid3}>
                 <div style={styles.summaryBox}>
-                  Budget disponible : {euro(budgetDisponible)}
+                  Capacité disponible : {euro(budgetDisponible)}
                 </div>
                 <div style={styles.summaryBox}>
-                  Budget projets : {euro(budgetProjet)}
+                  Capacité d’investissement : {euro(budgetProjet)}
                 </div>
                 <div style={styles.summaryBox}>
-                  Précaution recommandée : {euro(epargnePrecautionReco)}
+                  Réserve recommandée : {euro(epargnePrecautionReco)}
                 </div>
               </div>
 
               <div style={{ ...styles.summaryBox, marginTop: "12px" }}>
-                Épargne de précaution : {euro(precaution)}
+                Réserve de liquidité souhaitée : {euro(precaution)}
               </div>
             </div>
           </div>
@@ -732,7 +733,7 @@ export default function RapportPatrimonialPdf({
             <div style={styles.headerEyebrow}>Bilan patrimonial</div>
             <div style={styles.headerTitle}>Structure patrimoniale</div>
             <div style={styles.headerSubtitle}>
-              Lecture des placements financiers, répartition par horizon de
+              Lecture des actifs financiers, répartition par horizon de
               détention et valorisation globale.
             </div>
           </div>
@@ -747,7 +748,7 @@ export default function RapportPatrimonialPdf({
         </div>
 
         <div style={{ ...styles.card, ...styles.pageBreakAvoid }}>
-          <div style={styles.sectionTitle}>Épargne / stock</div>
+          <div style={styles.sectionTitle}>Actifs financiers</div>
           <div style={styles.sectionBody}>
             <table style={styles.table}>
               <thead>
@@ -965,7 +966,7 @@ export default function RapportPatrimonialPdf({
                 fontSize="16"
                 fill="#8b6e3e"
               >
-                Liquidités · livrets · épargne de précaution
+                Liquidités · livrets · réserve de précaution
               </text>
 
               <text x="70" y="180" fontSize="18" fontWeight="700" fill="#1f2937">
@@ -1078,7 +1079,7 @@ export default function RapportPatrimonialPdf({
                 fontWeight="700"
                 fill="#8b6b36"
               >
-                Épargne de précaution
+                Réserve de précaution
               </text>
             </svg>
 
@@ -1098,7 +1099,7 @@ export default function RapportPatrimonialPdf({
             </div>
           </div>
 
-          <div style={styles.sectionTitle}>Biens immobiliers</div>
+          <div style={styles.sectionTitle}>Patrimoine immobilier</div>
           <div style={styles.sectionBody}>
             <table style={styles.table}>
               <thead>
@@ -1140,6 +1141,74 @@ export default function RapportPatrimonialPdf({
               </div>
               <div style={styles.summaryBox}>
                 Capital restant : {euro(totalResteImmo)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pdf-page-4">
+        <div style={styles.header}>
+          <div style={styles.headerLeft}>
+            <div style={styles.headerEyebrow}>Bilan patrimonial</div>
+            <div style={styles.headerTitle}>Synthèse de lecture</div>
+            <div style={styles.headerSubtitle}>
+              Synthèse des grands équilibres et principaux indicateurs
+              patrimoniaux.
+            </div>
+          </div>
+
+          <div style={styles.headerRight}>
+            <div style={styles.headerClientLabel}>Client</div>
+            <div style={styles.headerClientName}>
+              {investorIdentity?.["Prénom"] || ""}{" "}
+              {investorIdentity?.["Nom"] || ""}
+            </div>
+          </div>
+        </div>
+
+        <div style={styles.card}>
+          <div style={styles.sectionTitle}>Lecture d’ensemble</div>
+          <div style={styles.sectionBody}>
+            <div style={styles.summaryGrid4}>
+              <div style={styles.summaryBox}>
+                Revenus mensuels : {euro(totalIncome)}
+              </div>
+              <div style={styles.summaryBox}>
+                Charges structurelles : {euro(totalCharges)}
+              </div>
+              <div style={styles.summaryBox}>
+                Train de vie : {euro(totalLoisirs)}
+              </div>
+              <div style={styles.summaryBox}>
+                Épargne mensuelle : {euro(totalEpargneMensuelle)}
+              </div>
+            </div>
+
+            <div style={styles.summaryGrid4}>
+              <div style={styles.summaryBox}>
+                Capacité disponible : {euro(budgetDisponible)}
+              </div>
+              <div style={styles.summaryBox}>
+                Capacité d’investissement : {euro(budgetProjet)}
+              </div>
+              <div style={styles.summaryBox}>
+                Patrimoine financier : {euro(totalAssets)}
+              </div>
+              <div style={styles.summaryBox}>
+                Patrimoine immobilier : {euro(totalImmo)}
+              </div>
+            </div>
+
+            <div style={styles.summaryGrid3}>
+              <div style={styles.summaryBox}>
+                Réserve recommandée : {euro(epargnePrecautionReco)}
+              </div>
+              <div style={styles.summaryBox}>
+                Réserve souhaitée : {euro(precaution)}
+              </div>
+              <div style={styles.summaryBox}>
+                Score patrimonial : {scorePatrimonial} / 10
               </div>
             </div>
           </div>
