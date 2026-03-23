@@ -874,88 +874,83 @@ return (
 )}
 
 {step === 2 && (
-        <div className="space-y-4">
-          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-            <h3 className={sectionTitle}>Flux de revenus mensuels</h3>
-            <div className="p-3">
-              {incomeFields.map((f) => (
-                <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
-                  <label className={label}>{f}</label>
-                  <input
-                    className={input}
-                    type="number"
-                    value={income[f]}
-                    onChange={(e) =>
-                      setIncome({ ...income, [f]: e.target.value })
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-            <div className={totalBar}>Total : {euro(totalIncome)}</div>
-          </div>
-
-          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-            <h3 className={sectionTitle}>Engagements financiers mensuels</h3>
-            <div className="p-3">
-              {chargesFields.map((f) => (
-                <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
-                  <label className={label}>{f}</label>
-                  <input
-                    className={input}
-                    type="number"
-                    value={charges[f]}
-                    onChange={(e) =>
-                      setCharges({ ...charges, [f]: e.target.value })
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-            <div className={totalBar}>Total : {euro(totalCharges)}</div>
-          </div>
-
-          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-			  <div className="flex items-center justify-between gap-4 px-5 py-4">
-				<div>
-				  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
-					Budget disponible
-				  </div>
-				  <div className="mt-1 text-sm text-[#4b5563]">
-					Revenus - charges incompressibles
-				  </div>
-				</div>
-				<div className="rounded-xl bg-[#f8efe2] px-4 py-2 text-lg font-semibold text-[#8b6b36]">
-				  {euro(budgetDisponible)}
-				</div>
-			  </div>
-		  </div>
-		
-
-
-          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-            <h3 className={sectionTitle}>Train de vie discrétionnaire</h3>
-            <div className="p-3">
-              {loisirsFields.map((f) => (
-                <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
-                  <label className={label}>{f}</label>
-                  <input
-                    className={input}
-                    type="number"
-                    value={loisirs[f]}
-                    onChange={(e) =>
-                      setLoisirs({ ...loisirs, [f]: e.target.value })
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-            <div className={totalBar}>Total : {euro(totalLoisirs)}</div>
-          </div>
-		  </div>
-		  		  
-
   <div className="space-y-4">
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+      <h3 className={sectionTitle}>Flux de revenus mensuels</h3>
+      <div className="p-3">
+        {incomeFields.map((f) => (
+          <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
+            <label className={label}>{f}</label>
+            <input
+              className={input}
+              type="number"
+              value={income[f]}
+              onChange={(e) =>
+                setIncome({ ...income, [f]: e.target.value })
+              }
+            />
+          </div>
+        ))}
+      </div>
+      <div className={totalBar}>Total : {euro(totalIncome)}</div>
+    </div>
+
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+      <h3 className={sectionTitle}>Engagements financiers mensuels</h3>
+      <div className="p-3">
+        {chargesFields.map((f) => (
+          <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
+            <label className={label}>{f}</label>
+            <input
+              className={input}
+              type="number"
+              value={charges[f]}
+              onChange={(e) =>
+                setCharges({ ...charges, [f]: e.target.value })
+              }
+            />
+          </div>
+        ))}
+      </div>
+      <div className={totalBar}>Total : {euro(totalCharges)}</div>
+    </div>
+
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+      <div className="flex items-center justify-between gap-4 px-5 py-4">
+        <div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
+            Budget disponible
+          </div>
+          <div className="mt-1 text-sm text-[#4b5563]">
+            Revenus - charges incompressibles
+          </div>
+        </div>
+        <div className="rounded-xl bg-[#f8efe2] px-4 py-2 text-lg font-semibold text-[#8b6b36]">
+          {euro(budgetDisponible)}
+        </div>
+      </div>
+    </div>
+
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+      <h3 className={sectionTitle}>Train de vie discrétionnaire</h3>
+      <div className="p-3">
+        {loisirsFields.map((f) => (
+          <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
+            <label className={label}>{f}</label>
+            <input
+              className={input}
+              type="number"
+              value={loisirs[f]}
+              onChange={(e) =>
+                setLoisirs({ ...loisirs, [f]: e.target.value })
+              }
+            />
+          </div>
+        ))}
+      </div>
+      <div className={totalBar}>Total : {euro(totalLoisirs)}</div>
+    </div>
+
     <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
       <h3 className={sectionTitle}>Épargne mensuelle actuelle</h3>
       <div className="p-3">
@@ -986,11 +981,11 @@ return (
         {euro(budgetProjet)}
       </div>
     </div>
-
+  </div>
 )}
 		  
 {step === 3 && (
-
+  <div className="space-y-4">
     <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
       <h3 className="border-b border-black bg-[#0f7fb3] px-2 py-1 text-center font-bold text-white">
         Épargne / Stock
@@ -1104,7 +1099,6 @@ return (
     </div>
   </div>
 )}
-
 {step === 4 && (
 
 
