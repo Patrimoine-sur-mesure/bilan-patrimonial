@@ -869,6 +869,7 @@ return (
             ))}
           </div>
         </div>
+		</div>
 		
 )}
 
@@ -951,156 +952,77 @@ return (
             </div>
             <div className={totalBar}>Total : {euro(totalLoisirs)}</div>
           </div>
+		  </div>
 		  		  
 )}
 		  
 {step === 3 && (
-		  <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-            <h3 className={sectionTitle}>Epargne mensuelle actuelle</h3>
-            <div className="p-3">
-              {epargneMensuelle.map((f) => (
-                <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
-                  <label className={label}>{f}</label>
-                  <input
-                    className={input}
-                    type="number"
-                    value={epargne[f]}
-                    onChange={(e) =>
-                      setEpargne({ ...epargne, [f]: e.target.value })
-                    }
-                  />
-                </div>
-              ))}
+  <div className="space-y-4">
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+      <h3 className={sectionTitle}>Epargne mensuelle actuelle</h3>
+      <div className="p-3">
+        {epargneMensuelle.map((f) => (
+          <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
+            <label className={label}>{f}</label>
+            <input
+              className={input}
+              type="number"
+              value={epargne[f]}
+              onChange={(e) =>
+                setEpargne({ ...epargne, [f]: e.target.value })
+              }
+            />
+          </div>
+        ))}
+      </div>
+      <div className={totalBar}>
+        Total épargne mensuelle : {euro(totalEpargneMensuelle)}
+      </div>
+    </div>
+
+    <div className="grid grid-cols-[1fr_auto] overflow-hidden border-2 border-black">
+      <div className="bg-black p-2 text-center font-bold text-white">
+        Budget Projets théorique
+      </div>
+      <div className="bg-[#f3c316] p-2 font-bold text-black">
+        {euro(budgetProjet)}
+      </div>
+    </div>
+
+    <div className="space-y-4">
+      <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+        ...
+      </div>
+
+      <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+        <h3 className={sectionTitle}>Epargne de précaution</h3>
+        <div className="grid gap-3 p-3 md:grid-cols-2">
+          <div>
+            <div className="mb-1 font-semibold text-[#1f2937]">
+              Montant souhaité
             </div>
-            <div className={totalBar}>
-              Total épargne mensuelle : {euro(totalEpargneMensuelle)}
+            <input
+              className={input}
+              type="number"
+              value={precaution}
+              onChange={(e) => setPrecaution(e.target.value)}
+            />
+          </div>
+          <div className="border border-black bg-[#d9d9d9] px-3 py-2 text-black">
+            <div className="text-xs font-bold uppercase">
+              Recommandation CGP
+            </div>
+            <div className="mt-1 text-base font-bold">
+              {euro(epargnePrecautionReco)}
+            </div>
+            <div className="mt-1 text-xs">
+              Base : 3 à 6 mois de charges incompressibles
             </div>
           </div>
-
-          <div className="grid grid-cols-[1fr_auto] overflow-hidden border-2 border-black">
-             <div className="bg-black p-2 text-center font-bold text-white">
-              Budget Projets théorique
-             </div>
-             <div className="bg-[#f3c316] p-2 font-bold text-black">
-              {euro(budgetProjet)}
-             </div>
-           </div>
-			
         </div>
-		
-
-
-        <div className="space-y-4">
-          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-            <h3 className="border-b border-black bg-[#0f7fb3] px-2 py-1 text-center font-bold text-white">
-              Epargne / Stock
-            </h3>
-            <div className="overflow-x-auto p-3">
-              <table className="w-full border-separate border-spacing-0 overflow-hidden text-sm">
-  <thead>
-    <tr className="bg-[#f8f5ef] text-[#374151]">
-      <th className="border-b border-[#e7dfd4] px-3 py-3 text-left font-semibold"></th>
-      <th className="border-b border-[#e7dfd4] px-3 py-3 text-left font-semibold">
-        Type de compte / placements
-      </th>
-      <th className="border-b border-[#e7dfd4] px-3 py-3 text-left font-semibold">
-        Montant
-      </th>
-      <th className="border-b border-[#e7dfd4] px-3 py-3 text-left font-semibold">
-        Banque / organisme
-      </th>
-    </tr>
-  </thead>
-                <tbody>
-                  {assets.map((a, i) => {
-                    const showCategory =
-                      i === 0 || assets[i - 1].categorie !== a.categorie;
-                    const rowSpan = assets.filter(
-                      (item) => item.categorie === a.categorie
-                    ).length;
-
-                    return (
-                      <tr key={i}>
-                        {showCategory && (
-                          <td
-							  rowSpan={rowSpan}
-							  className="border-b border-[#f1ece4] bg-[#faf7f2] px-2 text-center text-[11px] font-semibold uppercase tracking-[0.12em] text-[#8b6b36] [writing-mode:vertical-rl] rotate-180"
-							>
-							  {a.categorie}
-							</td>
-                        )}
-                        <td className="border-b border-[#f1ece4] px-3 py-2.5 text-[#1f2937]">
-                          {a.type}
-                        </td>
-                        <td className="border border-black">
-                          <input
-                            className={input}
-                            type="number"
-                            value={a.montant}
-                            onChange={(e) =>
-                              updateAsset(i, "montant", e.target.value)
-                            }
-                          />
-                        </td>
-                        <td className="border border-black">
-                          <input
-                            className={input}
-                            value={a.banque}
-                            onChange={(e) =>
-                              updateAsset(i, "banque", e.target.value)
-                            }
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-
-              <div className="mt-2 grid grid-cols-4 gap-px overflow-hidden border-2 border-black bg-black">
-                <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
-                  Court terme : {euro(assetsByCat["Court terme"])}
-                </div>
-                <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
-                  Moyen terme : {euro(assetsByCat["Moyen terme"])}
-                </div>
-                <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
-                  Long terme : {euro(assetsByCat["Long terme"])}
-                </div>
-                <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
-                  Total : {euro(totalAssets)}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-            <h3 className={sectionTitle}>Epargne de précaution</h3>
-            <div className="grid gap-3 p-3 md:grid-cols-2">
-              <div>
-                <div className="mb-1 font-semibold text-white">
-                  Montant souhaité
-                </div>
-                <input
-                  className={input}
-                  type="number"
-                  value={precaution}
-                  onChange={(e) => setPrecaution(e.target.value)}
-                />
-              </div>
-              <div className="border border-black bg-[#d9d9d9] px-3 py-2 text-black">
-                <div className="text-xs font-bold uppercase">
-                  Recommandation CGP
-                </div>
-                <div className="mt-1 text-base font-bold">
-                  {euro(epargnePrecautionReco)}
-                </div>
-                <div className="mt-1 text-xs">
-                  Base : 3 à 6 mois de charges incompressibles
-                </div>
-              </div>
-            </div>
-		  
+      </div>
+    </div>
+  </div>
 )}
 
 {step === 4 && (
