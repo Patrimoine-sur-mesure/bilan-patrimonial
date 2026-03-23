@@ -9,9 +9,9 @@ import PyramidePatrimoineActuel from "./PyramidePatrimoineActuel";
 export default function FormulaireBudgetPatrimonial() {
   const label = "text-[13px] font-medium text-[#4b5563]";
 const input =
-  "w-full rounded-xl border border-[#d8d1c5] bg-[#fcfaf7] px-3 py-2.5 text-sm text-[#111827] shadow-sm outline-none transition focus:border-[#b08a4a] focus:ring-2 focus:ring-[#b08a4a]/20";
+  "w-full rounded-xl border border-[#d8d1c5] bg-white px-3 py-2.5 text-sm text-[#111827] shadow-sm outline-none transition focus:border-[#b08a4a] focus:ring-2 focus:ring-[#b08a4a]/20";
 const sectionTitle =
-  "border-b border-[#ece6dc] bg-gradient-to-r from-[#1f3b57] to-[#2c4d6f] px-4 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#6b7280]";
+  "border-b border-[#ece6dc] bg-gradient-to-r from-[#1f3b57] to-[#2c4d6f] px-4 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-white";
 const totalBar =
   "border-t border-[#ece6dc] bg-[#faf7f2] px-4 py-3 text-sm font-semibold text-[#1f2937]";
 
@@ -578,7 +578,7 @@ const epargneMensuelleLT = useMemo(
   if (isCheckingAccess) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#f6f3ee]">
-      <div className="rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] px-6 py-5 text-sm text-[#1f2937] shadow">
+      <div className="rounded-2xl border border-[#e6ded2] bg-white px-6 py-5 text-sm text-[#1f2937] shadow">
         Vérification de l'accès...
       </div>
     </div>
@@ -588,7 +588,7 @@ const epargneMensuelleLT = useMemo(
 if (!isAuthorized) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#f6f3ee] px-4">
-      <div className="w-full max-w-md rounded-3xl border border-[#e6ded2] bg-[#fcfaf7] p-8 text-center shadow-[0_10px_30px_rgba(17,24,39,0.06)]">
+      <div className="w-full max-w-md rounded-3xl border border-[#e6ded2] bg-white p-8 text-center shadow-[0_10px_30px_rgba(17,24,39,0.06)]">
         <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8b6b36]">
           Accès sécurisé
         </div>
@@ -606,20 +606,20 @@ if (!isAuthorized) {
 return (
     <div id="formulaire-pdf" className="min-h-screen bg-[#f6f3ee] px-4 py-8 text-sm text-[#111827] md:px-8">
 	
-	<div className="mb-8 overflow-hidden rounded-[28px] border border-[#e6ded2] bg-gradient-to-r from-[#10273d] via-[#1f3b57] to-[#2c4d6f] px-6 py-7 text-[#6b7280] shadow-[0_18px_50px_rgba(16,39,61,0.18)]">
+	<div className="mb-8 overflow-hidden rounded-[28px] border border-[#e6ded2] bg-gradient-to-r from-[#10273d] via-[#1f3b57] to-[#2c4d6f] px-6 py-7 text-white shadow-[0_18px_50px_rgba(16,39,61,0.18)]">
   <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
     <div>
-      <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#6b7280]/70">
+      <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">
         Bilan patrimonial
       </div>
       <h1 className="mt-2 text-3xl font-semibold tracking-tight">
         Synthèse patrimoniale client
       </h1>
-      <p className="mt-2 max-w-2xl text-sm text-[#6b7280]/80">
+      <p className="mt-2 max-w-2xl text-sm text-white/80">
         Vision consolidée des revenus, charges, capacités d’épargne,
         actifs financiers et patrimoine immobilier.
       </p>
-	  <div className="mt-4 rounded-xl border border-white/20 bg-[#fcfaf7]/10 px-4 py-3 text-xs text-[#6b7280]/90 backdrop-blur">
+	  <div className="mt-4 rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-xs text-white/90 backdrop-blur">
   🔒 Accès sécurisé — Ce formulaire est accessible uniquement via le lien personnel transmis par votre conseiller.
 
 		Les informations saisies restent confidentielles.
@@ -629,7 +629,7 @@ return (
 </div>
     </div>
 	
-	<div className="mb-8 rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] p-4 shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+	<div className="mb-8 rounded-2xl border border-[#e6ded2] bg-white p-4 shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
   <div className="flex items-center justify-between gap-4">
     <div>
       <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
@@ -655,8 +655,8 @@ return (
 
 
 
-    <div className="rounded-2xl border border-white/15 bg-[#fcfaf7]/10 px-4 py-3 backdrop-blur">
-      <div className="text-[11px] uppercase tracking-[0.14em] text-[#6b7280]/70">
+    <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
+      <div className="text-[11px] uppercase tracking-[0.14em] text-white/70">
         Client
       </div>
       <div className="mt-1 text-base font-medium">
@@ -780,7 +780,7 @@ return (
         
 {step === 1 && (
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+        <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
           <h2 className={sectionTitle}>INFORMATION INVESTISSEUR</h2>
 
           <div className="border-b-2 border-black p-3">
@@ -875,7 +875,7 @@ return (
 
 {step === 2 && (
   <div className="space-y-4">
-    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
       <h3 className={sectionTitle}>Flux de revenus mensuels</h3>
       <div className="p-3">
         {incomeFields.map((f) => (
@@ -895,7 +895,7 @@ return (
       <div className={totalBar}>Total : {euro(totalIncome)}</div>
     </div>
 
-    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
       <h3 className={sectionTitle}>Engagements financiers mensuels</h3>
       <div className="p-3">
         {chargesFields.map((f) => (
@@ -915,7 +915,7 @@ return (
       <div className={totalBar}>Total : {euro(totalCharges)}</div>
     </div>
 
-    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
       <div className="flex items-center justify-between gap-4 px-5 py-4">
         <div>
           <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
@@ -931,8 +931,8 @@ return (
       </div>
     </div>
 
-    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-      <h3 className={sectionTitle}>Train de vie</h3>
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+      <h3 className={sectionTitle}>Train de vie discrétionnaire</h3>
       <div className="p-3">
         {loisirsFields.map((f) => (
           <div key={f} className="mb-1 grid grid-cols-2 items-center gap-2">
@@ -951,7 +951,7 @@ return (
       <div className={totalBar}>Total : {euro(totalLoisirs)}</div>
     </div>
 
-    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
       <h3 className={sectionTitle}>Épargne mensuelle actuelle</h3>
       <div className="p-3">
         {epargneMensuelle.map((f) => (
@@ -973,8 +973,8 @@ return (
       </div>
     </div>
 
-    <div className="flex items-center justify-between rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] px-5 py-4 shadow-[0_8px_20px_rgba(17,24,39,0.04)]">
-      <div className="bg-black p-2 text-center font-bold text-[#6b7280]">
+    <div className="grid grid-cols-[1fr_auto] overflow-hidden border-2 border-black">
+      <div className="bg-black p-2 text-center font-bold text-white">
         Budget Projets théorique
       </div>
       <div className="bg-[#f3c316] p-2 font-bold text-black">
@@ -986,14 +986,14 @@ return (
 		  
 {step === 3 && (
   <div className="space-y-4">
-    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-      <h3 className="border-b border-[#ece6dc] bg-gradient-to-r from-[#1f3b57] to-[#2c4d6f] px-4 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-white">
-     Actifs financiers
-		</h3>
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+      <h3 className="border-b border-black bg-[#0f7fb3] px-2 py-1 text-center font-bold text-white">
+        Épargne / Stock
+      </h3>
       <div className="overflow-x-auto p-3">
         <table className="w-full border-separate border-spacing-0 overflow-hidden text-sm">
           <thead>
-            <tr className="bg-[#faf7f2] text-[#374151]">
+            <tr className="bg-[#f8f5ef] text-[#374151]">
               <th className="border-b border-[#e7dfd4] px-3 py-3 text-left font-semibold"></th>
               <th className="border-b border-[#e7dfd4] px-3 py-3 text-left font-semibold">
                 Type de compte / placements
@@ -1027,7 +1027,7 @@ return (
                   <td className="border-b border-[#f1ece4] px-3 py-2.5 text-[#1f2937]">
                     {a.type}
                   </td>
-                  <td className="border border-[#e7dfd4] bg-[#fcfaf7]">
+                  <td className="border border-black">
                     <input
                       className={input}
                       type="number"
@@ -1052,24 +1052,24 @@ return (
           </tbody>
         </table>
 
-        <div className="mt-4 grid grid-cols-4 gap-3">
-          <div className="rounded-xl border border-[#e6ded2] bg-[#faf7f2] px-3 py-2 text-sm font-semibold text-[#1f2937]">
+        <div className="mt-2 grid grid-cols-4 gap-px overflow-hidden border-2 border-black bg-black">
+          <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
             Court terme : {euro(assetsByCat["Court terme"])}
           </div>
-          <div className="rounded-xl border border-[#e6ded2] bg-[#faf7f2] px-3 py-2 text-sm font-semibold text-[#1f2937]">
+          <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
             Moyen terme : {euro(assetsByCat["Moyen terme"])}
           </div>
-          <div className="rounded-xl border border-[#e6ded2] bg-[#faf7f2] px-3 py-2 text-sm font-semibold text-[#1f2937]">
+          <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
             Long terme : {euro(assetsByCat["Long terme"])}
           </div>
-          <div className="rounded-xl border border-[#e6ded2] bg-[#faf7f2] px-3 py-2 text-sm font-semibold text-[#1f2937]">
+          <div className="bg-[#e6c08f] px-2 py-1 font-bold text-black">
             Total : {euro(totalAssets)}
           </div>
         </div>
       </div>
     </div>
 
-    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+    <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
       <h3 className={sectionTitle}>Épargne de précaution</h3>
       <div className="grid gap-3 p-3 md:grid-cols-2">
         <div>
@@ -1103,19 +1103,19 @@ return (
 
 
 
-          <div className="overflow-hidden border border-[#e6ded2] bg-white rounded-2xl shadow-[0_8px_20px_rgba(17,24,39,0.04)]">
-            <h3 className="border-b border-black bg-[#0f7fb3] px-2 py-1 text-center font-bold text-[#6b7280]">
-              Patrimoine immobilier
+          <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+            <h3 className="border-b border-black bg-[#0f7fb3] px-2 py-1 text-center font-bold text-white">
+              Biens immobiliers
             </h3>
             <div className="space-y-4 p-3">
               {realEstate.map((r, i) => (
-                <div className="rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] shadow-[0_8px_20px_rgba(17,24,39,0.04)]">
-                  <div className="rounded-xl border border-[#e6ded2] bg-[#faf7f2] px-3 py-2 text-sm font-semibold text-[#1f2937]">
+                <div key={i} className="border-2 border-black bg-[#166e79]">
+                  <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
                     {r.type}
                   </div>
                   <div className="grid gap-3 p-3 md:grid-cols-2">
                     <div>
-                      <div className="mb-1 font-semibold text-[#6b7280]">
+                      <div className="mb-1 font-semibold text-white">
                         Valeur estimée
                       </div>
                       <input
@@ -1128,7 +1128,7 @@ return (
                       />
                     </div>
                     <div>
-                      <div className="mb-1 font-semibold text-[#6b7280]">
+                      <div className="mb-1 font-semibold text-white">
                         Surface / m²
                       </div>
                       <input
@@ -1141,7 +1141,7 @@ return (
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <div className="mb-1 font-semibold text-[#6b7280]">Adresse</div>
+                      <div className="mb-1 font-semibold text-white">Adresse</div>
                       <input
                         className={input}
                         value={r.adresse}
@@ -1153,7 +1153,7 @@ return (
                   </div>
                   <div className="grid gap-3 border-t-2 border-black p-3 md:grid-cols-4">
                     <div>
-                      <div className="mb-1 font-semibold text-[#6b7280]">
+                      <div className="mb-1 font-semibold text-white">
                         Date acquisition
                       </div>
                       <input
@@ -1166,7 +1166,7 @@ return (
                       />
                     </div>
                     <div>
-                      <div className="mb-1 font-semibold text-[#6b7280]">
+                      <div className="mb-1 font-semibold text-white">
                         Date fin
                       </div>
                       <input
@@ -1179,7 +1179,7 @@ return (
                       />
                     </div>
                     <div>
-                      <div className="mb-1 font-semibold text-[#6b7280]">
+                      <div className="mb-1 font-semibold text-white">
                         Mensualité
                       </div>
                       <input
@@ -1192,7 +1192,7 @@ return (
                       />
                     </div>
                     <div>
-                      <div className="mb-1 font-semibold text-[#6b7280]">
+                      <div className="mb-1 font-semibold text-white">
                         Reste à rembourser
                       </div>
                       <input
@@ -1208,14 +1208,14 @@ return (
                 </div>
               ))}
 
-              <div className="mt-4 grid grid-cols-3 gap-3">
-                <div className="rounded-xl border border-[#e6ded2] bg-[#faf7f2] px-3 py-2 text-sm font-semibold text-[#1f2937]">
+              <div className="grid gap-px overflow-hidden border-2 border-black bg-black md:grid-cols-3">
+                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
                   Total immobilier : {euro(totalImmo)}
                 </div>
-                <div className="rounded-xl border border-[#e6ded2] bg-[#faf7f2] px-3 py-2 text-sm font-semibold text-[#1f2937]">
+                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
                   Mensualités : {euro(totalMensualitesImmo)}
                 </div>
-                <div className="rounded-xl border border-[#e6ded2] bg-[#faf7f2] px-3 py-2 text-sm font-semibold text-[#1f2937]">
+                <div className="bg-[#e6c08f] px-3 py-2 font-bold text-black">
                   Capital restant : {euro(totalResteImmo)}
                 </div>
               </div>
@@ -1228,7 +1228,7 @@ return (
     type="button"
     onClick={goBack}
     disabled={step === 1}
-    className="rounded-2xl border border-[#d7c8ae] bg-[#fcfaf7] px-6 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.08)] transition disabled:cursor-not-allowed disabled:opacity-40"
+    className="rounded-2xl border border-[#d7c8ae] bg-white px-6 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.08)] transition disabled:cursor-not-allowed disabled:opacity-40"
   >
     Précédent
   </button>
@@ -1237,7 +1237,7 @@ return (
     type="button"
     onClick={goNext}
     disabled={step === totalSteps}
-    className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-6 py-3 text-sm font-semibold text-[#6b7280] shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868] disabled:cursor-not-allowed disabled:opacity-40"
+    className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868] disabled:cursor-not-allowed disabled:opacity-40"
   >
     Suivant
   </button>
@@ -1307,7 +1307,7 @@ return (
           <button
             type="button"
             onClick={handleSave}
-            className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-8 py-3 text-sm font-semibold text-[#6b7280] shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868]"
+            className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-8 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868]"
           >
             Enregistrer
           </button>
@@ -1321,7 +1321,7 @@ return (
           <button
             type="button"
             onClick={handleDownloadPdf}
-            className="rounded-2xl border border-[#d7c8ae] bg-[#fcfaf7] px-8 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.10)] transition hover:-translate-y-0.5 hover:bg-[#fcfaf7]"
+            className="rounded-2xl border border-[#d7c8ae] bg-white px-8 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.10)] transition hover:-translate-y-0.5 hover:bg-[#fcfaf7]"
           >
             Télécharger le PDF
           </button>
