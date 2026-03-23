@@ -987,11 +987,9 @@ return (
 {step === 3 && (
   <div className="space-y-4">
     <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-[#fcfaf7] shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-      <h3 className="border-b border-[#ece6dc] bg-gradient-to-r from-[#1f3b57] to-[#2c4d6f] px-4 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
-			Actifs financiers
+      <h3 className="border-b border-[#ece6dc] bg-gradient-to-r from-[#1f3b57] to-[#2c4d6f] px-4 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-white">
+     Actifs financiers
 		</h3>
-        Actifs financiers
-      </h3>
       <div className="overflow-x-auto p-3">
         <table className="w-full border-separate border-spacing-0 overflow-hidden text-sm">
           <thead>
