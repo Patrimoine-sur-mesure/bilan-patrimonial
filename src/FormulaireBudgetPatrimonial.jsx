@@ -656,16 +656,17 @@ return (
 
 
     <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
-      <div className="text-[11px] uppercase tracking-[0.14em] text-white/70">
+      	  <div className="mt-2 inline-flex items-center rounded-full bg-[#efe8da] px-3 py-1 text-[10px] uppercase tracking-[0.12em] text-[#8b6b36]">
+  Conseil patrimonial indépendant
+</div>
+<div className="text-[11px] uppercase tracking-[0.14em] text-white/70">
         Client
       </div>
       <div className="mt-1 text-base font-medium">
         {investorIdentity["Prénom"] || "Prénom"} {investorIdentity["Nom"] || "Nom"}
       </div>
 	  
-	  <div className="mt-2 inline-flex items-center rounded-full bg-[#efe8da] px-3 py-1 text-[10px] uppercase tracking-[0.12em] text-[#8b6b36]">
-  Conseil patrimonial indépendant
-</div>
+
 
     </div>
   </div>
