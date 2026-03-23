@@ -628,32 +628,6 @@ return (
 		Dans ce cas, aucune donnée ne sera sauvegardée sur le serveur.
 </div>
     </div>
-	
-	<div className="mb-8 rounded-2xl border border-[#e6ded2] bg-white p-4 shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
-  <div className="flex items-center justify-between gap-4">
-    <div>
-      <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
-        Progression du bilan
-      </div>
-      <div className="mt-1 text-sm font-medium text-[#1f2937]">
-        Étape {step} sur {totalSteps} — {stepTitles[step]}
-      </div>
-    </div>
-
-    <div className="text-sm font-semibold text-[#8b6b36]">
-      {Math.round((step / totalSteps) * 100)}%
-    </div>
-  </div>
-
-  <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#ece7de]">
-    <div
-      className="h-full rounded-full bg-[#b08a4a] transition-all duration-500"
-      style={{ width: `${(step / totalSteps) * 100}%` }}
-    />
-  </div>
-</div>
-
-
 
     <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
       <div className="text-[11px] uppercase tracking-[0.14em] text-white/70">
@@ -671,7 +645,7 @@ return (
   </div>
 </div>
 
-      <div className="space-y-6">
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
   {[
     {
       title: "Revenus mensuels",
@@ -778,7 +752,7 @@ return (
 
 
         
-{step === 1 && (
+
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
           <h2 className={sectionTitle}>INFORMATION INVESTISSEUR</h2>
@@ -803,7 +777,6 @@ return (
               </div>
             ))}
           </div>
-
 
           <div className="border-b-2 border-black p-3">
             {investorFamilyFields.map((f) => (
@@ -869,10 +842,7 @@ return (
             ))}
           </div>
         </div>
-		
-)}
 
-{step === 2 && (
         <div className="space-y-4">
           <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
             <h3 className={sectionTitle}>Flux de revenus mensuels</h3>
@@ -952,9 +922,7 @@ return (
             <div className={totalBar}>Total : {euro(totalLoisirs)}</div>
           </div>
 		  		  
-)}
 		  
-{step === 3 && (
 		  <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
             <h3 className={sectionTitle}>Epargne mensuelle actuelle</h3>
             <div className="p-3">
@@ -987,8 +955,6 @@ return (
            </div>
 			
         </div>
-		
-
 
         <div className="space-y-4">
           <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
@@ -1101,12 +1067,6 @@ return (
               </div>
             </div>
           </div>
-		  
-)}
-
-{step === 4 && (
-
-
 
           <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
             <h3 className="border-b border-black bg-[#0f7fb3] px-2 py-1 text-center font-bold text-white">
@@ -1228,9 +1188,6 @@ return (
           </div>
         </div>
       </div>
-	  
-)}
-{step === 5 && (
 
 	  {isGeneratingPdf && (
         <div
@@ -1288,28 +1245,6 @@ return (
 			  scorePatrimonial={scorePatrimonial}
 			  analysePatrimoniale={analysePatrimoniale}
 			/>
-			
-<div className="mt-8 flex items-center justify-between">
-  <button
-    type="button"
-    onClick={goBack}
-    disabled={step === 1}
-    className="rounded-2xl border border-[#d7c8ae] bg-white px-6 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.08)] transition disabled:cursor-not-allowed disabled:opacity-40"
-  >
-    Précédent
-  </button>
-
-  <button
-    type="button"
-    onClick={goNext}
-    disabled={step === totalSteps}
-    className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868] disabled:cursor-not-allowed disabled:opacity-40"
-  >
-    Suivant
-  </button>
-</div>
-
-{step === 5 && (
 
 <div className="mt-12 flex w-full justify-center">
   <div className="flex flex-wrap justify-center gap-4">
@@ -1344,7 +1279,5 @@ return (
         </div>
       </div>
     </div>
-	
-)}
   );
 }
