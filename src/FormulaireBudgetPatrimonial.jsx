@@ -1230,6 +1230,26 @@ return (
       </div>
 	  
 )}
+<div className="mt-8 flex items-center justify-between">
+  <button
+    type="button"
+    onClick={goBack}
+    disabled={step === 1}
+    className="rounded-2xl border border-[#d7c8ae] bg-white px-6 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.08)] transition disabled:cursor-not-allowed disabled:opacity-40"
+  >
+    Précédent
+  </button>
+
+  <button
+    type="button"
+    onClick={goNext}
+    disabled={step === totalSteps}
+    className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868] disabled:cursor-not-allowed disabled:opacity-40"
+  >
+    Suivant
+  </button>
+</div>
+
 {step === 5 && (
 
 	  {isGeneratingPdf && (
@@ -1289,27 +1309,6 @@ return (
 			  analysePatrimoniale={analysePatrimoniale}
 			/>
 			
-<div className="mt-8 flex items-center justify-between">
-  <button
-    type="button"
-    onClick={goBack}
-    disabled={step === 1}
-    className="rounded-2xl border border-[#d7c8ae] bg-white px-6 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.08)] transition disabled:cursor-not-allowed disabled:opacity-40"
-  >
-    Précédent
-  </button>
-
-  <button
-    type="button"
-    onClick={goNext}
-    disabled={step === totalSteps}
-    className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868] disabled:cursor-not-allowed disabled:opacity-40"
-  >
-    Suivant
-  </button>
-</div>
-
-{step === 5 && (
 
 <div className="mt-12 flex w-full justify-center">
   <div className="flex flex-wrap justify-center gap-4">
