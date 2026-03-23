@@ -158,6 +158,7 @@ const [investorIdentity, setInvestorIdentity] = useState(
   );
 
   const [saveStatus, setSaveStatus] = useState("");
+  const [saveStatus, setSaveStatus] =
   
 const [step, setStep] = useState(1);
 const totalSteps = 5;
@@ -170,8 +171,19 @@ const stepTitles = {
   5: "Synthèse patrimoniale",
 };
 
-const goNext = () => setStep((prev) => Math.min(prev + 1, totalSteps));
-const goBack = () => setStep((prev) => Math.max(prev - 1, 1));
+const goNext = async () => {
+  const ok = await saveFormToServer({ silent: true });
+  if (!ok) return;
+
+  setStep((prev) => Math.min(prev + 1, totalSteps));
+};
+
+const goBack = async () => {
+  const ok = await saveFormToServer({ silent: true });
+  if (!ok) return;
+
+  setStep((prev) => Math.max(prev - 1, 1));
+};
 
   const totalIncome = useMemo(
     () => Object.values(income).reduce((a, b) => a + toNumber(b), 0),
@@ -357,6 +369,7 @@ const epargneMensuelleLT = useMemo(
         if (typeof saved.precaution === "string") setPrecaution(saved.precaution);
         if (saved.assets) setAssets(saved.assets);
         if (saved.realEstate) setRealEstate(saved.realEstate);
+		if (typeof saved.step === "number") setStep(saved.step);
 
         setSaveStatus("Brouillon rechargé depuis le serveur.");
       } else {
@@ -463,13 +476,15 @@ const epargneMensuelleLT = useMemo(
   }
 };
 
-  const handleSave = async () => {
+  const saveFormToServer = async ({ silent = false } = {}) => {
   try {
+    setIsSaving(true);
+
     const token = getTokenFromUrl();
 
     if (!token) {
-      alert("Lien invalide.");
-      return;
+      if (!silent) alert("Lien invalide.");
+      return false;
     }
 
     const { data: accessRow, error: accessError } = await supabase
@@ -480,13 +495,13 @@ const epargneMensuelleLT = useMemo(
 
     if (accessError || !accessRow) {
       console.error("SAVE ACCESS ERROR:", accessError);
-      alert("Lien invalide.");
-      return;
+      if (!silent) alert("Lien invalide.");
+      return false;
     }
 
     if (new Date(accessRow.expires_at) < new Date()) {
-      alert("Lien expiré.");
-      return;
+      if (!silent) alert("Lien expiré.");
+      return false;
     }
 
     const payload = {
@@ -502,6 +517,7 @@ const epargneMensuelleLT = useMemo(
       assets,
       realEstate,
       updatedAt: new Date().toISOString(),
+      step,
     };
 
     const nom = investorIdentity["Nom"] || "";
@@ -516,8 +532,8 @@ const epargneMensuelleLT = useMemo(
 
     if (checkError) {
       console.error("CHECK ERROR:", checkError);
-      alert("Erreur lors de la vérification du formulaire.");
-      return;
+      if (!silent) alert("Erreur lors de la vérification du formulaire.");
+      return false;
     }
 
     if (existing) {
@@ -534,8 +550,8 @@ const epargneMensuelleLT = useMemo(
 
       if (error) {
         console.error("UPDATE ERROR:", error);
-        alert("Erreur lors de la sauvegarde : " + error.message);
-        return;
+        if (!silent) alert("Erreur lors de la sauvegarde : " + error.message);
+        return false;
       }
     } else {
       const { error } = await supabase
@@ -553,16 +569,26 @@ const epargneMensuelleLT = useMemo(
 
       if (error) {
         console.error("INSERT ERROR:", error);
-        alert("Erreur lors de la création : " + error.message);
-        return;
+        if (!silent) alert("Erreur lors de la création : " + error.message);
+        return false;
       }
     }
 
     setSaveStatus("Brouillon enregistré sur le serveur.");
-    alert("Formulaire sauvegardé.");
+    return true;
   } catch (err) {
     console.error("SAVE EXCEPTION:", err);
-    alert("Erreur JS : " + err.message);
+    if (!silent) alert("Erreur JS : " + err.message);
+    return false;
+  } finally {
+    setIsSaving(false);
+  }
+};
+
+const handleSave = async () => {
+  const ok = await saveFormToServer({ silent: false });
+  if (ok) {
+    alert("Formulaire sauvegardé.");
   }
 };
 
@@ -1228,19 +1254,19 @@ return (
   <button
     type="button"
     onClick={goBack}
-    disabled={step === 1}
+    disabled={step === 1 || isSaving}
     className="rounded-2xl border border-[#d7c8ae] bg-white px-6 py-3 text-sm font-semibold text-[#8b6b36] shadow-[0_10px_25px_rgba(176,138,74,0.08)] transition disabled:cursor-not-allowed disabled:opacity-40"
   >
-    Précédent
+    {isSaving ? "Enregistrement..." : "Précédent"}
   </button>
 
   <button
     type="button"
     onClick={goNext}
-    disabled={step === totalSteps}
+    disabled={step === totalSteps || isSaving}
     className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868] disabled:cursor-not-allowed disabled:opacity-40"
   >
-    Suivant
+    {isSaving ? "Enregistrement..." : "Suivant"}
   </button>
 </div>
 
@@ -1308,9 +1334,10 @@ return (
           <button
             type="button"
             onClick={handleSave}
+			disabled={isSaving}
             className="rounded-2xl border border-[#1f3b57] bg-[#1f3b57] px-8 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(31,59,87,0.18)] transition hover:-translate-y-0.5 hover:bg-[#284868]"
           >
-            Enregistrer
+            {isSaving ? "Enregistrement..." : "Enregistrer"}
           </button>
 
           <div className="mt-2 text-[11px] text-[#6b7280]">
