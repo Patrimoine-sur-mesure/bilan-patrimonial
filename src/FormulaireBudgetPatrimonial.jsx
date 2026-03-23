@@ -158,7 +158,7 @@ const [investorIdentity, setInvestorIdentity] = useState(
   );
 
   const [saveStatus, setSaveStatus] = useState("");
-  const [saveStatus, setSaveStatus] = useState(false);  
+const [isSaving, setIsSaving] = useState(false);
 const [step, setStep] = useState(1);
 const totalSteps = 5;
 
