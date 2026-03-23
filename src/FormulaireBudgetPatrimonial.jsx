@@ -955,8 +955,6 @@ return (
 		  </div>
 		  		  
 
-		  
-
   <div className="space-y-4">
     <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
       <h3 className={sectionTitle}>Épargne mensuelle actuelle</h3>
@@ -988,9 +986,9 @@ return (
         {euro(budgetProjet)}
       </div>
     </div>
-	
-)}
 
+)}
+		  
 {step === 3 && (
 
     <div className="overflow-hidden rounded-2xl border border-[#e6ded2] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
