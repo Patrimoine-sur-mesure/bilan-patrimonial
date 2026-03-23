@@ -607,6 +607,7 @@ return (
     <div id="formulaire-pdf" className="min-h-screen bg-[#f6f3ee] px-4 py-8 text-sm text-[#111827] md:px-8">
 	
 	<div className="mb-8 overflow-hidden rounded-[28px] border border-[#e6ded2] bg-gradient-to-r from-[#10273d] via-[#1f3b57] to-[#2c4d6f] px-6 py-7 text-white shadow-[0_18px_50px_rgba(16,39,61,0.18)]">
+  
   <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
     <div>
       <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">
@@ -655,20 +656,18 @@ return (
 
 
 
-    <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
-      	  <div className="mt-2 inline-flex items-center rounded-full bg-[#efe8da] px-3 py-1 text-[10px] uppercase tracking-[0.12em] text-[#8b6b36]">
-         Conseil patrimonial indépendant
-        </div>
-<div className="mt-4 text-[11px] uppercase tracking-[0.14em] text-white/70">
+ <div className="w-full rounded-2xl border border-white/15 bg-white/10 px-4 py-4 backdrop-blur md:w-[230px]">
+      <div className="text-[11px] uppercase tracking-[0.14em] text-white/70">
         Client
       </div>
-	  
-      <div className="mt-1 text-base font-medium">
+
+      <div className="mt-2 text-base font-medium text-white">
         {investorIdentity["Prénom"] || "Prénom"} {investorIdentity["Nom"] || "Nom"}
       </div>
-	  
 
-
+      <div className="mt-4 inline-flex items-center rounded-full bg-[#efe8da] px-3 py-1 text-[10px] uppercase tracking-[0.12em] text-[#8b6b36]">
+        Conseil patrimonial indépendant
+      </div>
     </div>
   </div>
 </div>
