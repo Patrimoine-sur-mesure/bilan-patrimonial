@@ -39,18 +39,16 @@ export default function RapportPatrimonialPdf({
   const visibleChildren =
     childrenData?.filter((c) => c?.prenom || c?.naissance) || [];
 
-  // ✅ Adapté aux nouvelles clés du formulaire
-  const epargneMensuelleCT = toNumber(
-    epargne?.["Épargne de sécurité (court terme)"]
-  );
+  const epargneMensuelleCT =
+    toNumber(epargne?.["Livrets"]) + toNumber(epargne?.["Autres épargne CT"]);
 
-  const epargneMensuelleMT = toNumber(
-    epargne?.["Épargne financière (assurance vie, PEA)"]
-  );
+  const epargneMensuelleMT =
+    toNumber(epargne?.["Assurance vie"]) +
+    toNumber(epargne?.["Autres épargne MT"]);
 
   const epargneMensuelleLT =
-    toNumber(epargne?.["Investissements immobiliers"]) +
-    toNumber(epargne?.["Autres investissements long terme"]);
+    toNumber(epargne?.["Investissement locatif"]) +
+    toNumber(epargne?.["Autres épargne LT"]);
 
   const styles = {
     page: {
@@ -62,64 +60,64 @@ export default function RapportPatrimonialPdf({
       padding: "24px",
       boxSizing: "border-box",
     },
+	
+	  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginBottom: "18px",
+    padding: "14px 18px",
+    border: "1px solid #ddd6ca",
+    borderRadius: "16px",
+    backgroundColor: "#fcfaf7",
+  },
 
-    header: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "flex-start",
-      marginBottom: "18px",
-      padding: "14px 18px",
-      border: "1px solid #ddd6ca",
-      borderRadius: "16px",
-      backgroundColor: "#fcfaf7",
-    },
+  headerLeft: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "4px",
+  },
 
-    headerLeft: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "4px",
-    },
+  headerEyebrow: {
+    fontSize: "10px",
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: "1.2px",
+    color: "#8b8175",
+  },
 
-    headerEyebrow: {
-      fontSize: "10px",
-      fontWeight: "700",
-      textTransform: "uppercase",
-      letterSpacing: "1.2px",
-      color: "#8b8175",
-    },
+  headerTitle: {
+    fontSize: "18px",
+    fontWeight: "700",
+    color: "#1f2937",
+    lineHeight: 1.2,
+  },
 
-    headerTitle: {
-      fontSize: "18px",
-      fontWeight: "700",
-      color: "#1f2937",
-      lineHeight: 1.2,
-    },
+  headerSubtitle: {
+    fontSize: "11px",
+    color: "#6b7280",
+  },
 
-    headerSubtitle: {
-      fontSize: "11px",
-      color: "#6b7280",
-    },
+  headerRight: {
+    textAlign: "right",
+    display: "flex",
+    flexDirection: "column",
+    gap: "4px",
+  },
 
-    headerRight: {
-      textAlign: "right",
-      display: "flex",
-      flexDirection: "column",
-      gap: "4px",
-    },
+  headerClientLabel: {
+    fontSize: "10px",
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: "1.2px",
+    color: "#8b8175",
+  },
 
-    headerClientLabel: {
-      fontSize: "10px",
-      fontWeight: "700",
-      textTransform: "uppercase",
-      letterSpacing: "1.2px",
-      color: "#8b8175",
-    },
-
-    headerClientName: {
-      fontSize: "15px",
-      fontWeight: "700",
-      color: "#223046",
-    },
+  headerClientName: {
+    fontSize: "15px",
+    fontWeight: "700",
+    color: "#223046",
+  },
 
     pageBreakAvoid: {
       breakInside: "avoid",
@@ -133,14 +131,12 @@ export default function RapportPatrimonialPdf({
       gap: "12px",
       marginBottom: "22px",
     },
-
     statCard: {
       border: "1px solid #d8d1c5",
       borderRadius: "18px",
       overflow: "hidden",
       backgroundColor: "#ffffff",
     },
-
     statHead: {
       backgroundColor: "#1f3b57",
       color: "#ffffff",
@@ -150,7 +146,6 @@ export default function RapportPatrimonialPdf({
       letterSpacing: "1px",
       padding: "10px 12px",
     },
-
     statValue: {
       backgroundColor: "#ffffff",
       color: "#223046",
@@ -158,7 +153,6 @@ export default function RapportPatrimonialPdf({
       fontWeight: "700",
       padding: "16px 12px",
     },
-
     statValueSoft: {
       backgroundColor: "#fcfaf7",
       color: "#223046",
@@ -180,7 +174,6 @@ export default function RapportPatrimonialPdf({
       backgroundColor: "#ffffff",
       overflow: "hidden",
     },
-
     sectionTitle: {
       background:
         "linear-gradient(90deg, #10273d 0%, #1f3b57 55%, #2c4d6f 100%)",
@@ -191,7 +184,6 @@ export default function RapportPatrimonialPdf({
       textTransform: "uppercase",
       letterSpacing: "0.8px",
     },
-
     sectionBody: {
       padding: "14px",
     },
@@ -201,13 +193,11 @@ export default function RapportPatrimonialPdf({
       gridTemplateColumns: "1fr 1fr",
       gap: "10px",
     },
-
     fieldBlock: {
       display: "flex",
       flexDirection: "column",
       gap: "4px",
     },
-
     label: {
       fontSize: "11px",
       fontWeight: "700",
@@ -215,7 +205,6 @@ export default function RapportPatrimonialPdf({
       textTransform: "uppercase",
       letterSpacing: "0.6px",
     },
-
     value: {
       minHeight: "30px",
       border: "1px solid #ddd6ca",
@@ -233,7 +222,6 @@ export default function RapportPatrimonialPdf({
       borderCollapse: "collapse",
       tableLayout: "fixed",
     },
-
     th: {
       border: "1px solid #ddd6ca",
       backgroundColor: "#f8f5ef",
@@ -246,7 +234,6 @@ export default function RapportPatrimonialPdf({
       textTransform: "uppercase",
       letterSpacing: "0.4px",
     },
-
     td: {
       border: "1px solid #e7dfd4",
       padding: "8px 8px",
@@ -262,14 +249,12 @@ export default function RapportPatrimonialPdf({
       gap: "12px",
       marginTop: "12px",
     },
-
     summaryGrid4: {
       display: "grid",
       gridTemplateColumns: "repeat(4, 1fr)",
       gap: "12px",
       marginTop: "12px",
     },
-
     summaryBox: {
       border: "1px solid #ddd6ca",
       backgroundColor: "#fcfaf7",
@@ -288,7 +273,6 @@ export default function RapportPatrimonialPdf({
       padding: "18px",
       marginBottom: "16px",
     },
-
     pyramidEyebrow: {
       fontSize: "11px",
       fontWeight: "700",
@@ -297,35 +281,30 @@ export default function RapportPatrimonialPdf({
       color: "#8b8175",
       marginBottom: "6px",
     },
-
     pyramidTitle: {
       fontSize: "24px",
       fontWeight: "700",
       color: "#1f2937",
       marginBottom: "6px",
     },
-
     pyramidText: {
       fontSize: "13px",
       lineHeight: 1.5,
       color: "#6b7280",
       marginBottom: "18px",
     },
-
     pyramidKpis: {
       display: "grid",
       gridTemplateColumns: "repeat(3, 1fr)",
       gap: "12px",
       marginBottom: "18px",
     },
-
     pyramidKpi: {
       border: "1px solid #ddd6ca",
       backgroundColor: "#fcfaf7",
       borderRadius: "14px",
       padding: "10px 12px",
     },
-
     pyramidKpiLabel: {
       fontSize: "10px",
       fontWeight: "700",
@@ -334,27 +313,23 @@ export default function RapportPatrimonialPdf({
       color: "#8b8175",
       marginBottom: "4px",
     },
-
     pyramidKpiValue: {
       fontSize: "21px",
       fontWeight: "700",
       color: "#223046",
     },
-
     pyramidInsights: {
       display: "grid",
       gridTemplateColumns: "repeat(3, 1fr)",
       gap: "12px",
       marginTop: "16px",
     },
-
     insightBox: {
       border: "1px solid #ddd6ca",
       borderRadius: "14px",
       padding: "12px",
       backgroundColor: "#ffffff",
     },
-
     insightLabel: {
       fontSize: "10px",
       fontWeight: "700",
@@ -363,7 +338,6 @@ export default function RapportPatrimonialPdf({
       color: "#8b8175",
       marginBottom: "6px",
     },
-
     insightText: {
       fontSize: "12px",
       lineHeight: 1.5,
@@ -435,26 +409,23 @@ export default function RapportPatrimonialPdf({
 
   return (
     <div id="rapport-pdf" style={styles.page}>
-      <div id="pdf-page-1">
-        <div style={styles.header}>
-          <div style={styles.headerLeft}>
-            <div style={styles.headerEyebrow}>Bilan patrimonial</div>
-            <div style={styles.headerTitle}>Synthèse patrimoniale client</div>
-            <div style={styles.headerSubtitle}>
-              Vision consolidée des revenus, charges, capacités d’épargne,
-              actifs financiers et patrimoine immobilier.
-            </div>
-          </div>
+<div id="pdf-page-1">
+  <div style={styles.header}>
+    <div style={styles.headerLeft}>
+      <div style={styles.headerEyebrow}>Bilan patrimonial</div>
+      <div style={styles.headerTitle}>Synthèse patrimoniale client</div>
+      <div style={styles.headerSubtitle}>
+        Vision consolidée des revenus, charges, capacités d’épargne, actifs financiers et patrimoine immobilier.
+      </div>
+    </div>
 
-          <div style={styles.headerRight}>
-            <div style={styles.headerClientLabel}>Client</div>
-            <div style={styles.headerClientName}>
-              {investorIdentity?.["Prénom"] || ""}{" "}
-              {investorIdentity?.["Nom"] || ""}
-            </div>
-          </div>
-        </div>
-
+    <div style={styles.headerRight}>
+      <div style={styles.headerClientLabel}>Client</div>
+      <div style={styles.headerClientName}>
+        {investorIdentity?.["Prénom"] || ""} {investorIdentity?.["Nom"] || ""}
+      </div>
+    </div>
+  </div>
         <div style={styles.topCards}>
           <div style={styles.statCard}>
             <div style={styles.statHead}>Revenus mensuels</div>
@@ -726,26 +697,24 @@ export default function RapportPatrimonialPdf({
         </div>
       </div>
 
-      <div id="pdf-page-2">
-        <div style={styles.header}>
-          <div style={styles.headerLeft}>
-            <div style={styles.headerEyebrow}>Bilan patrimonial</div>
-            <div style={styles.headerTitle}>Structure patrimoniale</div>
-            <div style={styles.headerSubtitle}>
-              Lecture des placements financiers, répartition par horizon de
-              détention et valorisation globale.
-            </div>
-          </div>
+<div id="pdf-page-2">
+  <div style={styles.header}>
+    <div style={styles.headerLeft}>
+      <div style={styles.headerEyebrow}>Bilan patrimonial</div>
+      <div style={styles.headerTitle}>Structure patrimoniale</div>
+      <div style={styles.headerSubtitle}>
+        Lecture des placements financiers, répartition par horizon de détention et valorisation globale.
+      </div>
+    </div>
 
-          <div style={styles.headerRight}>
-            <div style={styles.headerClientLabel}>Client</div>
-            <div style={styles.headerClientName}>
-              {investorIdentity?.["Prénom"] || ""}{" "}
-              {investorIdentity?.["Nom"] || ""}
-            </div>
-          </div>
-        </div>
-
+    <div style={styles.headerRight}>
+      <div style={styles.headerClientLabel}>Client</div>
+      <div style={styles.headerClientName}>
+        {investorIdentity?.["Prénom"] || ""} {investorIdentity?.["Nom"] || ""}
+      </div>
+    </div>
+  </div>
+	  
         <div style={{ ...styles.card, ...styles.pageBreakAvoid }}>
           <div style={styles.sectionTitle}>Épargne / stock</div>
           <div style={styles.sectionBody}>
@@ -790,25 +759,24 @@ export default function RapportPatrimonialPdf({
         </div>
       </div>
 
-      <div id="pdf-page-3">
-        <div style={styles.header}>
-          <div style={styles.headerLeft}>
-            <div style={styles.headerEyebrow}>Bilan patrimonial</div>
-            <div style={styles.headerTitle}>Analyse patrimoniale</div>
-            <div style={styles.headerSubtitle}>
-              Lecture des stocks, flux mensuels, pyramide patrimoniale et
-              patrimoine immobilier.
-            </div>
-          </div>
+<div id="pdf-page-3">
+  <div style={styles.header}>
+    <div style={styles.headerLeft}>
+      <div style={styles.headerEyebrow}>Bilan patrimonial</div>
+      <div style={styles.headerTitle}>Analyse patrimoniale</div>
+      <div style={styles.headerSubtitle}>
+        Lecture des stocks, flux mensuels, pyramide patrimoniale et patrimoine immobilier.
+      </div>
+    </div>
 
-          <div style={styles.headerRight}>
-            <div style={styles.headerClientLabel}>Client</div>
-            <div style={styles.headerClientName}>
-              {investorIdentity?.["Prénom"] || ""}{" "}
-              {investorIdentity?.["Nom"] || ""}
-            </div>
-          </div>
-        </div>
+    <div style={styles.headerRight}>
+      <div style={styles.headerClientLabel}>Client</div>
+      <div style={styles.headerClientName}>
+        {investorIdentity?.["Prénom"] || ""} {investorIdentity?.["Nom"] || ""}
+      </div>
+    </div>
+  </div>
+
 
         <div style={{ ...styles.card, ...styles.pageBreakAvoid }}>
           <div style={styles.pyramidCard}>

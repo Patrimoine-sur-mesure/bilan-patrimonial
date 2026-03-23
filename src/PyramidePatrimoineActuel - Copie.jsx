@@ -9,29 +9,21 @@ export default function PyramidePatrimoineActuel({
   fluxMT = 0,
   fluxLT = 0,
   scorePatrimonial = "0.0",
-  analysePatrimoniale = {},
+  analysePatrimoniale = {
+    force: "",
+    vigilance: "",
+    orientation: "",
+  },
 }) {
-  const safeAnalyse = {
-    force: analysePatrimoniale?.force || "",
-    vigilance: analysePatrimoniale?.vigilance || "",
-    orientation: analysePatrimoniale?.orientation || "",
-  };
-
   const fmt = (v) => {
     const n = Number(v || 0);
 
-    if (typeof euro === "function") return euro(n);
-    if (n >= 1000000) {
-      return `${(n / 1000000).toFixed(2).replace(".", ",")} M€`;
-    }
-    if (n >= 1000) {
-      return `${Math.round(n / 1000)} k€`;
-    }
+    if (euro) return euro(n);
+    if (n >= 1000000) return `${(n / 1000000).toFixed(2).replace(".", ",")} M€`;
+    if (n >= 1000) return `${Math.round(n / 1000)} k€`;
 
     return `${n.toLocaleString("fr-FR")} €`;
   };
-
-  const clampPct = (n) => Math.max(0, Math.min(100, Number(n || 0)));
 
   const totalStock =
     Number(stockCT || 0) + Number(stockMT || 0) + Number(stockLT || 0);
@@ -39,17 +31,9 @@ export default function PyramidePatrimoineActuel({
   const totalFlux =
     Number(fluxCT || 0) + Number(fluxMT || 0) + Number(fluxLT || 0);
 
-  const pctCT = totalStock
-    ? Math.round((Number(stockCT || 0) / totalStock) * 100)
-    : 0;
-
-  const pctMT = totalStock
-    ? Math.round((Number(stockMT || 0) / totalStock) * 100)
-    : 0;
-
-  const pctLT = totalStock
-    ? Math.round((Number(stockLT || 0) / totalStock) * 100)
-    : 0;
+  const pctCT = totalStock ? Math.round((Number(stockCT || 0) / totalStock) * 100) : 0;
+  const pctMT = totalStock ? Math.round((Number(stockMT || 0) / totalStock) * 100) : 0;
+  const pctLT = totalStock ? Math.round((Number(stockLT || 0) / totalStock) * 100) : 0;
 
   let diagnostic =
     "Structure patrimoniale cohérente au regard des horizons de détention.";
@@ -138,7 +122,7 @@ export default function PyramidePatrimoineActuel({
           <div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
             <div
               className="h-full rounded-full bg-[#dcc79b] transition-all duration-700"
-              style={{ width: `${clampPct(pctCT)}%` }}
+              style={{ width: `${pctCT}%` }}
             />
           </div>
 
@@ -175,7 +159,7 @@ export default function PyramidePatrimoineActuel({
           <div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
             <div
               className="h-full rounded-full bg-[#c9b07a] transition-all duration-700"
-              style={{ width: `${clampPct(pctMT)}%` }}
+              style={{ width: `${pctMT}%` }}
             />
           </div>
 
@@ -212,7 +196,7 @@ export default function PyramidePatrimoineActuel({
           <div className="mb-4 h-2 overflow-hidden rounded-full bg-[#efe8da]">
             <div
               className="h-full rounded-full bg-[#b98d4a] transition-all duration-700"
-              style={{ width: `${clampPct(pctLT)}%` }}
+              style={{ width: `${pctLT}%` }}
             />
           </div>
 
@@ -497,7 +481,7 @@ export default function PyramidePatrimoineActuel({
             Atout principal
           </div>
           <p className="mt-2 text-sm leading-6 text-[#1f2937]">
-            {safeAnalyse.force}
+            {analysePatrimoniale.force}
           </p>
         </div>
 
@@ -506,7 +490,7 @@ export default function PyramidePatrimoineActuel({
             Point de vigilance
           </div>
           <p className="mt-2 text-sm leading-6 text-[#1f2937]">
-            {safeAnalyse.vigilance}
+            {analysePatrimoniale.vigilance}
           </p>
         </div>
 
@@ -515,7 +499,7 @@ export default function PyramidePatrimoineActuel({
             Orientation patrimoniale
           </div>
           <p className="mt-2 text-sm leading-6 text-[#1f2937]">
-            {safeAnalyse.orientation}
+            {analysePatrimoniale.orientation}
           </p>
         </div>
       </div>
@@ -535,8 +519,7 @@ export default function PyramidePatrimoineActuel({
           className="mt-3 text-sm font-semibold"
           style={{ color: diagnosticColor }}
         >
-          {pctCT > 60 || pctMT > 60 || pctLT > 70 ? "⚠ " : "✓ "}
-          {diagnostic}
+          {pctCT > 60 || pctMT > 60 || pctLT > 70 ? "⚠ " : "✓ "} {diagnostic}
         </div>
       </div>
     </div>
